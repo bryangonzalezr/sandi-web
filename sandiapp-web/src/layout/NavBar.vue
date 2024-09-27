@@ -1,8 +1,18 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 
+import { useAuthStore } from "@/stores";
+
 // COMPONENTES
 import AppButton from "@/common/AppButton.vue";
+
+
+const authStore = useAuthStore();
+
+const Logout = () => {
+  authStore.Logout();
+}
+
 </script>
 
 <template>
@@ -30,6 +40,7 @@ import AppButton from "@/common/AppButton.vue";
           <AppButton
             text="Salir"
             icons="fa-right-from-bracket"
+            @click="Logout()"
           />
         </div>
     </div>

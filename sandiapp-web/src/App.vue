@@ -1,16 +1,31 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { computed } from "vue";
+import { useRoute, RouterView } from 'vue-router'
 import NavBar from '@/layout/NavBar.vue'
+
+const route = useRoute();
+
+const excludedRoutes = ["Login", "Register"];
+
+const isExcludedRoute = computed(() =>
+  excludedRoutes.some(
+    (excludedRoute) => route.name?.includes(excludedRoute) === true
+  )
+);
 </script>
 
 <template>
-  <header>
-    <NavBar/>
-  </header>
-
-  <main class="flex flex-col gap-6 2xl:gap-10 py-24">
+  <template v-if="isExcludedRoute">
     <RouterView />
-  </main>
+  </template>
+  <template v-else>
+    <header>
+      <NavBar/>
+    </header>
+    <main class="flex flex-col gap-6 2xl:gap-10 py-24">
+      <RouterView />
+    </main>
+  </template> 
 </template>
 
 <style scoped>

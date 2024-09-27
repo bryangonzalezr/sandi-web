@@ -1,5 +1,16 @@
 @import "base/_settings";
+@import "base/_variables";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+      font-style: normal;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-display: swap;
+      src: url("@/assets/fonts/Poppins-Regular.ttf") format("truetype");
+    }
+}
