@@ -35,55 +35,16 @@ const Register = async () => {
 </script>
 
 <template>
-  <!-- <IonPage>
-    <IonContent>
-      <template v-if="!isloading">
-        <IonGrid class="grid justify-center content-center items-center h-screen w-screen">
-          <IonTitle class="pb-5 text-center">Registrar un nuevo usuario</IonTitle>
-          <IonItem>
-            <IonInput v-model="register.name" label="Nombre" label-placement="stacked" type="text" placeholder="Ingrese su nombre"></IonInput>
-            <IonInput v-model="register.last_name" label="Apellido" label-placement="stacked" type="text" placeholder="Ingrese su apellido"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonInput v-model="register.email" label="Correo" label-placement="stacked" type="text" placeholder="Ingrese su correo"></IonInput>
-            <IonInput v-model="register.phone_number" label="Número de telefono" label-placement="stacked" type="text" placeholder="Ingrese su número"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonInput v-model="register.password" label="Contraseña" label-placement="stacked" type="text" placeholder="Ingrese su contraseña"></IonInput>
-            <IonInput v-model="register.password_confirmation" label="Confirmar contraseña" label-placement="stacked" type="text" placeholder="Confirme su contraseña"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonSelect v-model="register.sex" label="Sexo" label-placement="stacked" placeholder="Selecciona tu sexo">
-              <IonSelectOption value="Masculino">Masculino</IonSelectOption>
-              <IonSelectOption value="Femenino">Femenino</IonSelectOption>
-            </IonSelect>
-            <IonSelect v-model="register.civil_status" label="Estado civil" label-placement="stacked" placeholder="Selecciona tu estado">
-              <IonSelectOption value="Soltero(a)">Soltero(a)</IonSelectOption>
-              <IonSelectOption value="Divorciad(a)">Divorciad(a)</IonSelectOption>
-              <IonSelectOption value="Viudo(a)">Viudo(a)</IonSelectOption>
-              <IonSelectOption value="Casado(a)">Casado(a)</IonSelectOption>
-              <IonSelectOption value="Conviviente civil">Conviviente civil</IonSelectOption>
-            </IonSelect>
-          </IonItem>
-          <IonItem>
-            <IonInput v-model="register.birthdate" label="Fecha de nacimiento" label-placement="stacked" type="date"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonInput v-model="register.objectives" label="Objetivos" label-placement="stacked"  placeholder="Ingresa tus objetivos"></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonSelect v-model="register.role" label="Rol" label-placement="stacked" placeholder="Ingresa rol">
-              <IonSelectOption value="nutricionista">Nutricionista</IonSelectOption>
-              <IonSelectOption value="usuario_basico">Usuario</IonSelectOption>
-            </IonSelect>
-          </IonItem>
-          <IonButton @click="Register()" class="px-20 pt-5">Registrar</IonButton>
-          <IonButton @click="goToLogin()" class="px-20 pt-5">Cancelar</IonButton>
-        </IonGrid>
-      </template>
-      <template v-else>
-        <IonSpinner color="success"></IonSpinner>
-      </template>
-    </IonContent>
-  </IonPage> -->
+  <!-- Lado derecho -->
+  <div class="w-1/2 flex flex-col gap-2 justify-center items-center">
+    <!-- Logo, titulo y descripción -->
+    <div class="w-3/4 flex flex-col gap-1">
+      <img 
+        class="w-24 self-start"
+        src="@/assets/images/Logo_monocroma.svg"
+      />
+      <h1 class="text-2xl">Da el primer paso para fortalecer la conexión con tus pacientes</h1>
+      <h2 class="text-base">Completa el formulario y regístrate ahora</h2>
+    </div>
+  </div>
 </template>
