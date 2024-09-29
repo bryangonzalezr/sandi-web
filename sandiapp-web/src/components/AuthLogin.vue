@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores";
 //Importar paquetes de diseño o elementos visuales
 //Importar componentes
 import AppButton from '@/common/AppButton.vue';
+import AppInput from '@/common/AppInput.vue';
 
 // Definir contantes relacionadas al Vue-Router
 // Deifinir constantes relacionadas a los Stores
@@ -14,12 +15,14 @@ const authStore = useAuthStore();
 
 // Definir variables referenciales o reactivas
 const errorsForm = ref({});
-const form = ref({
-  email: '',
-  password: ''
-});
+const form = ref({});
 
 // Definir funciones de redireccionamiento, normales, asincronicas y eventos en ese orden
+const setValue = (value) => {
+  form.value[value] = event.target.value;
+  delete errorsForm.value[value];
+};
+
 /* Realiza login con las credenciales ingresadas en los inputs */
 const Login = async () => {
   try{
@@ -33,15 +36,11 @@ const Login = async () => {
       console.log(errorsForm.value)
     }
 }
-
-const setValue = (value) => {
-  delete errorsForm.value[value];
-};
 </script>
 
 <template>
   <!-- Lado derecho -->
-  <div class="w-1/2 flex flex-col gap-2 justify-center items-center">
+  <div class="w-2/3 flex flex-col gap-2 justify-center items-center">
     <!-- Logo, titulo y descripción -->
     <div class="w-1/2 flex flex-col gap-1">
       <img 
@@ -54,43 +53,27 @@ const setValue = (value) => {
     <!--Formulario para iniciar sesión-->
     <form 
       class="w-1/2" 
-      @submit.prevent="Login(form)"
+      @submit.prevent="Login()"
     >
-      <div class="flex flex-col">
-        <label class="text-sm">Correo:</label>
-        <input
-          class="p-1 rounded"
-          :class="errorsForm.email ? 'border border-bold-red': ''"
-          id="email"
-          v-model="form.email"
-          type="text"
-          name="email"
-          placeholder="Ingresa tu correo"
-          @change="setValue('email')"
-        />
-        <p v-if="errorsForm.email" class="text-xs text-bold-red flex gap-1 items-center">
-          <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
-          {{ errorsForm.email[0] }}
-        </p>
-      </div>
-      <div class="flex flex-col">
-        <label class="text-sm">Contraseña:</label>
-        <input
-          class="p-1 rounded"
-          :class="errorsForm.password ? 'border border-bold-red': ''"
-          id="password"
-          v-model="form.password"
-          type="password"
-          name="password"
-          placeholder="Ingresa tu contraseña"
-          @change="setValue('password')"
-        />
-        <p v-if="errorsForm.password" class="text-xs text-bold-red flex gap-1 items-center">
-          <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
-          {{ errorsForm.password[0] }}
-        </p>
-      </div>
-    
+      <AppInput
+        type="text"
+        v-model="form.email"
+        label="Correo:"
+        placeholder="Ingresa tu correo"s
+        :error="errorsForm.email ? true : false"
+        :errorMessage="errorsForm.email"
+        @update:modelValue="setValue('email')"
+      />
+      <AppInput
+        type="password"
+        v-model="form.password"
+        label="Contraseña:"
+        placeholder="Ingresa tu contraseña"
+        :error="errorsForm.password ? true : false"
+        :errorMessage="errorsForm.password"
+        @update:modelValue="setValue('password')"
+      />
+
       <div class="flex justify-center m-2">
         <AppButton 
           class="bg-bold-red border-0 text-white hover:bg-white hover:border hover:border-bold-red hover:text-bold-red" 

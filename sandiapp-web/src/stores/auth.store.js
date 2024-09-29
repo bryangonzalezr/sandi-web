@@ -11,15 +11,6 @@ export const useAuthStore = defineStore('auth', {
             rolUser: JSON.parse(localStorage.getItem("rolUser")) || null,
             roles: JSON.parse(localStorage.getItem("roles")) || null,
             register: {
-                name: '',
-                last_name: '',
-                sex: '',
-                birthdate: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                phone_number: '',
-                civil_status: '',
                 objectives: '',
                 role: ''
             },
@@ -106,12 +97,8 @@ export const useAuthStore = defineStore('auth', {
                 console.log(this.register);
             },
     
-            async Register() {
-                try{
-                    await APIAxios.post(`api/register`, this.register)
-                }catch(err){
-                    return err
-                }
+            async Register(credentials) {
+                await APIAxios.post(`api/register`, credentials)
             }
 
         },
