@@ -26,9 +26,9 @@ const router = createRouter({
     // PRIVATE ROUTES
     {
       path: '/',
-      name: 'Home',
+      name: 'Patients',
       meta: { requiresAuth: true },
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/PatientsView.vue')
     },
     {
       path: '/about',

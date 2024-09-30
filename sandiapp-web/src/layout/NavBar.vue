@@ -27,7 +27,7 @@ const Logout = () => {
         <!-- Lista de navegación -->
         <div class="topbar__links">
           <nav class="flex justify-start gap-5">
-            <RouterLink to="/">Home</RouterLink>
+            <RouterLink to="/">Pacientes</RouterLink>
             <RouterLink to="/about">About</RouterLink>
           </nav>
         </div>
