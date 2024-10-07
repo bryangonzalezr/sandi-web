@@ -2,7 +2,6 @@
 const props = defineProps({
   text: {
     type: String,
-    required: true,
   },
   class: {
     type: String,

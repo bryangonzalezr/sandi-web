@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from "vue-router";
 import { usePatientsStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 
+const router = useRouter();
 
 const patientStore = usePatientsStore()
 
@@ -11,6 +13,10 @@ const deletePatients = ref(false)
 
 const headers = ['Nombre', 'Apellido', 'Edad', 'Sexo', 'Celular', 'Email', 'Objetivo', 'Acciones' ]
 const atributesBody = ['name', 'last_name', 'age', 'sex', 'phone_number', 'email', 'objectives']
+
+const goToChat = (id) => {
+  router.push({ name: 'ChatPatients', params: { id: id }})
+}
 
 const GetData = async () => {
   await patientStore.IndexPatient()
@@ -94,6 +100,12 @@ onMounted(async () => {
                 class="text-violet"
                 type="icon"
                 :icons="['fas', 'eye']"
+              />
+              <AppButton
+                class="text-violet"
+                type="icon"
+                :icons="['fas', 'message']"
+                @click="goToChat(item.id)"
               />
               <AppButton
                 v-if="deletePatients"

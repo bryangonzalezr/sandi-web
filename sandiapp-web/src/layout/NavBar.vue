@@ -49,11 +49,9 @@ const Logout = () => {
 <style lang="postcss" scoped>
 .topbar {
     min-width: 100%;
-    min-height: 3.3125rem;
     display: grid;
     grid-template-columns: 1fr 3fr 0.5fr;
     &__brand {
-      min-height: 53px;
       align-items: center;
       justify-content: center;
       justify-items: center;
@@ -61,7 +59,7 @@ const Logout = () => {
       font-size: 13px;
       color: white;
       img {
-        height: 70px;
+        max-height: 4.375rem;
       }
     }
     &__links {

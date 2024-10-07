@@ -22,7 +22,7 @@ export const usePatientsStore = defineStore('patients',{
 
     async ShowPatient(id){
       const res = await APIAxios.get(`/api/paciente/${id}`);
-      this.patient = res;
+      this.patient = res.data.data;
     },
 
     async RemovePatient(id) {

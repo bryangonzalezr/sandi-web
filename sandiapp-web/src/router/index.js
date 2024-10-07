@@ -28,13 +28,23 @@ const router = createRouter({
       path: '/',
       name: 'Patients',
       meta: { requiresAuth: true },
-      component: () => import('../views/PatientsView.vue')
+      component: () => import('@/views/PatientsView.vue')
     },
     {
       path: '/about',
       name: 'About',
       meta: { requiresAuth: true },
-      component: () => import('../views/AboutView.vue')
+      component: () => import('@/views/AboutView.vue')
+    },
+    {
+      path: '/chat/paciente/:id',
+      name: 'ChatPatients',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('@/components/PatientsChat.vue')
     }
   ]
 })

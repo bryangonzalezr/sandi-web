@@ -72,7 +72,7 @@ export const useAuthStore = defineStore('auth', {
                     localStorage.setItem("user", JSON.stringify(user))
                     localStorage.setItem("rolUser", JSON.stringify(role))
                     localStorage.setItem("roles", JSON.stringify(roles))
-                    router.push( {name: 'Home'});
+                    router.push( {name: 'Patients'});
                 }
             },
 
