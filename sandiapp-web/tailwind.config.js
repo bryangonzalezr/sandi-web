@@ -2,7 +2,22 @@
 export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pink: {
+          50: '#FFF1F2',
+          100: '#FFE4E6',
+          200: '#FECDD3',
+          300: '#FDA4AF',
+          400: '#FB7185',
+          500: '#F43F5E',
+          600: '#E11D48',
+          700: '#BE123C',
+          800: '#9F1239',
+          900: '#881337',
+        }
+      }
+    },
     fontFamily: {
       'Poppins': 'Poppins'
     },
@@ -26,7 +41,18 @@ export default {
       'light-green': '#B7D0A8',
       'forest-green': '#76A95C',
       'violet': '#311B58',
-
+      'blue': '#2F80ED',
+      'yellow': '#F2C94C',
+      'orange': '#F2994A',
+      'red': '#EB5757',
+      'green': '#27AE60',
+      'purple': '#BB6BD9',
+      'indigo': '#4F46E5',
+      'cyan': '#2D9CDB',
+      'teal': '#219653',
+      'emerald': '#6FCF97',
+      'lime': '#A5DE37',
+      'gray': '#9CA3AF',
     }
   },
   plugins: [],

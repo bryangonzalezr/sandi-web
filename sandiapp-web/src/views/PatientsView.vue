@@ -1,8 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { usePatientsStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 
+const router = useRouter();
+
+const loading = ref(true);
 
 const patientStore = usePatientsStore()
 
@@ -12,10 +16,15 @@ const deletePatients = ref(false)
 const headers = ['Nombre', 'Apellido', 'Edad', 'Sexo', 'Celular', 'Email', 'Objetivo', 'Acciones' ]
 const atributesBody = ['name', 'last_name', 'age', 'sex', 'phone_number', 'email', 'objectives']
 
+const viewPatientDetails = (patient) => {
+  router.push({ name: "PatientsShow", params: { id: patient }});
+};
+
 const GetData = async () => {
+  loading.value = true;
   await patientStore.IndexPatient()
   patients.value = patientStore.GetPatients
-  console.log(patients.value)
+  loading.value = false;
 }
 
 onMounted(async () => {
@@ -64,7 +73,13 @@ onMounted(async () => {
         />
       </div>
     </div>
-    <div class="">
+
+    <div v-if="loading" class="flex justify-center items-center">
+      <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
+      <span class="visually-hidden">  Loading...</span>
+    </div>
+
+    <div v-else class="">
       <table class="min-w-full">
         <thead class="bg-forest-green">
           <tr
@@ -94,6 +109,7 @@ onMounted(async () => {
                 class="text-violet"
                 type="icon"
                 :icons="['fas', 'eye']"
+                @click="viewPatientDetails(item.id)"
               />
               <AppButton
                 v-if="deletePatients"

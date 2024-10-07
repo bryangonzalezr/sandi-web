@@ -22,7 +22,7 @@ const isExcludedRoute = computed(() =>
     <header>
       <NavBar/>
     </header>
-    <main class="flex flex-col gap-6 2xl:gap-10 py-24">
+    <main class="bg-pink-200 flex flex-col gap-6 2xl:gap-10 py-24">
       <RouterView />
     </main>
   </template> 
