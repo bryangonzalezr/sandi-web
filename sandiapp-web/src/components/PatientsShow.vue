@@ -36,6 +36,14 @@ const goEdit = () => {
   router.push(`/patient/${props.id}/edit`);
 };
 
+const goToConsult = () => {
+  router.push(`/patient/${props.id}/consult`);
+};
+
+const goToProgress = () => {
+  router.push(`/patient/${props.id}/progress`);
+};
+
 onMounted(async () => {
     GetData();
 });
@@ -62,6 +70,7 @@ onMounted(async () => {
           type="button"
           text="Progreso"
           :icons="['fas', 'eye']"
+          @click="goToProgress"
         />
         <AppButton
           type="button"
@@ -76,6 +85,7 @@ onMounted(async () => {
           type="button"
           text="Agregar consulta"
           :icons="['fas', 'plus']"
+          @click="goToConsult"
         />
         <AppButton
           class="bg-warm-beige text-black border-warm-beige enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"

@@ -52,6 +52,28 @@ const router = createRouter({
       },
       component: () => import('../components/PatientsEdit.vue')
     },
+
+    {
+      path: '/patient/:id/consult',
+      name: 'PatientConsult',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('../components/PatientsConsult.vue')
+    },
+
+    {
+      path : '/patient/:id/progress',
+      name: 'PatientProgress',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('../components/PatientsProgress.vue')
+    },
       
     {
       path: '/about',

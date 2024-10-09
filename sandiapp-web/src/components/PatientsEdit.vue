@@ -127,9 +127,9 @@ onMounted(() => {
           <tbody>
             <!-- Tabla anidada para hábitos -->
             <tr class="bg-white border-b">
-              <td class="px-6 py-4 font-medium text-gray-900">Hábitos</td>
+              <td class="px-6 py-4 font-medium text-black">Hábitos</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-gray-500 rounded-lg border border-gray-200">
+                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Alcohol</td>
@@ -188,7 +188,7 @@ onMounted(() => {
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Antecedentes Personales</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-gray-500 rounded-lg border border-gray-200">
+                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Diabetes</td>
@@ -287,7 +287,7 @@ onMounted(() => {
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Anamnesis Nutricional</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-gray-500 rounded-lg border border-gray-200">
+                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Peso Usual</td>
@@ -341,8 +341,17 @@ onMounted(() => {
 
       <!-- Botones de acción -->
       <div class="mt-8 flex gap-4">
-        <AppButton class="bg-green-500 text-white" type="submit" text="Guardar Cambios" />
-        <AppButton class="bg-gray-200 text-black" type="button" text="Cancelar" @click="goBack" />
+        <AppButton 
+        class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+        type="submit" 
+        text="Guardar Cambios" 
+        />
+        <AppButton 
+        class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+        type="button" 
+        text="Cancelar" 
+        @click="goBack" 
+        />
       </div>
     </form>
   </div>
