@@ -24,8 +24,7 @@ const GetData = async () => {
 }
 
 onMounted(() => {
-  GetData();  
-
+  GetData(); 
 })
 
 </script>
@@ -43,7 +42,7 @@ onMounted(() => {
         <div class="topbar__links">
           <nav class="flex justify-start gap-7">
             <RouterLink to="/">Pacientes</RouterLink>
-            <RouterLink :to="{ name: 'ChatPatients', params: { id: 1 }}">Chat pacientes</RouterLink>
+            <RouterLink :to="{ name: 'ChatPatients', params: { id: firstPatient }}">Chats</RouterLink>
             <RouterLink to="/about">About</RouterLink>
           </nav>
         </div>

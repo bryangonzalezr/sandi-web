@@ -6,7 +6,7 @@ export const usePatientsStore = defineStore('patients',{
     patientslist: [],
     patientprogress: {},
     patient: {},
-    firstPatient: {},
+    firstPatient: 0,
   }),
 
   getters: {
@@ -19,7 +19,8 @@ export const usePatientsStore = defineStore('patients',{
     async IndexPatient() {
       const res = await APIAxios.get(`/api/pacientes`);
       this.patientslist = res.data.data;
-      this.firstPatient = res.data.data[0]
+      this.firstPatient = res.data.data[0].id
+      console.log(this.firstPatient)
     },
 
     async ShowPatient(id){

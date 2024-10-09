@@ -44,7 +44,7 @@ const router = createRouter({
         const id = route.params.id;
         return { id };
       },
-      component: () => import('@/views/ChatView.vue')
+      component: () => import('@/views/ChatPatientsView.vue')
     }
   ]
 })
