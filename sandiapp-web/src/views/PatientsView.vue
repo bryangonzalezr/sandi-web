@@ -21,7 +21,6 @@ const goToChat = (id) => {
 const GetData = async () => {
   await patientStore.IndexPatient()
   patients.value = patientStore.GetPatients
-  console.log(patients.value)
 }
 
 onMounted(async () => {

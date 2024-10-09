@@ -52,7 +52,6 @@ onMounted(() => {
 
 watch(patient, (newVal) => {
     userPatient.value = newVal.user
-  console.log("Paciente cargado:", newVal);
 });
 
 watch(
