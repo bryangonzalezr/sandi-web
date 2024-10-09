@@ -29,6 +29,8 @@ const Logout = () => {
           <nav class="flex justify-start gap-5">
             <RouterLink to="/">Pacientes</RouterLink>
             <RouterLink to="/about">About</RouterLink>
+            <RouterLink to="/listrecipes">Mis Recetas</RouterLink>
+            <RouterLink to="/listmenus">Mis Menús</RouterLink>
           </nav>
         </div>
         <!-- Sesión activa y boton de logout -->
