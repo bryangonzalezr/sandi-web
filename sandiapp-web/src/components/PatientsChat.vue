@@ -38,6 +38,7 @@ const getData = async () => {
 
 const sendMessage = async (message, receiver_id) => {
     await chatStore.SendMessage(message, receiver_id)
+    form.value.message = '';
 }
 
 const setValue = (value) => {
