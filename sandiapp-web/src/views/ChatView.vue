@@ -70,12 +70,29 @@ watch(
 </script>
 
 <template>
-    <div class="w-full h-full flex flex-col justify-between">
+  <div class="grid grid-cols-4">
+    <div>
+      <div class="bg-pink p-4 shadow-2xl rounded-bl-md">
+            <h1>Chat</h1>
+      </div>
+      <ul>
+        <template v-for="patient in patients">
+          <RouterLink 
+            activeClass=" bg-light-green"
+            exactActiveClass="bg-light-green" 
+            :to="{ name: 'ChatPatients', params: { id: patient.id }}"
+            >
+            <li class="py-8 text-center rounded-md shadow-md">{{ patient.name + ' ' + patient.last_name }}</li>
+          </RouterLink>
+        </template>
+      </ul>
+    </div>
+    <div class="w-full h-full flex flex-col justify-between col-span-3">
         <!--Nombre de paciente-->
-        <div class="bg-pink p-4 shadow-2xl">
+        <div class="bg-pink p-4 shadow-2xl rounded-br-md">
             <h1>{{ userPatient.name }} {{ userPatient.last_name }}</h1>
         </div>
-        <div class="bg-lavender flex-grow p-2 overflow-y-auto" ref="messagesContainer">
+        <div class="bg-lavender grow p-2 overflow-y-auto rounded-md" ref="messagesContainer">
             <template v-for="(message, index) in messages" :key="index">
               <div class="flex mb-2" :class="message.sender_id === currentUser.id ? 'justify-end' : 'justify-start'" >
                 <div class="flex px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-white" :class="message.sender_id === currentUser.id ? 'rounded-tr-none' : 'rounded-tl-none'">
@@ -85,7 +102,7 @@ watch(
             </template>
         </div>
         <form @submit.prevent="sendMessage(form, props.id)">
-        <div class="bg-white py-4 px-2 shadow-2xl flex">
+        <div class="bg-white py-4 px-2 shadow-2xl flex border-2 border-gray rounded-md">
             <input 
                 class="input-message w-full text-wrap"
                 type="text"
@@ -100,6 +117,8 @@ watch(
         </div>
         </form>
     </div>
+  </div>
+  
 </template>
 
 <style lang="postcss" scoped>

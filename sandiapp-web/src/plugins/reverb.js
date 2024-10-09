@@ -19,5 +19,5 @@ export const echo = new Echo({
     headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
     },
-},
+  },
 });

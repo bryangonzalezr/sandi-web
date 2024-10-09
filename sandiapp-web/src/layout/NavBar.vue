@@ -1,17 +1,32 @@
 <script setup>
+import { ref, onMounted, watch } from 'vue';
 import { RouterLink } from 'vue-router'
+import { storeToRefs } from "pinia";
 
 import { useAuthStore } from "@/stores";
 
 // COMPONENTES
 import AppButton from "@/common/AppButton.vue";
+import { usePatientsStore } from '@/stores';
 
+const patientStore = usePatientsStore()
+
+const { firstPatient } = storeToRefs(usePatientsStore());
 
 const authStore = useAuthStore();
 
 const Logout = () => {
   authStore.Logout();
 }
+
+const GetData = async () => {
+  await patientStore.IndexPatient()
+}
+
+onMounted(() => {
+  GetData();  
+
+})
 
 </script>
 
@@ -26,8 +41,9 @@ const Logout = () => {
         </RouterLink>
         <!-- Lista de navegación -->
         <div class="topbar__links">
-          <nav class="flex justify-start gap-5">
+          <nav class="flex justify-start gap-7">
             <RouterLink to="/">Pacientes</RouterLink>
+            <RouterLink :to="{ name: 'ChatPatients', params: { id: 1 }}">Chat pacientes</RouterLink>
             <RouterLink to="/about">About</RouterLink>
           </nav>
         </div>

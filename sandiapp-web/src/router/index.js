@@ -44,7 +44,7 @@ const router = createRouter({
         const id = route.params.id;
         return { id };
       },
-      component: () => import('@/components/PatientsChat.vue')
+      component: () => import('@/views/ChatView.vue')
     }
   ]
 })
