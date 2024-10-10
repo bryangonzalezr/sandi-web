@@ -29,15 +29,13 @@ onMounted(async () => {
       <h1 class="uppercase text-2xl">Mis menús</h1>
       <h2>Gestión de menús asignados a pacientes</h2>
     </div>
-    <div class="grid">
-      <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
-        <AppButton
-        class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-        type="button"
-        text="Crear menú"
-        :icons="['fas', 'plus']"
-        />
-      </div>
+    <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
+      <AppButton
+      class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+      type="button"
+      text="Crear menú"
+      :icons="['fas', 'plus']"
+      />
     </div>
     <div>
       <table class="min-w-full">

@@ -39,36 +39,34 @@ onMounted(async () => {
 
 <template>
     <div class="flex flex-col py-2 px-10 gap-y-5">
-        <div class="grid grid-cols-2">
         <div class="flex flex-col">
             <h1 class="uppercase text-2xl">Mis recetas</h1>
             <h2>Gestión de recetas</h2>
         </div>
-            <div class="grid grid-flow-col auto-cols gap-2 justify-self-end">
-                <AppButton
-                    class="bg-lavender text-black border-lavender enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-                    type="button"
-                    text="Crear receta"
-                    :icons="['fas','plus']"
-                    @click="goToNewRecipe"
-                />
-                <AppButton
-                    v-if="!deleteRecipe"
-                    class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-                    type="button"
-                    text="Eliminar receta/s"
-                    :icons="['fas', 'trash-can']"
-                    @click="deleteRecipe = !deleteRecipe"
-                />
-                <AppButton
-                    v-if="deleteRecipe"
-                    class="enabled:hover:bg-pink enabled:hover:text-black enabled:hover:border-pink bg-white text-black border-black"
-                    type="button"
-                    text="Cancelar eliminación"
-                    :icons="['fas', 'x']"
-                    @click="deleteRecipe = !deleteRecipe"
-                />
-            </div>
+        <div class="grid grid-flow-col auto-cols gap-2 w-fit">
+            <AppButton
+                class="bg-lavender text-black border-lavender enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+                type="button"
+                text="Crear receta"
+                :icons="['fas','plus']"
+                @click="goToNewRecipe"
+            />
+            <AppButton
+                v-if="!deleteRecipe"
+                class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+                type="button"
+                text="Eliminar receta/s"
+                :icons="['fas', 'trash-can']"
+                @click="deleteRecipe = !deleteRecipe"
+            />
+            <AppButton
+                v-if="deleteRecipe"
+                class="enabled:hover:bg-pink enabled:hover:text-black enabled:hover:border-pink bg-white text-black border-black"
+                type="button"
+                text="Cancelar eliminación"
+                :icons="['fas', 'x']"
+                @click="deleteRecipe = !deleteRecipe"
+            />
         </div>
         <div>
             <table class="min-w-full">
