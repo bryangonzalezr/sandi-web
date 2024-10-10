@@ -30,6 +30,51 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import('@/views/PatientsView.vue')
     },
+      
+    { 
+      path: '/patient/:id', 
+      name: 'PatientsShow',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      }, 
+      component: () => import('../components/PatientsShow.vue') 
+    },
+
+    {
+      path: '/patient/:id/edit',
+      name: 'PatientsEdit',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('../components/PatientsEdit.vue')
+    },
+
+    {
+      path: '/patient/:id/consult',
+      name: 'PatientConsult',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('../components/PatientsConsult.vue')
+    },
+
+    {
+      path : '/patient/:id/progress',
+      name: 'PatientProgress',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('../components/PatientsProgress.vue')
+    },
+      
     {
       path: '/about',
       name: 'About',

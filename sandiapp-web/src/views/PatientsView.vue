@@ -6,6 +6,8 @@ import AppButton from '@/common/AppButton.vue';
 
 const router = useRouter();
 
+const loading = ref(true);
+
 const patientStore = usePatientsStore()
 
 const patients = ref([])
@@ -17,10 +19,15 @@ const atributesBody = ['name', 'last_name', 'age', 'sex', 'phone_number', 'email
 const goToChat = (id) => {
   router.push({ name: 'ChatPatients', params: { id: id }})
 }
+const viewPatientDetails = (patient) => {
+  router.push({ name: "PatientsShow", params: { id: patient }});
+};
 
 const GetData = async () => {
+  loading.value = true;
   await patientStore.IndexPatient()
   patients.value = patientStore.GetPatients
+  loading.value = false;
 }
 
 onMounted(async () => {
@@ -69,7 +76,13 @@ onMounted(async () => {
         />
       </div>
     </div>
-    <div class="">
+
+    <div v-if="loading" class="flex justify-center items-center">
+      <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
+      <span class="visually-hidden">  Loading...</span>
+    </div>
+
+    <div v-else class="">
       <table class="min-w-full">
         <thead class="bg-forest-green">
           <tr
@@ -99,6 +112,7 @@ onMounted(async () => {
                 class="text-violet"
                 type="icon"
                 :icons="['fas', 'eye']"
+                @click="viewPatientDetails(item.id)"
               />
               <AppButton
                 class="text-violet"
