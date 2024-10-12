@@ -1,17 +1,14 @@
 <script setup>
-// Importaciones desde Vue y Chart.js
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { usePatientsStore } from '@/stores/patients.store';
-import { defineProps } from 'vue';
 import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js';
+import { useRouter } from 'vue-router';
+import AppButton from '@/common/AppButton.vue';
 
-// Registrar componentes de Chart.js
 Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale);
 
-// Importar el store de pacientes
 const patientsStore = usePatientsStore();
 
-// Definir props que recibes
 const props = defineProps({
   id: {
     type: Number,
@@ -19,36 +16,25 @@ const props = defineProps({
   }
 });
 
-// Variables reactivas
 const progress = ref([]);
-const currentprogress = ref([]);
+const currentprogress = ref({});
 const dateprogress = ref([]);
 const heightprogress = ref([]);
 const weightprogress = ref([]);
 
-// Definir funciones asincrónicas para cargar datos
 const loadData = async () => {
   try {
-    // Llamada a la función ShowProgress con el id del paciente
     await patientsStore.ShowProgress(props.id);
-
-    console.log('Datos de progreso:', patientsStore.GetProgress);
-
-    // Asignar el progreso obtenido desde el store
     const fetchedProgress = patientsStore.GetProgress || [];
 
-    if (fetchedProgress.length === 0) {
-      console.warn('No hay datos de progreso disponibles.');
+    progress.value = fetchedProgress;
+
+    if (!progress.value.length) {
       return;
     }
 
-    // Actualizar las variables reactivas con los datos obtenidos
-    progress.value = fetchedProgress;
-  
-    // Obtener el último progreso
     const lastProgress = fetchedProgress[fetchedProgress.length - 1];
 
-    // Verificar que los datos de la última consulta existan y tengan las propiedades esperadas
     if (lastProgress) {
       currentprogress.value = {
         nutritional_state: lastProgress.nutritional_state || "Desconocido",
@@ -61,27 +47,23 @@ const loadData = async () => {
       currentprogress.value = {};
     }
 
-    // Mapear los datos de las consultas solo si los valores están presentes
     dateprogress.value = fetchedProgress.map(p => p.date || "Fecha no disponible");
     heightprogress.value = fetchedProgress.map(p => p.height || 0);
     weightprogress.value = fetchedProgress.map(p => p.weight || 0);
 
-    // Cargar las gráficas con los datos obtenidos
+    // Asegurarse de que el DOM esté actualizado antes de dibujar gráficos
+    await nextTick();
     loadCharts();
   } catch (error) {
     console.error('Error cargando los datos del progreso:', error);
   }
 };
 
-// Función para cargar los gráficos
 const loadCharts = () => {
-  // Verificar que las referencias tengan datos antes de cargar los gráficos
   if (!dateprogress.value.length || !heightprogress.value.length || !weightprogress.value.length) {
-    console.warn('Datos insuficientes para los gráficos.');
     return;
   }
 
-  // Gráfico para la altura
   const ctxHeight = document.getElementById('heightChart').getContext('2d');
   new Chart(ctxHeight, {
     type: 'line',
@@ -91,7 +73,7 @@ const loadCharts = () => {
         label: 'Altura',
         data: heightprogress.value,
         backgroundColor: 'rgba(236,196,220, 1)',
-        borderColor: 'rgba(236,196,220, 1)',
+        borderColor: 'rgba(196,156,180, 1)',
         borderWidth: 1
       }]
     },
@@ -106,7 +88,6 @@ const loadCharts = () => {
     }
   });
 
-  // Gráfico para el peso
   const ctxWeight = document.getElementById('weightChart').getContext('2d');
   new Chart(ctxWeight, {
     type: 'line',
@@ -116,7 +97,7 @@ const loadCharts = () => {
         label: 'Peso',
         data: weightprogress.value,
         backgroundColor: 'rgba(136,196,220, 1)',
-        borderColor: 'rgba(136,196,220, 1)',
+        borderColor: 'rgba(96,156,180, 1)',
         borderWidth: 1
       }]
     },
@@ -127,15 +108,21 @@ const loadCharts = () => {
           display: true,
           text: 'Peso por consulta'
         }
-      },
-      leyenda: {
-        display: false
       }
     }
   });
 };
 
-// Cargar datos cuando se monte el componente
+const router = useRouter();
+
+const goToConsults = () => {
+  router.push(`/patient/${props.id}/consult`);
+};
+
+const goBack = () => {
+  router.push(`/patient/${props.id}`);
+};
+
 onMounted(() => {
   loadData();
 });
@@ -143,25 +130,62 @@ onMounted(() => {
 
 <template>
   <div class="p-4">
-    <!-- Mostrar información del último progreso -->
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <h2 class="text-lg font-bold">Estado Nutricional: {{ currentprogress.nutritional_state }}</h2>
-        <p>Peso: {{ currentprogress.weight }} kg</p>
-        <p>Altura: {{ currentprogress.height }} m</p>
-        <p>Grasa: {{ currentprogress.fat_percentage }}%</p>
-        <p>Musculatura: {{ currentprogress.muscular_percentage }}%</p>
+    <div v-if="progress.length">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <h2 class="text-lg font-bold">Estado Nutricional: {{ currentprogress.nutritional_state }}</h2>
+          <p>Peso: {{ currentprogress.weight }} kg</p>
+          <p>Altura: {{ currentprogress.height }} m</p>
+          <p>Grasa: {{ currentprogress.fat_percentage }}%</p>
+          <p>Musculatura: {{ currentprogress.muscular_percentage }}%</p>
+        </div>
+
+        <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
+          <AppButton 
+            class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+            type="button" 
+            text="Ir a consultas"
+            :icons="['fas', 'eye']" 
+            @click="goToConsults" 
+          />
+          <AppButton 
+            class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+            type="button" 
+            text="Volver"
+            :icons="['fas', 'arrow-left']" 
+            @click="goBack" 
+          />
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4">Gráficas de Progreso</h2>
+        <div>
+          <canvas id="heightChart"></canvas>
+        </div>
+        <div class="mt-8">
+          <canvas id="weightChart"></canvas>
+        </div>
       </div>
     </div>
 
-    <!-- Gráficos de progreso -->
-    <div class="mt-8">
-      <h2 class="text-xl font-bold mb-4">Gráficas de Progreso</h2>
-      <div>
-        <canvas id="heightChart"></canvas>
-      </div>
-      <div class="mt-8">
-        <canvas id="weightChart"></canvas>
+    <div v-else>
+      <p class="text-center text-xl font-bold mt-4">No tiene progreso registrado.</p>
+      <div class="grid grid-flow-col auto-cols-max gap-2 justify-center mt-4">
+        <AppButton 
+          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+          type="button" 
+          text="Crear Consulta"
+          :icons="['fas', 'plus']" 
+          @click="goToConsults" 
+        />
+        <AppButton 
+          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+          type="button" 
+          text="Volver al perfil"
+          :icons="['fas', 'arrow-left']" 
+          @click="goBack" 
+        />
       </div>
     </div>
   </div>
