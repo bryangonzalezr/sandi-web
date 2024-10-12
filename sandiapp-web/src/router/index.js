@@ -90,6 +90,24 @@ const router = createRouter({
         return { id };
       },
       component: () => import('@/views/ChatPatientsView.vue')
+    },
+    {
+      path: '/listmenus',
+      name: 'ListMenus',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/ListMenusView.vue')
+    },
+    {
+      path:'/listrecipes',
+      name: 'ListRecipes',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/ListRecipesView.vue')
+    },
+    {
+      path: '/newrecipe',
+      name: 'NewRecipe',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/CreateRecipeView.vue')
     }
   ]
 })

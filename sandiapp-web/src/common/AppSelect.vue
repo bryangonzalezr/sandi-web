@@ -92,7 +92,7 @@ const changeSelect = () => {
   cursor: pointer;
   background: url(@/assets/icons/chevron-down-solid.svg) no-repeat;
   background-position: 96% 50%;
-  background-size: 7%;
+  background-size: 1.25rem;
   background-color: white;
   color: black;
   option {

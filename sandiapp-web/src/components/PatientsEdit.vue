@@ -104,6 +104,13 @@ onMounted(() => {
 <template>
   <div class="flex flex-col py-2 px-10 gap-y-5">
     <div class="flex flex-col">
+      <AppButton
+          class="w-fit border-0 px-0 my-2"
+          type="button"
+          text="Volver"
+          :icons="['fas', 'arrow-left']"
+          @click="goBack"
+        />
       <h1 class="uppercase text-2xl">Editar Perfil Nutricional</h1>
       <h2>Editando el perfil de {{ user.name || 'Paciente' }}</h2>
     </div>
@@ -117,7 +124,7 @@ onMounted(() => {
     <form @submit.prevent="updatePatientProfile">
       <!-- Tabla principal que agrupa las tablas anidadas -->
       <div class="overflow-x-auto relative">
-        <table class="w-full text-sm text-left border-black bg-forest-green text-black rounded-lg">
+        <table class="w-full text-sm text-left border-black bg-forest-green text-black rounded">
           <thead class="text-xs text-black uppercase ">
             <tr>
               <th scope="col" class="px-6 py-3">Sección</th>
@@ -129,7 +136,7 @@ onMounted(() => {
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Hábitos</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Alcohol</td>
@@ -160,7 +167,7 @@ onMounted(() => {
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4 font-medium text-black">Anamnesis Nutricional</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Plan Anterior</td>
@@ -175,7 +182,7 @@ onMounted(() => {
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Agua</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.nutritional_anamnesis.agua" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.nutritional_anamnesis.agua" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                   </tbody>
@@ -188,55 +195,55 @@ onMounted(() => {
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Antecedentes Personales</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Diabetes</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.morbid_antecedents.dm2" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.morbid_antecedents.dm2" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Hipertensión</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.morbid_antecedents.hta" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.morbid_antecedents.hta" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <!-- Añadir más campos de antecedentes aquí -->
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Tiroides</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.morbid_antecedents.tiroides" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.morbid_antecedents.tiroides" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Resistencia a la Insulina</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.morbid_antecedents.insulin_resistance" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.morbid_antecedents.insulin_resistance" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Dislipidemia</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.morbid_antecedents.dislipidemia" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.morbid_antecedents.dislipidemia" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Cirugías</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.morbid_antecedents.cirugias" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.morbid_antecedents.cirugias" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Fármacos</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.morbid_antecedents.farmacos" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.morbid_antecedents.farmacos" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Examenes</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.morbid_antecedents.exams" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.morbid_antecedents.exams" class="rounded" />
                       </td>
                     </tr>
                   </tbody>
@@ -247,36 +254,36 @@ onMounted(() => {
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4 font-medium text-black">Antecedentes Familiares</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Diabetes</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.family_antecedents.dm2" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.family_antecedents.dm2" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Hipertensión</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.family_antecedents.hta" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.family_antecedents.hta" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Tiroides</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.family_antecedents.tiroides" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.family_antecedents.tiroides" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Dislipidemia</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.family_antecedents.dislipidemia" type="checkbox" class="rounded-lg" />
+                        <input v-model="nutritional_profile.family_antecedents.dislipidemia" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Comentarios</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.family_antecedents.comments" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.family_antecedents.comments" class="rounded" />
                       </td>
                     </tr>
                   </tbody>
@@ -287,48 +294,48 @@ onMounted(() => {
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Anamnesis Nutricional</td>
               <td class="px-6 py-4">
-                <table class="w-full text-sm text-left text-black rounded-lg border border-black">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Peso Usual</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.subjective_assessment.usual_weight" type="text" class="rounded-lg" />
+                        <input v-model="nutritional_profile.subjective_assessment.usual_weight" type="text" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Síntomas Gastrointestinales</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.subjective_assessment.gastrointestinal_symptoms" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.subjective_assessment.gastrointestinal_symptoms" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Variación de Peso</td>
                       <td class="px-6 py-4">
-                        <input v-model="nutritional_profile.subjective_assessment.weight_variation" type="text" class="rounded-lg" />
+                        <input v-model="nutritional_profile.subjective_assessment.weight_variation" type="text" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Apetito</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.subjective_assessment.appetite" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.subjective_assessment.appetite" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Digestión</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.subjective_assessment.digestion" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.subjective_assessment.digestion" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Frecuencia de Digestión</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.subjective_assessment.digestion_frequency" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.subjective_assessment.digestion_frequency" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Medidas de Digestión</td>
                       <td class="px-6 py-4">
-                        <textarea v-model="nutritional_profile.subjective_assessment.digestion_measures" class="rounded-lg" />
+                        <textarea v-model="nutritional_profile.subjective_assessment.digestion_measures" class="rounded" />
                       </td>
                     </tr>
                   </tbody>
