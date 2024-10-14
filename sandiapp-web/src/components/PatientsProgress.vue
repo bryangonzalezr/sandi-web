@@ -74,15 +74,24 @@ const loadCharts = () => {
         data: heightprogress.value,
         backgroundColor: 'rgba(236,196,220, 1)',
         borderColor: 'rgba(196,156,180, 1)',
-        borderWidth: 1
+        borderWidth: 3
       }]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false, // Desactiva el ratio para ajustar el tamaño
       plugins: {
         title: {
           display: true,
           text: 'Altura por consulta'
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 10,
+          }
         }
       }
     }
@@ -98,15 +107,24 @@ const loadCharts = () => {
         data: weightprogress.value,
         backgroundColor: 'rgba(136,196,220, 1)',
         borderColor: 'rgba(96,156,180, 1)',
-        borderWidth: 1
+        borderWidth: 3
       }]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false, // Ajustar el tamaño
       plugins: {
         title: {
           display: true,
           text: 'Peso por consulta'
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 10,
+          }
         }
       }
     }

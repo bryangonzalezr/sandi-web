@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useNutritionalProfileStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 import { useRouter } from 'vue-router';
 import AppSelect from '@/common/AppSelect.vue';
+
 
 const router = useRouter();
 const patientStore = useNutritionalProfileStore();
@@ -56,6 +57,17 @@ const nutritional_profile = ref({
   patient_type: ''
 });
 
+// New ref for allergies input
+const allergiesInput = ref('');
+
+// Computed property to convert allergies array to string
+const allergiesString = computed({
+  get: () => nutritional_profile.value.allergies.join(', '),
+  set: (val) => {
+    nutritional_profile.value.allergies = val.split(',').map(item => item.trim()).filter(item => item !== '');
+  }
+});
+
 
 // Cargar los datos actuales del perfil al montar el componente
 const loadPatientProfile = async () => {
@@ -79,13 +91,14 @@ const loadPatientProfile = async () => {
     physical_activity: data.nutritional_profile?.physical_activity || null,
     patient_type: data.nutritional_profile?.patient_type || ''
   };
+  allergiesInput.value = nutritional_profile.value.allergies.join(', ');
   loading.value = false;
 };
 
 // Guardar los cambios en el perfil nutricional
 const updatePatientProfile = async () => {
   const updatedProfile = { ...nutritional_profile.value };
-
+  updatedProfile.allergies = allergiesInput.value.split(',').map(item => item.trim()).filter(item => item !== '');
   console.log(updatedProfile);
   await patientStore.EditPatientProfile(updatedProfile.id, updatedProfile);
   router.push('/patient/' + props.id);
@@ -172,11 +185,7 @@ onMounted(() => {
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Plan Anterior</td>
                       <td class="px-6 py-4">
-                        <AppSelect 
-                          :options="{'1': 'Si', '2': 'No'}" 
-                          :firstOptionValue="'Tuviste un plan anterior?'" 
-                          v-model:selectedOption="nutritional_profile.habits.plan_anterior" 
-                        />
+                        <input v-model="nutritional_profile.nutritional_anamnesis.plan_anterior" type="checkbox" class="rounded" />
                       </td>
                     </tr>
                     <tr class="bg-warm-beige border-b">
@@ -197,6 +206,17 @@ onMounted(() => {
               <td class="px-6 py-4">
                 <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
+                    <!-- Añadir Alergias aqui -->
+                    <tr class="bg-white border-b">
+                      <td class="px-6 py-4 font-medium text-black">Alergias</td>
+                      <td class="px-6 py-4">
+                        <textarea 
+                          v-model="allergiesInput"
+                          class="w-full p-2 border rounded"
+                          placeholder="Ingrese alergias separadas por comas (e.j., gluten, lactosa, maní)"
+                        ></textarea>
+                      </td>
+                    </tr>
                     <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4">Diabetes</td>
                       <td class="px-6 py-4">

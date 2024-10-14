@@ -19,6 +19,39 @@ const nutritional_profile = ref({});
 const router = useRouter();
 const loading = ref(true);
 
+const allergyTranslations = {
+  'alcohol-free': 'Alcohol',
+  'crustacean-free': 'Crustaceos',
+  'dairy-free': 'Lacteos',
+  'egg-free': 'Huevos',
+  'fish-free': 'Pescado',
+  'gluten-free': 'Gluten',
+  'keto-friendly': 'Keto Amigable',
+  'kidney-friendly': 'Apto Para Riñones',
+  'kosher': 'Kosher',
+  'lupine-free': 'Lupino',
+  'mediterranean': 'Mediterraneo',
+  'mollusk-free': 'Molusco',
+  'mustard-free': 'Mostaza',
+  'no-oil-added': 'Aceite',
+  'paleo': 'Dieta Paleo',
+  'peanut-free': 'Mani',
+  'pescatarian': 'Pescetariano',
+  'pork-free': 'Cerdo',
+  'red-meat-free': 'Carne Roja',
+  'sesame-free': 'Sesamo',
+  'shellfish-free': 'Marisco',
+  'soy-free': 'Soya',
+  'sugar-conscious': 'Azucar Consciente',
+  'tree-nut-free': 'Frutos Secos',
+  'vegan': 'Vegano',
+  'vegetarian': 'Vegetariano',
+  'wheat-free': 'Trigo',
+};
+
+const translateAllergies = (allergies) => {
+  return allergies.map(allergy => allergyTranslations[allergy] || allergy);
+};
 
 const GetData = async () => {
     loading.value = true;
@@ -146,7 +179,7 @@ onMounted(async () => {
           </tr>
           <tr>
             <td class="border border-black px-4 py-2">Alergias</td>
-            <td class="border border-black px-4 py-2">{{ nutritional_profile.allergies?.length > 0 ? nutritional_profile.allergies.join(', ') : 'No especificadas' }}</td>
+            <td class="border border-black px-4 py-2">{{ nutritional_profile.allergies?.length > 0 ? translateAllergies(nutritional_profile.allergies).join(', ') : 'No especificadas' }}</td>
           </tr>
           <tr>
             <td class="border border-black px-4 py-2">Comentario Físico</td>
