@@ -123,6 +123,7 @@ watch(
                     <input 
                         class="input-message w-full text-wrap"
                         type="text"
+                        placeholder="Mensaje"
                         v-model="form.message"
                         @update:modelValue="setValue('message')"
                     />
