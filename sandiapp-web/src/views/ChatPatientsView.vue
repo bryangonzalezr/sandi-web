@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { usePatientsStore, useChatStore, useAuthStore } from "@/stores"
 import { echo } from "@/plugins/reverb";
+import AppButton from "@/common/AppButton.vue"
 
 const props = defineProps({
   id: {
@@ -29,23 +30,31 @@ const { patient, patientslist } = storeToRefs(usePatientsStore());
 
 const userPatient = ref({})
 const patientList = ref([])
+const showFiled = ref(false)
 
-const goToChat = (id) => {
+const goToChat = (id, filter=0) => {
   router.push({ name: 'ChatPatients', params: { id: id }})
-  getData(id)
+  getData(id, filter)
 }
 
-const getData = async (id) => {
+const handleFilter = async () => {
+    showFiled.value = !showFiled.value
+    const filter = showFiled.value ? 1 : 0
+    await patientsStore.IndexPatient(filter)
+    goToChat(patientsStore.GetFirstPatient, filter)
+}
+
+const getData = async (id = props.id, filter=0) => {
     await patientsStore.ShowPatient(id)
     await chatStore.ShowMessage(id)
-    await patientsStore.IndexPatient()
+    await patientsStore.IndexPatient(filter)
     
     messages.value = chatStore.GetMessages;
 
     echo.private(`chat.${currentUser.id}`)
-        .listen('MessageSent', (response) => {
-          messages.value.push(response.message)
-        })
+    .listen('MessageSent', (response) => {
+      messages.value.push(response.message)
+    })
 }
 
 const sendMessage = async (message, receiver_id) => {
@@ -88,8 +97,19 @@ watch(
 <template>
     <div class="w-full h-full flex">
         <div class="w-1/5 shadow-xl">
-            <div class="p-4 text-2xl uppercase">
-                Chats
+            <div class="p-4 grid grid-cols-2">
+                <div class="text-2xl uppercase">
+                    Chats
+                </div>
+                <div class="self-center justify-self-end">
+                    <AppButton
+                        class="flex items-center justify-center gap-2 text-base border rounded px-3.5 min-h-[1.625rem] min-w-[53px] transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed bg-light-green text-black border-light-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+                        type="icon"
+                        :icons="showFiled ? ['fas', 'comment-dots'] : ['fas', 'box-archive']"
+                        :hoverText="showFiled ? 'Chats' : 'Chats archivados'"
+                        @click="handleFilter"
+                    />
+                </div>
             </div>
             <!--Listado de pacientes-->
             <div class=" flex flex-col">

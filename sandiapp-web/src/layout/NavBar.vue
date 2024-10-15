@@ -33,7 +33,7 @@ onMounted(() => {
     <!-- MENU VISTA DESKTOP -->
     <div class="topbar bg-warm-beige text-black">
         <!-- Titulo y Logo aplicacion -->
-        <RouterLink to="/">
+        <RouterLink :to="{ name: 'Patients' }">
           <div class="topbar__brand">
             <img src="@/assets/images/Logo_color.svg" alt="logo" />
           </div>
@@ -41,11 +41,10 @@ onMounted(() => {
         <!-- Lista de navegación -->
         <div class="topbar__links">
           <nav class="flex justify-start gap-7">
-            <RouterLink to="/">Pacientes</RouterLink>
+            <RouterLink :to="{ name: 'Patients' }">Pacientes</RouterLink>
             <RouterLink :to="{ name: 'ChatPatients', params: { id: firstPatient }}">Chats</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
-            <RouterLink to="/listrecipes">Mis Recetas</RouterLink>
-            <RouterLink to="/listmenus">Mis Menús</RouterLink>
+            <RouterLink :to="{ name: 'ListRecipes' }">Mis Recetas</RouterLink>
+            <RouterLink :to="{ name: 'ListMenus' }">Mis Menús</RouterLink>
           </nav>
         </div>
         <!-- Sesión activa y boton de logout -->

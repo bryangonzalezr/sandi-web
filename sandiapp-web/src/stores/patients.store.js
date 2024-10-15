@@ -1,9 +1,12 @@
 import { APIAxios } from "./baseURL";
 import { defineStore } from "pinia";
+import Swal from "sweetalert2";
 
 export const usePatientsStore = defineStore('patients',{
   state: () => ({
     patientslist: [],
+    links: {},
+    meta: {},
     patientprogress: [],
     patient: {},
     firstPatient: 0,
@@ -11,16 +14,20 @@ export const usePatientsStore = defineStore('patients',{
 
   getters: {
     GetPatients: (state) => state.patientslist,
+    GetLinks: (state) => state.links,
+    GetMeta: (state) => state.meta,
     GetProgress: (state) => state.patientprogress,
     GetPatient: (state) => state.patient,
+    GetFirstPatient: (state) => state.firstPatient,
   },
 
   actions: {
-    async IndexPatient() {
-      const res = await APIAxios.get(`/api/pacientes`);
+    async IndexPatient(archivados = 0, page, paginate = 0) {
+      const res = await APIAxios.get(`/api/pacientes?page=${page}&archivados=${archivados}&paginate=${paginate}`);
       this.patientslist = res.data.data;
       this.firstPatient = res.data.data[0].id
-      console.log(this.firstPatient)
+      this.links = res.data.links ? res.data.links : {};
+      this.meta = res.data.meta ? res.data.meta : {};
     },
 
     async ShowPatient(id){
@@ -28,15 +35,31 @@ export const usePatientsStore = defineStore('patients',{
       this.patient = res.data.data;
     },
 
-    async RemovePatient(id) {
-      const res = await APIAxios.delete(`/api/paciente/${id}`);
-      console.log("Eliminar paciente con id",id);
-      this.IndexPatient();
+    RemovePatient(id) {
+      Swal.fire({
+        title: "¿Segur@ que quieres eliminar al paciente?",
+        showDenyButton: true,
+        confirmButtonText: "Si",
+        confirmButtonColor: "#76A95C",
+        denyButtonText: `No`,
+        denyButtonColor: "#DE3E3E",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await APIAxios.delete(`/api/paciente/${id}`);
+          this.IndexPatient();
+        }
+      });
     },
 
     async AssociatePatient(email) {
-      const res = await APIAxios.post(`/api/paciente` , { patient_email: email});
-      this.IndexPatient();
+      await APIAxios.post(`/api/paciente` , { patient_email: email});
+      Swal.fire({
+        title: "Se ha añadido un nuevo paciente",
+        icon: "success",
+        timer: 1000,
+        showConfirmButton: false,
+        heightAuto: false,
+      });
     },
 
     async ShowProgress(id){

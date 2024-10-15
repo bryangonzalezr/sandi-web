@@ -33,7 +33,6 @@ const Login = async () => {
       }
     }catch(error){
       errorsForm.value = error.response.data.errors;
-      /* console.log(error.response) */
     }
 }
 </script>

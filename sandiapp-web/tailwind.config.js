@@ -39,7 +39,6 @@ export default {
       'teal': '#219653',
       'emerald': '#6FCF97',
       'lime': '#A5DE37',
-      'gray': '#9CA3AF',
     }
   },
   plugins: [],

@@ -1,0 +1,30 @@
+export const getDishType = () => {
+    const enumDishType = {
+        'CocktailDeAlcohol': 'Cocktail de Alcohol',
+        'BizcochosYGalletas': 'Bizcochos y Galletas',
+        'Pan': 'Pan',
+        'Cereales': 'Cereales',
+        'CondimentosYSalsas': 'Condimentos y Salsas',
+        'Postres': 'Postres',
+        'Bebidas': 'Bebidas',
+        'Huevo': 'Huevo',
+        'HeladoYFlan': 'Helado y Flan',
+        'PlatoPrincipal': 'Plato principal',
+        'Panqueque': 'Panqueque',
+        'Pasta': 'Pasta',
+        'Pasteleria': 'Pasteleria',
+        'PiesYTartas': 'Pies Y Tartas',
+        'Pizza': 'Pizza',
+        'Preparativos': 'Preparativos',
+        'Conserva': 'Conserva',
+        'Ensalada': 'Ensalada',
+        'Sandwiches': 'Sandwiches',
+        'ComidaMarina': 'Comida Marina',
+        'Guarniciones': 'Guarniciones',
+        'Sopa': 'Sopa',
+        'OcasionesEspeciales': 'Ocasiones Especiales',
+        'Entrada': 'Entrada',
+        'Dulces': 'Dulces',
+    }
+    return enumDishType
+}

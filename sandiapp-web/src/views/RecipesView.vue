@@ -1,32 +1,52 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useListRecipesStore } from '@/stores/list-recipes.store';
-import AppButton from '@/common/AppButton.vue';
 import { useRouter } from 'vue-router';
+import formatDate from '@/helpers/dateFormat'
+import { useRecipeStore, useTraductorStore } from '@/stores';
+import Swal from "sweetalert2";
+import AppButton from '@/common/AppButton.vue';
+import AppPagination from '@/common/AppPagination.vue';
 
 const router = useRouter();
 
-const listRecipesStore = useListRecipesStore();
+const RecipesStore = useRecipeStore();
 
 const listRecipes = ref([])
-const deleteRecipe = ref(false)
+const loading = ref(true);
+const links = ref({})
+const meta = ref({})
 
 const headers = ['Nombre','Tipo de comida','Etiquetas','Calorías','Última edición','Acciones']
 const atributesBody = ['label','dishType','calories','updated_at']
 
-const GetData = async () => {
-    await listRecipesStore.ShowRecipes();
-    listRecipes.value = listRecipesStore.GetRecipesList;
-    console.log(listRecipes.value);
-}
-
 const goToNewRecipe = () => {
-  router.push({name: "NewRecipe"})
+  router.push({name: "RecipesCreate"})
 }
 
-const DeleteRecipeSelected = async (id) => {
+const GetData = async (page = 1) => {
+    loading.value = true;
+    await RecipesStore.IndexRecipe(page, 1);
+    listRecipes.value = RecipesStore.GetRecipesList;
+    meta.value = RecipesStore.GetMeta;
+    links.value = RecipesStore.GetLinks;
+    loading.value = false;
+}
+
+const DeleteRecipeSelected = (id) => {
     try{
-        await listRecipesStore.DeleteRecipe(id);
+        Swal.fire({
+          title: "¿Segur@ que quieres eliminar la receta?",
+          showDenyButton: true,
+          confirmButtonText: "Si",
+          confirmButtonColor: "#76A95C",
+          denyButtonText: `No`,
+          denyButtonColor: "#DE3E3E",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            await RecipesStore.DeleteRecipe(id);
+            GetData()
+          }
+        });
     }catch(err){
         console.log(err)
     }
@@ -51,25 +71,13 @@ onMounted(async () => {
                 :icons="['fas','plus']"
                 @click="goToNewRecipe"
             />
-            <AppButton
-                v-if="!deleteRecipe"
-                class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-                type="button"
-                text="Eliminar receta/s"
-                :icons="['fas', 'trash-can']"
-                @click="deleteRecipe = !deleteRecipe"
-            />
-            <AppButton
-                v-if="deleteRecipe"
-                class="enabled:hover:bg-pink enabled:hover:text-black enabled:hover:border-pink bg-white text-black border-black"
-                type="button"
-                text="Cancelar eliminación"
-                :icons="['fas', 'x']"
-                @click="deleteRecipe = !deleteRecipe"
-            />
         </div>
-        <div>
-            <table class="min-w-full">
+        <div v-if="loading" class="flex justify-center items-center">
+          <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
+          <span class="visually-hidden">  Loading...</span>
+        </div>
+        <div v-else>
+            <table class="min-w-full h-full">
                 <thead class="bg-forest-green">
                     <tr class="w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)">
                     </tr>
@@ -89,32 +97,38 @@ onMounted(async () => {
                         :key="item.id"
                         class="bg-white w-full px-11 border-b border-b-gray"
                     >
-                    <td class="p-3"><div>
+                    <td class="p-2"><div>
                         {{ item['label'] }}
                     </div></td>
-                    <td class="p-3"><div>
-                        {{ item['mealType'] }}
-                    </div></td>
-                    <td class="p-3"><div>
-                        {{ item['healthLabels'] }}
-                    </div></td>
-                    <td class="p-3"><div>
+                    <td class="p-2">
+                        <div v-for="(mealType , index) in item['mealType']" :key="index">
+                            {{ mealType }}
+                        </div>
+                    </td>
+                    <td class="p-2 flex gap-x-2 flex-wrap">
+                        <div v-for="(health, index) in item['healthLabels']" :key="index">
+                            {{ health }}
+                        </div>
+                    </td>
+                    <td class="p-2"><div>
                         {{ Math.round(item['calories']) }}
                     </div></td>
-                    <td class="p-3"><div>
-                        {{ Intl.DateTimeFormat("en-GB").format(Date.parse(item['updated_at'])) }}
+                    <td class="p-2"><div>
+                        {{ formatDate(item['updated_at']) }}
                     </div></td>
-                    <td class="flex p-3 justify-center gap-x-2">
+                    <td class="flex p-2 justify-center gap-x-2">
                         <AppButton
                             class="text-black"
                             type="icon"
+                            hoverText="Editar"
                             text=""
                             :icons="['fas','pencil']"
+                            @click="router.push({name: 'RecipesEdit', params: {id: item['_id']}})"
                         />
                         <AppButton
-                            v-if="deleteRecipe"
                             class="text-bold-red"
                             type="icon"
+                            hoverText="Eliminar"
                             text=""
                             :icons="['fas','trash-can']"
                             @click="DeleteRecipeSelected(item['_id'])"
@@ -123,6 +137,7 @@ onMounted(async () => {
                     </tr>
                 </tbody>
             </table>
+            <AppPagination :meta="meta" :links="links" @handlePage="GetData" />
         </div>
     </div>
 

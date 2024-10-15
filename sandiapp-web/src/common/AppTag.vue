@@ -8,16 +8,16 @@ const props = defineProps({
 
 const TextDisplay = {
     receta: "Receta",
-    menu_diario: "Menú Diario",
-    menu_semanal: "Menú Semanal",
-    menu_mensual: "Menú Mensual",
+    diario: "Menú Diario",
+    semanal: "Menú Semanal",
+    mensual: "Menú Mensual",
 }
 
 const ColorDisplay = {
     receta: "bg-[#a3e635]",
-    menu_diario: "bg-[#34d399]",
-    menu_semanal: "bg-[#22d3ee]",
-    menu_mensual: "bg-[#c084fc]",
+    diario: "bg-[#34d399]",
+    semanal: "bg-[#22d3ee]",
+    mensual: "bg-[#c084fc]",
 }
 
 </script>

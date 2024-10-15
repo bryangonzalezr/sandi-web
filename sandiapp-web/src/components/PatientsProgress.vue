@@ -11,7 +11,7 @@ const patientsStore = usePatientsStore();
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -134,11 +134,11 @@ const loadCharts = () => {
 const router = useRouter();
 
 const goToConsults = () => {
-  router.push(`/patient/${props.id}/consult`);
+  router.push({ name: 'PatientConsult', params: { id: props.id } });
 };
 
 const goBack = () => {
-  router.push(`/patient/${props.id}`);
+  router.push({name: 'PatientsShow', params: {id: props.id}});
 };
 
 onMounted(() => {

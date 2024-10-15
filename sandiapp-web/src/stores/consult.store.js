@@ -35,8 +35,6 @@ export const useConsultStore = defineStore('consulta', {
   actions: {
 
       async saveConsult(id,consultdata) {
-        console.log(consultdata);
-        console.log(consultdata)
         await APIAxios.post('api/consulta', consultdata).then(() =>{
           router.push({name: 'PatientProgress', params: {id: id}});
         });

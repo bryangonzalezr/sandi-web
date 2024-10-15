@@ -3,6 +3,9 @@ const props = defineProps({
   text: {
     type: String,
   },
+  hoverText: {
+    type: String,
+  },
   class: {
     type: String,
   },
@@ -27,17 +30,22 @@ const props = defineProps({
 
 <template>
     <template v-if="props.type == 'icon'">
-      <button
-        :class="props.class ? props.class : 'text-light-green'"
-        :disabled="props.isDisabled"
-        :type="props.type"
-      >
-        <font-awesome-icon v-if="props.icons != '' && first" :icon="props.icons" />
-      </button>
+      <div class="relative group">
+        <button
+          :class="props.class ? props.class : 'text-light-green'"
+          :disabled="props.isDisabled"
+          :type="props.type"
+        >
+          <font-awesome-icon v-if="props.icons != '' && first" :icon="props.icons" />
+        </button>
+        <div class="absolute right-0 z-10 invisible group-hover:visible bg-white shadow-md p-2 text-xs text-nowrap">
+          {{ props.hoverText }}
+        </div>
+      </div>
     </template>
     <template v-else>
       <button
-        class="flex items-center justify-center gap-2 text-base border rounded px-3.5 min-h-[1.625rem] min-w-[53px] transition-all duration-100 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+        class="flex items-center justify-center gap-1 text-base border rounded px-2 min-h-[1.625rem] min-w-[53px] transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
         :class="props.class ? props.class : 'bg-light-green text-black border-light-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black'"
         :disabled="props.isDisabled"
         :type="props.type"

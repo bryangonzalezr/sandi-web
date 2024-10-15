@@ -10,7 +10,7 @@ const loading = ref(true);
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
@@ -52,18 +52,14 @@ const getCurrentDate = () => {
 // Función para guardar la consulta
 const saveConsult = async () => {
   const consultData = { ...consulta.value };
-  console.log(consultData);
-  console.log(patientId.value);
-  console.log(fecha.value);
   consultData.date = fecha.value;
   consultData.patient_id = parseInt(props.id);
-  console.log(consultData);
   await consultStore.saveConsult(props.id,consultData);
 };
 
 // Función para regresar a la página anterior
 const goBack = () => {
-  router.push('/patient/' + props.id);
+  router.push({name: 'PatientsShow', params: {id: props.id}});
 };
 
 onMounted(() => {
@@ -79,6 +75,13 @@ onMounted(() => {
 <template>
   <div class="flex flex-col py-2 px-10 gap-y-5">
     <div class="flex flex-col">
+      <AppButton
+        class="w-fit border-0 px-0 py-1"
+        type="button"
+        text="Volver"
+        :icons="['fas', 'arrow-left']"
+        @click="goBack"
+      />
       <h1 class="uppercase text-2xl">Crear Consulta</h1>
       <h2>Para el paciente con ID: {{ patientId }}</h2>
     </div>

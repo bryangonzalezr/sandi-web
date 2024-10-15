@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import { usePatientsStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
+import AppPagination from '@/common/AppPagination.vue';
+import AppInput from '@/common/AppInput.vue';
 
 const router = useRouter();
 
@@ -11,7 +13,12 @@ const loading = ref(true);
 const patientStore = usePatientsStore()
 
 const patients = ref([])
+const links = ref({})
+const meta = ref({})
 const deletePatients = ref(false)
+const addPatient = ref(false)
+const email = ref('')
+const errorsForm = ref({})
 
 const headers = ['Nombre', 'Apellido', 'Edad', 'Sexo', 'Celular', 'Email', 'Objetivo', 'Acciones' ]
 const atributesBody = ['name', 'last_name', 'age', 'sex', 'phone_number', 'email', 'objectives']
@@ -19,14 +26,39 @@ const atributesBody = ['name', 'last_name', 'age', 'sex', 'phone_number', 'email
 const goToChat = (id) => {
   router.push({ name: 'ChatPatients', params: { id: id }})
 }
+
 const viewPatientDetails = (patient) => {
   router.push({ name: "PatientsShow", params: { id: patient }});
 };
 
-const GetData = async () => {
+const setValue = (value) => {
+  email.value = event.target.value;
+  delete errorsForm.value[value];
+};
+
+const changeAddPatient = () => {
+  addPatient.value = !addPatient.value
+  delete errorsForm.value.patient_email
+  email.value = ''
+}
+
+const AddPatient = async () => {
+  try {
+    await patientStore.AssociatePatient(email.value)
+    GetData();
+    addPatient.value = false;
+  } catch (error) {
+    errorsForm.value = error.response.data.errors;
+    console.log(errorsForm.value)
+  }
+}
+
+const GetData = async (page = 1) => {
   loading.value = true;
-  await patientStore.IndexPatient()
+  await patientStore.IndexPatient(0,page,1)
   patients.value = patientStore.GetPatients
+  links.value = patientStore.GetLinks
+  meta.value = patientStore.GetMeta
   loading.value = false;
 }
 
@@ -51,12 +83,13 @@ onMounted(async () => {
           :icons="['fas', 'box-archive']"
         />
       </div>
-      <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
+      <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end relative">
         <AppButton
           class="bg-lavender text-black border-lavender enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
           type="button"
           text="Agregar paciente"
           :icons="['fas', 'plus']"
+          @click="changeAddPatient"
         />
         <AppButton
           v-if="!deletePatients"
@@ -74,6 +107,25 @@ onMounted(async () => {
           :icons="['fas', 'x']"
           @click="deletePatients = !deletePatients"
         />
+        <div
+          v-if="addPatient"
+          class="absolute z-30 rounded bg-warm-beige shadow-md top-7 flex flex-col w-fit p-2 gap-2"
+        >
+          <AppInput
+            type="text"
+            v-model="email"
+            label="Correo:"
+            placeholder="Ingresa tu correo"s
+            :error="errorsForm.patient_email ? true : false"
+            :errorMessage="errorsForm.patient_email"
+            @update:modelValue="setValue('patient_email')"
+          />
+          <AppButton 
+            class="w-fit h-fit self-center bg-forest-green text-white border-forest-green hover:bg-white hover:text-forest-green"
+            text="Agregar Paciente"
+            @click="AddPatient"
+          />
+        </div>
       </div>
     </div>
 
@@ -111,12 +163,14 @@ onMounted(async () => {
               <AppButton
                 class="text-violet"
                 type="icon"
+                hoverText="Ver detalles"
                 :icons="['fas', 'eye']"
                 @click="viewPatientDetails(item.id)"
               />
               <AppButton
                 class="text-violet"
                 type="icon"
+                hoverText="Ir al chat"
                 :icons="['fas', 'message']"
                 @click="goToChat(item.id)"
               />
@@ -124,12 +178,15 @@ onMounted(async () => {
                 v-if="deletePatients"
                 class="text-bold-red"
                 type="icon"
+                hoverText="Eliminar y Archivar"
                 :icons="['fas', 'trash-can']"
+                @click="patientStore.RemovePatient(item.id)"
               />
             </td>
           </tr>
         </tbody>
       </table>
+      <AppPagination :meta="meta" :links="links" @handlePage="GetData" />
     </div>
   </div>
 </template>

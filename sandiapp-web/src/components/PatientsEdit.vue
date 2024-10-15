@@ -12,7 +12,7 @@ const loading = ref(true);
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: String,
     required: true
   }
 });
@@ -99,14 +99,13 @@ const loadPatientProfile = async () => {
 const updatePatientProfile = async () => {
   const updatedProfile = { ...nutritional_profile.value };
   updatedProfile.allergies = allergiesInput.value.split(',').map(item => item.trim()).filter(item => item !== '');
-  console.log(updatedProfile);
   await patientStore.EditPatientProfile(updatedProfile.id, updatedProfile);
-  router.push('/patient/' + props.id);
+  router.push({name: 'PatientsShow', params: {id: props.id}});
 };
 
 // Volver a la vista anterior
 const goBack = () => {
-  router.push('/patient/' + props.id);
+  router.push({name: 'PatientsShow', params: {id: props.id}});
 };
 
 onMounted(() => {

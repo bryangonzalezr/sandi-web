@@ -8,7 +8,7 @@ import { useRouter } from 'vue-router';
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
@@ -62,19 +62,19 @@ const GetData = async () => {
 };
 
 const goBack = () => {
-  router.push('/');
+  router.push({ name: 'Patients'});
 };
 
 const goEdit = () => {
-  router.push(`/patient/${props.id}/edit`);
+  router.push({ name: 'PatientsEdit', params: { id: props.id } });
 };
 
 const goToConsult = () => {
-  router.push(`/patient/${props.id}/consult`);
+  router.push({ name: 'PatientConsult', params: { id: props.id } });
 };
 
 const goToProgress = () => {
-  router.push(`/patient/${props.id}/progress`);
+  router.push({ name: 'PatientProgress', params: { id: props.id } });
 };
 
 onMounted(async () => {

@@ -30,6 +30,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  displayRow: {
+    type: Boolean,
+    default: false,
   }
 });
 
@@ -47,30 +51,32 @@ const changeType = () => {
 </script>
 
 <template>
-    <div class="flex flex-col">
-        <label class="text-sm">{{props.label}}</label>
-        <div class="flex items-center bg-white rounded">
+    <div :class="displayRow ? 'flex gap-2 items-center w-full' : 'flex flex-col'">
+        <label class="text-sm text-nowrap" v-if="props.label">{{props.label}}</label>
+        <div class="flex flex-col w-full">
+          <div class="w-full flex items-center bg-white rounded">
             <input
-              class="py-[6px] px-1 rounded w-full border border-white hover:border-[#aaaeb7] focus:border-[#aaaeb7] transition-all outline-0"
-              :class="props.error ? 'border border-bold-red': ''"
-              :value="modelValue"
-              :type="props.type == 'password' ? type : props.type"
-              :placeholder="props.placeholder"
-              @input="$emit('update:modelValue', modelValue)"
-              @change="$emit('update:modelValue', modelValue)"
-              :disabled="props.disabled"
-            >
-            </input>
-            <font-awesome-icon
-                class="text-bold-red p-2 cursor-pointer"
-                v-if="props.type == 'password'"
-                :icon="seePassword ? ['fas', 'eye-slash'] : ['fas', 'eye'] "
-                @click="changeType()"
-            />
+                class="py-[6px] px-1 rounded w-full border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061] transition-all outline-0"
+                :class="props.error ? 'border border-bold-red': ''"
+                :value="modelValue"
+                :type="props.type == 'password' ? type : props.type"
+                :placeholder="props.placeholder"
+                @input="$emit('update:modelValue', modelValue)"
+                @change="$emit('update:modelValue', modelValue)"
+                :disabled="props.disabled"
+              >
+              </input>
+              <font-awesome-icon
+                  class="text-bold-red p-2 cursor-pointer"
+                  v-if="props.type == 'password'"
+                  :icon="seePassword ? ['fas', 'eye-slash'] : ['fas', 'eye'] "
+                  @click="changeType()"
+              />
+          </div>
+          <p v-if="props.error" class="text-xs text-bold-red flex gap-1 items-center">
+            <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
+            {{ props.errorMessage[0] }}
+          </p>
         </div>
-        <p v-if="props.error" class="text-xs text-bold-red flex gap-1 items-center">
-          <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
-          {{ props.errorMessage[0] }}
-        </p>
     </div>
 </template>

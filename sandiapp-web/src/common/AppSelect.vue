@@ -15,6 +15,10 @@ const props = defineProps({
     required: false,
     default: 'Selecciona',
   },
+  selectedOption: {
+    type: String,
+    default: ''
+  },
   error: {
     type: Boolean,
     required: false,
@@ -31,12 +35,16 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  displayRow: {
+    type: Boolean,
+    default: false,
   }
 });
 
-const emit = defineEmits(['update:selectedOption'])
+const emit = defineEmits(["update:selectedOption"]);
 
-const selectedOption = ref(null);
+const selectedOption = ref(props.selectedOption);
 
 const changeSelect = () => {
   selectedOption.value = event.target.value;
@@ -45,22 +53,23 @@ const changeSelect = () => {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div :class="displayRow ? 'flex gap-2 items-center w-full' : 'flex flex-col'">
     <label class="text-sm">{{ props.label }}</label>
-    <div class="w-full relative">
+    <div :class="displayRow ? 'relative flex-grow' : 'w-full relative'">
       <select
         id="selectRef"
-        class="w-full rounded py-1.5 pl-1 pr-7 custom-select border border-white hover:border-[#aaaeb7] focus:border-[#aaaeb7] transition-all outline-0"
+        class="w-full rounded py-1.5 pl-1 pr-7 custom-select border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061] transition-all outline-0"
         :class="{
           'cursor-not-allowed': props.disabled,
           'border border-bold-red': error === true,
-          'select-placeholder': props.disabledFirstOption && selectedOption == null,
+          'select-placeholder': props.disabledFirstOption && selectedOption == '',
         }"
         :disabled="props.disabled"
         @change="changeSelect()"
-        @click="displaySelect()"
       >
         <option
+          v-if="selectedOption == ''"
+          :key="props.firstOptionValue"
           :disabled="props.disabledFirstOption"
           value=""
           selected
