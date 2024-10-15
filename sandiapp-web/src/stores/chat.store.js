@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 export const useChatStore = defineStore('chat',{
   state: () => ({
-    messages: ref([]),
+    messages: [],
     message: "",
   }),
 

@@ -19,8 +19,10 @@ const authUser = localStorage.getItem('user')
 const currentUser = JSON.parse(authUser.toString());
 
 const chatStore = useChatStore();
-const { message, messages } = storeToRefs(useChatStore());
+const messages = ref([]);
 const messagesContainer = ref(null);
+const isPatientTyping = ref(false);
+const isPatientTypingTimer = ref(null);
 const form = ref({
     message: '',
 });
@@ -54,13 +56,29 @@ const getData = async (id = props.id, filter=0) => {
     echo.private(`chat.${currentUser.id}`)
     .listen('MessageSent', (response) => {
       messages.value.push(response.message)
-    })
+    }).listenForWhisper("typing", (response) => {
+        isPatientTyping.value = response.userID == Number(id);
+
+        if (isPatientTypingTimer.value) {
+            clearTimeout(isPatientTypingTimer.value);
+        }
+
+        isPatientTypingTimer.value = setTimeout(() => {
+            isPatientTyping.value = false;
+        }, 1000);
+    });
 }
 
 const sendMessage = async (message, receiver_id) => {
     await chatStore.SendMessage(message, receiver_id)
     form.value.message = '';
 }
+
+const sendTypingEvent = () => {
+    echo.private(`chat.${props.id}`).whisper("typing", {
+        userID: currentUser.id,
+    });
+};
 
 const setValue = (value) => {
   form.value[value] = event.target.value;
@@ -130,6 +148,11 @@ watch(
                 <h1>{{ userPatient.name }} {{ userPatient.last_name }}</h1>
             </div>
             <div class="bg-lavender flex-grow p-2 overflow-y-auto h-max-48" ref="messagesContainer">
+                <div class="flex mb-2 justify-start" v-if="messages.length === 0 && isPatientTyping">
+                    <div class="flex px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-white rounded-tl-none opacity-70">
+                      <div class="w-full text-black">{{ userPatient.name }} está escribiendo...</div>
+                    </div>
+                </div>
                 <template v-for="(message, index) in messages" :key="index">
                   <div class="flex mb-2" :class="message.sender_id === currentUser.id ? 'justify-end' : 'justify-start'" >
                     <div class="flex px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-white" :class="message.sender_id === currentUser.id ? 'rounded-tr-none' : 'rounded-tl-none'">
@@ -137,6 +160,11 @@ watch(
                     </div>
                   </div>
                 </template>
+                <div class="flex mb-2 justify-start" v-if="messages.length !== 0 && isPatientTyping">
+                    <div class="flex px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-white rounded-tl-none opacity-70">
+                      <div class="w-full text-black">{{ userPatient.name }} está escribiendo...</div>
+                    </div>
+                </div>
             </div>
             <form @submit.prevent="sendMessage(form, props.id)">
                 <div class="bg-white py-4 px-2 shadow-2xl flex">
@@ -144,6 +172,7 @@ watch(
                         class="input-message w-full text-wrap"
                         type="text"
                         placeholder="Mensaje"
+                        @keydown="sendTypingEvent"
                         v-model="form.message"
                         @update:modelValue="setValue('message')"
                     />
