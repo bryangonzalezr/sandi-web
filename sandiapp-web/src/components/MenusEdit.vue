@@ -132,7 +132,7 @@ const SendMenu = () => {
         if(form.value.type == 'mensual' || form.value.type == 'semanal'){
             for (const day in form.value.menus) {
               form.value.menus[day].forEach(recipe => {
-                  form.value.total_calories += recipe.calories;
+                  form.value.total_calories += Number(recipe.calories);
               });
             }
             menuStore.SaveMenu(form.value)
@@ -140,7 +140,7 @@ const SendMenu = () => {
         if(form.value.type == 'diario'){
             form.recipes = newlistRecipes.value
             form.value.recipes.forEach(recipe => {
-                form.value.total_calories += recipe.calories;
+                form.value.total_calories += Number(recipe.calories);
             });
             menuStore.SaveMenuDay(form.value)
 
