@@ -14,6 +14,8 @@ const patientStore = usePatientsStore()
 const { firstPatient } = storeToRefs(usePatientsStore());
 
 const authStore = useAuthStore();
+const authUser = localStorage.getItem('user')
+const currentUser = JSON.parse(authUser.toString());
 
 const Logout = () => {
   authStore.Logout();
@@ -51,7 +53,7 @@ onMounted(() => {
         <div class="topbar__session">
           <div class="flex justify-center items-center gap-2">
             <font-awesome-icon icon="fa-solid fa-circle-user" />
-            <span>Nombre</span>
+            <span>{{ currentUser.name }}</span>
           </div>
           <AppButton
             text="Salir"

@@ -1,7 +1,7 @@
 export const getDietLabels = () => {
     const enumDietLabels = {
-        'low-carb' : 'Bajo en Potasio',
-        'low-fat' : 'Bajo en Azucar',
+        'low-carb' : 'Bajo en Carbohidratos',
+        'low-fat' : 'Bajo en Grasas',
         'low-sodium' : 'Bajo en Sodio',
         'balanced' : 'Balanceado',
         'high-fiber' : 'Alto en Fibra',
