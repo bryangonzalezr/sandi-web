@@ -268,11 +268,11 @@ onMounted(async () => {
                   <tbody>
                     <tr>
                       <td class="border border-black px-4 py-2">Plan Nutricional Anterior</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior || 'No especificado' }}</td>
+                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Si' : 'No especificado' }}</td>
                     </tr>
                     <tr>
                       <td class="border border-black px-4 py-2">Consumo de Agua</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua || 'No especificado' }}</td>
+                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Si' : 'No especificado' }}</td>
                     </tr>
                   </tbody>
                 </table>

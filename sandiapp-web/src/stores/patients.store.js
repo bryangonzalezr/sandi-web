@@ -35,20 +35,8 @@ export const usePatientsStore = defineStore('patients',{
       this.patient = res.data.data;
     },
 
-    RemovePatient(id) {
-      Swal.fire({
-        title: "¿Segur@ que quieres eliminar al paciente?",
-        showDenyButton: true,
-        confirmButtonText: "Si",
-        confirmButtonColor: "#76A95C",
-        denyButtonText: `No`,
-        denyButtonColor: "#DE3E3E",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await APIAxios.delete(`/api/paciente/${id}`);
-          this.IndexPatient();
-        }
-      });
+    async RemovePatient(id) {
+      const res =await APIAxios.delete(`/api/paciente/${id}`);
     },
 
     async AssociatePatient(email) {

@@ -5,6 +5,7 @@ import { usePatientsStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 import AppPagination from '@/common/AppPagination.vue';
 import AppInput from '@/common/AppInput.vue';
+import Swal from "sweetalert2";
 
 const router = useRouter();
 
@@ -50,6 +51,27 @@ const AddPatient = async () => {
   } catch (error) {
     errorsForm.value = error.response.data.errors;
     console.log(errorsForm.value)
+  }
+}
+
+const RemovePatient = (id) => {
+  try{
+    Swal.fire({
+        title: "¿Segur@ que quieres eliminar al paciente?",
+        showDenyButton: true,
+        confirmButtonText: "Si",
+        confirmButtonColor: "#76A95C",
+        denyButtonText: `No`,
+        denyButtonColor: "#DE3E3E",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await patientStore.RemovePatient(id);
+          GetData();
+        }
+      });
+    
+  } catch (error) {
+    errorsForm.value = error.response.data.errors;
   }
 }
 
@@ -180,7 +202,7 @@ onMounted(async () => {
                 type="icon"
                 hoverText="Eliminar y Archivar"
                 :icons="['fas', 'trash-can']"
-                @click="patientStore.RemovePatient(item.id)"
+                @click="RemovePatient(item.id)"
               />
             </td>
           </tr>

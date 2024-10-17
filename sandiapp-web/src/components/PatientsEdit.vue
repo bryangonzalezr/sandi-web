@@ -24,7 +24,7 @@ const nutritional_profile = ref({
     tabaco: ''
   },
   nutritional_anamnesis: {
-    plan_anterior: '',
+    plan_anterior: false,
     agua: false
   },
   morbid_antecedents: {
@@ -81,7 +81,7 @@ const loadPatientProfile = async () => {
   nutritional_profile.value = {
     id: data.nutritional_profile?.id || null,
     habits: data.nutritional_profile?.habits || { alcohol: '', tabaco: '' },
-    nutritional_anamnesis: data.nutritional_profile?.nutritional_anamnesis || { plan_anterior: '', agua: false },
+    nutritional_anamnesis: data.nutritional_profile?.nutritional_anamnesis || { plan_anterior: false, agua: false },
     morbid_antecedents: data.nutritional_profile?.morbid_antecedents || { dm2: false, hta: false, tiroides: false, dislipidemia: false, insulin_resistance: false, cirugias: '', farmacos: '' },
     subjective_assessment: data.nutritional_profile?.subjective_assessment || { usual_weight: '', weight_variation: '', gastrointestinal_symptoms: '', appetite: '', digestion: '' },
     allergies: data.nutritional_profile?.allergies || [],
