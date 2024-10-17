@@ -33,17 +33,19 @@ const { patient, patientslist } = storeToRefs(usePatientsStore());
 const userPatient = ref({})
 const patientList = ref([])
 const showFiled = ref(false)
+const filter = ref(0);
 
-const goToChat = (id, filter=0) => {
+const goToChat = (id) => {
+  getData(id, filter.value)
   router.push({ name: 'ChatPatients', params: { id: id }})
-  //getData(id, filter)
+  
 }
 
 const handleFilter = async () => {
     showFiled.value = !showFiled.value
-    const filter = showFiled.value ? 1 : 0
-    await patientsStore.IndexPatient(filter)
-    goToChat(patientsStore.GetFirstPatient, filter)
+    filter.value = showFiled.value ? 1 : 0
+    await patientsStore.IndexPatient(filter.value)
+    goToChat(patientsStore.GetFirstPatient)
 }
 
 const getData = async (id = props.id, filter=0) => {
@@ -86,6 +88,7 @@ const setValue = (value) => {
 };
 
 onMounted(() => {
+    showFiled.value = false
     getData(props.id)
 })
 
