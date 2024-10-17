@@ -57,6 +57,28 @@ export const useMenuStore = defineStore('menu', {
             });
         },
 
+        async UpdateMenu(menu, menu_id){
+            await APIAxios.put(`/api/menu/${menu_id}`, menu)
+            Swal.fire({
+                title: "El menú se ha editado con exito",
+                icon: "success",
+                timer: 1000,
+                showConfirmButton: false,
+                heightAuto: false,
+            });
+        },
+        
+        async UpdateMenuDay(menuDay, menuDay_id){
+            await APIAxios.put(`/api/menu-diario/${menuDay_id}`, menuDay)
+            Swal.fire({
+                title: "El menú se ha editado con exito",
+                icon: "success",
+                timer: 1000,
+                showConfirmButton: false,
+                heightAuto: false,
+            });
+        },
+
         async DeleteMenu(id_menu){
             try{
                 await APIAxios.delete(`/api/menu/${id_menu}`)

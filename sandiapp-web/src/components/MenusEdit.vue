@@ -135,14 +135,14 @@ const SendMenu = () => {
                   form.value.total_calories += Number(recipe.calories);
               });
             }
-            menuStore.SaveMenu(form.value)
+            menuStore.UpdateMenu(form.value, props.id)
         }
         if(form.value.type == 'diario'){
             form.recipes = newlistRecipes.value
             form.value.recipes.forEach(recipe => {
                 form.value.total_calories += Number(recipe.calories);
             });
-            menuStore.SaveMenuDay(form.value)
+            menuStore.UpdateMenuDay(form.value, props.id)
 
         }
         router.push({ name: 'ListMenus'})
