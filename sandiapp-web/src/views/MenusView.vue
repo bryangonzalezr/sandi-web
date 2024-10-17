@@ -36,6 +36,7 @@ const links = ref({})
 const meta = ref({})
 const loading = ref(true);
 const activeFilter = ref(false);
+const currentPage = ref(1)
 
 
 const goToCreate = () => {
@@ -74,7 +75,7 @@ const setValue = (value) => {
 const filterMenu = async () => {
   activeFilter.value = !activeFilter.value
   loading.value = true;
-  await menuStore.IndexMenus(form.value.id_patient, form.value.type, form.value.sandi)
+  await menuStore.IndexMenus(currentPage.value,form.value.id_patient, form.value.type, form.value.sandi)
   listMenus.value = menuStore.GetMenus;
   loading.value = false;
   form.value = {}
@@ -88,6 +89,7 @@ const GetPatients = async () => {
 }
 
 const GetData = async (page = 1) => {
+  currentPage.value = page
   form.value = {}
   loading.value = true;
   await menuStore.IndexMenus(page)
@@ -98,7 +100,7 @@ const GetData = async (page = 1) => {
 }
 
 onMounted(async () => {
-  GetData();
+  GetData(currentPage.value);
   GetPatients();
 });
 
