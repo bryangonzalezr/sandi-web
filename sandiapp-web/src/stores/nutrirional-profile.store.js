@@ -1,5 +1,6 @@
 import { APIAxios } from "./baseURL";
 import { defineStore } from "pinia";
+import Swal from "sweetalert2";
 
 export const useNutritionalProfileStore = defineStore('nutritional-profile', {
   state: () => ({
@@ -71,7 +72,15 @@ export const useNutritionalProfileStore = defineStore('nutritional-profile', {
 
   actions: {
     async EditPatientProfile(id, nutritional_profile){
-      await APIAxios.put(`/api/perfil-nutricional/${id}`, nutritional_profile);
+      await APIAxios.put(`/api/perfil-nutricional/${id}`, nutritional_profile).then((data) => {
+          Swal.fire({
+            title: "El perfil se ha editado con exito",
+            icon: "success",
+            timer: 1000,
+            showConfirmButton: false,
+            heightAuto: false,
+        });
+      });
     },
 
     async ShowPatientProfile(id){
