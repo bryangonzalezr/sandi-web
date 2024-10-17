@@ -186,8 +186,8 @@ const GetData = async () => {
             }
         }
         GetRecipes().then(() => {
-            const selectedIds = newlistRecipes.value.map(recipe => recipe._id);
-            listRecipes.value = recipeStore.GetRecipesList.filter(recipe => !selectedIds.includes(recipe._id));
+            const selectedIds = newlistRecipes.value.map(recipe => recipe._id ?? recipe.id);
+            listRecipes.value = recipeStore.GetRecipesList.filter(recipe => !selectedIds.includes(recipe._id ?? recipe.id));
         });
         daySelected.value = 1
         form.value.user_id = getIdByFullName(menuStore.GetMenu.user)
@@ -222,9 +222,10 @@ watch(daySelected, (newVal) => {
             form.value.menus[newVal - 1] = [];
         }
         newlistRecipes.value = form.value.menus[newVal - 1];
+
         GetRecipes().then(() => {
-            const selectedIds = newlistRecipes.value.map(recipe => recipe._id);
-            listRecipes.value = recipeStore.GetRecipesList.filter(recipe => !selectedIds.includes(recipe._id));
+            const selectedIds = newlistRecipes.value.map(recipe => recipe._id ?? recipe.id);
+            listRecipes.value = recipeStore.GetRecipesList.filter(recipe => !selectedIds.includes(recipe._id ?? recipe.id));
         });
     }
 })
