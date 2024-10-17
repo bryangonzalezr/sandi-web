@@ -36,7 +36,7 @@ const showFiled = ref(false)
 
 const goToChat = (id, filter=0) => {
   router.push({ name: 'ChatPatients', params: { id: id }})
-  getData(id, filter)
+  //getData(id, filter)
 }
 
 const handleFilter = async () => {
@@ -170,8 +170,10 @@ watch(
                 <div class="bg-white py-4 px-2 shadow-2xl flex">
                     <input 
                         class="input-message w-full text-wrap"
+                        :class="showFiled ? 'cursor-not-allowed': ''"
                         type="text"
                         placeholder="Mensaje"
+                        :disabled="showFiled"
                         @keydown="sendTypingEvent"
                         v-model="form.message"
                         @update:modelValue="setValue('message')"
