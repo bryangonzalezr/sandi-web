@@ -19,6 +19,39 @@ const nutritional_profile = ref({});
 const router = useRouter();
 const loading = ref(true);
 
+const allergyTranslations = {
+  'alcohol-free': 'Alcohol',
+  'crustacean-free': 'Crustaceos',
+  'dairy-free': 'Lacteos',
+  'egg-free': 'Huevos',
+  'fish-free': 'Pescado',
+  'gluten-free': 'Gluten',
+  'keto-friendly': 'Keto Amigable',
+  'kidney-friendly': 'Apto Para Riñones',
+  'kosher': 'Kosher',
+  'lupine-free': 'Lupino',
+  'mediterranean': 'Mediterraneo',
+  'mollusk-free': 'Molusco',
+  'mustard-free': 'Mostaza',
+  'no-oil-added': 'Aceite',
+  'paleo': 'Dieta Paleo',
+  'peanut-free': 'Mani',
+  'pescatarian': 'Pescetariano',
+  'pork-free': 'Cerdo',
+  'red-meat-free': 'Carne Roja',
+  'sesame-free': 'Sesamo',
+  'shellfish-free': 'Marisco',
+  'soy-free': 'Soya',
+  'sugar-conscious': 'Azucar Consciente',
+  'tree-nut-free': 'Frutos Secos',
+  'vegan': 'Vegano',
+  'vegetarian': 'Vegetariano',
+  'wheat-free': 'Trigo',
+};
+
+const translateAllergies = (allergies) => {
+  return allergies.map(allergy => allergyTranslations[allergy] || allergy);
+};
 
 const GetData = async () => {
     loading.value = true;
@@ -52,19 +85,32 @@ onMounted(async () => {
 
 
 <template>
-  <div class="flex flex-col py-2 px-10 gap-y-5">
+  <div class="flex flex-col py-2 px-10 gap-y-3">
     <!-- Titulo sección -->
-    <div class="flex flex-col">
+    <div class="flex flex-col bg-pink rounded p-4">
       <h1 class="uppercase text-2xl">Paciente</h1>
-      <h2>Gestión del Paciente {{ user.name }}</h2>
+      <h2>Gestión del paciente: {{ user.name }}</h2>
+      <AppButton
+          class="w-fit border-0 px-0 my-1 bg-forest-green enabled:hover:bg-white enabled:hover:text-black"
+          type="button"
+          text="Volver"
+          :icons="['fas', 'arrow-left']"
+          @click="goBack"
+        />
     </div>
 
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
         <AppButton
           type="button"
-          text="Planes archivados"
-          :icons="['fas', 'box-archive']"
+          text="Agregar consulta"
+          :icons="['fas', 'plus']"
+          @click="goToConsult"
+        />
+        <AppButton
+          type="button"
+          text="Agregar plan nutricional"
+          :icons="['fas', 'plus']"
         />
         <AppButton
           type="button"
@@ -72,33 +118,14 @@ onMounted(async () => {
           :icons="['fas', 'eye']"
           @click="goToProgress"
         />
+      </div>
+      <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
         <AppButton
+          class="bg-warm-beige text-black border-warm-beige enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
           type="button"
           text="Editar perfil"
           :icons="['fas', 'pen-to-square']"
           @click="goEdit"
-        />
-      </div>
-      <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
-        <AppButton
-          class="bg-lavender text-black border-lavender enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-          type="button"
-          text="Agregar consulta"
-          :icons="['fas', 'plus']"
-          @click="goToConsult"
-        />
-        <AppButton
-          class="bg-warm-beige text-black border-warm-beige enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-          type="button"
-          text="Agregar plan nutricional"
-          :icons="['fas', 'plus']"
-        />
-        <AppButton
-          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
-          type="button"
-          text="Volver"
-          :icons="['fas', 'arrow-left']"
-          @click="goBack"
         />
       </div>
     </div>
@@ -114,8 +141,7 @@ onMounted(async () => {
       <table class="bg-white min-w-full table-auto border-collapse rounded border">
         <thead class="bg-forest-green text-white">
           <tr>
-            <th class="border border-black px-4 py-2">Datos Personales</th>
-            <th class="border border-black px-4 py-2">Valor</th>
+            <th class="border border-black px-4 py-2" colspan="2">Datos Personales</th>
           </tr>
         </thead>
         <tbody>
@@ -153,7 +179,7 @@ onMounted(async () => {
           </tr>
           <tr>
             <td class="border border-black px-4 py-2">Alergias</td>
-            <td class="border border-black px-4 py-2">{{ nutritional_profile.allergies?.length > 0 ? nutritional_profile.allergies.join(', ') : 'No especificadas' }}</td>
+            <td class="border border-black px-4 py-2">{{ nutritional_profile.allergies?.length > 0 ? translateAllergies(nutritional_profile.allergies).join(', ') : 'No especificadas' }}</td>
           </tr>
           <tr>
             <td class="border border-black px-4 py-2">Comentario Físico</td>
@@ -242,11 +268,11 @@ onMounted(async () => {
                   <tbody>
                     <tr>
                       <td class="border border-black px-4 py-2">Plan Nutricional Anterior</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior || 'No especificado' }}</td>
+                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Sí' : 'No' }}</td>
                     </tr>
                     <tr>
                       <td class="border border-black px-4 py-2">Consumo de Agua</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua || 'No especificado' }}</td>
+                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Sí' : 'No' }}</td>
                     </tr>
                   </tbody>
                 </table>
