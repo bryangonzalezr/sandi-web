@@ -57,16 +57,46 @@ const nutritional_profile = ref({
   patient_type: ''
 });
 
+const allergiesMapping = {
+  'alcohol-free': 'Alcohol',
+  'crustacean-free': 'Crustaceos',
+  'dairy-free': 'Lacteos',
+  'egg-free': 'Huevos',
+  'fish-free': 'Pescado',
+  'gluten-free': 'Gluten',
+  'keto-friendly': 'Keto Amigable',
+  'kidney-friendly': 'Apto Para Riñones',
+  'kosher': 'Kosher',
+  'lupine-free': 'Lupino',
+  'mediterranean': 'Mediterraneo',
+  'mollusk-free': 'Molusco',
+  'mustard-free': 'Mostaza',
+  'no-oil-added': 'Aceite',
+  'paleo': 'Dieta Paleo',
+  'peanut-free': 'Mani',
+  'pescatarian': 'Pescetariano',
+  'pork-free': 'Cerdo',
+  'red-meat-free': 'Carne Roja',
+  'sesame-free': 'Sesamo',
+  'shellfish-free': 'Marisco',
+  'soy-free': 'Soya',
+  'sugar-conscious': 'Azucar Consciente',
+  'tree-nut-free': 'Frutos Secos',
+  'vegan': 'Vegano',
+  'vegetarian': 'Vegetariano',
+  'wheat-free': 'Trigo'
+};
+
 // New ref for allergies input
 const allergiesInput = ref('');
 
 // Computed property to convert allergies array to string
-const allergiesString = computed({
+/* const allergiesString = computed({
   get: () => nutritional_profile.value.allergies.join(', '),
   set: (val) => {
     nutritional_profile.value.allergies = val.split(',').map(item => item.trim()).filter(item => item !== '');
   }
-});
+}); */
 
 
 // Cargar los datos actuales del perfil al montar el componente
@@ -206,7 +236,7 @@ onMounted(() => {
                 <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <!-- Añadir Alergias aqui -->
-                    <tr class="bg-white border-b">
+                    <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4 font-medium text-black">Alergias</td>
                       <td class="px-6 py-4">
                         <textarea 
