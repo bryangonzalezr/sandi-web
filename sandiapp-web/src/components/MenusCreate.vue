@@ -152,6 +152,8 @@ const SendMenu = async () => {
             }
         }
     }
+    router.push({ name: 'ListMenus'})
+
 };
 
 
