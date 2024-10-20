@@ -85,7 +85,7 @@ onMounted(async () => {
 
 
 <template>
-  <div class="flex flex-col py-2 px-10 gap-y-5">
+  <div class="flex flex-col py-2 px-10 gap-y-3">
     <!-- Titulo sección -->
     <div class="flex flex-col">
       <AppButton
@@ -95,8 +95,16 @@ onMounted(async () => {
           :icons="['fas', 'arrow-left']"
           @click="goBack"
         />
+
       <h1 class="uppercase text-2xl">Paciente</h1>
-      <h2>Gestión del Paciente {{ user.name }}</h2>
+      <h2>Gestión del paciente: {{ user.name }}</h2>
+      <AppButton
+          class="w-fit border-0 px-0 my-1 bg-forest-green enabled:hover:bg-white enabled:hover:text-black"
+          type="button"
+          text="Volver"
+          :icons="['fas', 'arrow-left']"
+          @click="goBack"
+        />
     </div>
 
     <div class="grid grid-cols-2 justify-between">
@@ -273,6 +281,7 @@ onMounted(async () => {
                     <tr>
                       <td class="border border-black px-4 py-2">Consumo de Agua</td>
                       <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Si' : 'No especificado' }}</td>
+
                     </tr>
                   </tbody>
                 </table>
