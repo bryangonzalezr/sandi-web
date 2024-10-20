@@ -2,8 +2,7 @@ import { defineStore } from "pinia";
 import router from "@/router";
 import { APIAxios } from "./baseURL";
 import Swal from "sweetalert2";
-
-
+import { usePatientsStore } from './patients.store';
 
 export const useAuthStore = defineStore('auth', {
         state: () => ({
@@ -55,8 +54,10 @@ export const useAuthStore = defineStore('auth', {
                         heightAuto: false,
                       });
                 }else{
+                    const patientStore = usePatientsStore()
                     localStorage.setItem("authToken", data.data.token);
                     APIAxios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('authToken')}`;
+                    await patientStore.IndexPatient()
                     let roles = [];
                     try {
                       roles = await this.ShowRoles();
@@ -66,9 +67,6 @@ export const useAuthStore = defineStore('auth', {
                     this.user = user;
                     this.rolUser = role;
                     this.roles = roles.data;
-                    console.log(this.user)
-                    console.log(this.rolUser)
-                    console.log(this.roles)
                     localStorage.setItem("user", JSON.stringify(user))
                     localStorage.setItem("rolUser", JSON.stringify(role))
                     localStorage.setItem("roles", JSON.stringify(roles))
@@ -87,14 +85,9 @@ export const useAuthStore = defineStore('auth', {
                     router.push({name: 'Login'});
 
                     await APIAxios.post(`/api/logout`);
-                    console.log("se cerro sesión")
                 }catch(error){
                     return { 'error': error.message }
                 }
-            },
-
-            async ShowRegister() {
-                console.log(this.register);
             },
     
             async Register(credentials) {

@@ -1,17 +1,33 @@
 <script setup>
+import { ref, onMounted, watch } from 'vue';
 import { RouterLink } from 'vue-router'
+import { storeToRefs } from "pinia";
 
 import { useAuthStore } from "@/stores";
 
 // COMPONENTES
 import AppButton from "@/common/AppButton.vue";
+import { usePatientsStore } from '@/stores';
 
+const patientStore = usePatientsStore()
+
+const { firstPatient } = storeToRefs(usePatientsStore());
 
 const authStore = useAuthStore();
+const authUser = localStorage.getItem('user')
+const currentUser = JSON.parse(authUser.toString());
 
 const Logout = () => {
   authStore.Logout();
 }
+
+const GetData = async () => {
+  await patientStore.IndexPatient()
+}
+
+onMounted(() => {
+  GetData(); 
+})
 
 </script>
 
@@ -19,23 +35,25 @@ const Logout = () => {
     <!-- MENU VISTA DESKTOP -->
     <div class="topbar bg-warm-beige text-black">
         <!-- Titulo y Logo aplicacion -->
-        <RouterLink to="/">
+        <RouterLink :to="{ name: 'Patients' }">
           <div class="topbar__brand">
             <img src="@/assets/images/Logo_color.svg" alt="logo" />
           </div>
         </RouterLink>
         <!-- Lista de navegación -->
         <div class="topbar__links">
-          <nav class="flex justify-start gap-5">
-            <RouterLink to="/">Pacientes</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
+          <nav class="flex justify-start gap-7">
+            <RouterLink :to="{ name: 'Patients' }">Pacientes</RouterLink>
+            <RouterLink :to="{ name: 'ChatPatients', params: { id: firstPatient }}">Chats</RouterLink>
+            <RouterLink :to="{ name: 'ListRecipes' }">Mis Recetas</RouterLink>
+            <RouterLink :to="{ name: 'ListMenus' }">Mis Menús</RouterLink>
           </nav>
         </div>
         <!-- Sesión activa y boton de logout -->
         <div class="topbar__session">
           <div class="flex justify-center items-center gap-2">
             <font-awesome-icon icon="fa-solid fa-circle-user" />
-            <span>Nombre</span>
+            <span>{{ currentUser.name }}</span>
           </div>
           <AppButton
             text="Salir"
@@ -49,11 +67,9 @@ const Logout = () => {
 <style lang="postcss" scoped>
 .topbar {
     min-width: 100%;
-    min-height: 3.3125rem;
     display: grid;
     grid-template-columns: 1fr 3fr 0.5fr;
     &__brand {
-      min-height: 53px;
       align-items: center;
       justify-content: center;
       justify-items: center;
@@ -61,7 +77,7 @@ const Logout = () => {
       font-size: 13px;
       color: white;
       img {
-        height: 70px;
+        max-height: 4.375rem;
       }
     }
     &__links {

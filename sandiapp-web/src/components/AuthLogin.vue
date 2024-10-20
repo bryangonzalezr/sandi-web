@@ -10,7 +10,7 @@ import AppButton from '@/common/AppButton.vue';
 import AppInput from '@/common/AppInput.vue';
 
 // Definir contantes relacionadas al Vue-Router
-// Deifinir constantes relacionadas a los Stores
+// Definir constantes relacionadas a los Stores
 const authStore = useAuthStore();
 
 // Definir variables referenciales o reactivas
@@ -33,7 +33,6 @@ const Login = async () => {
       }
     }catch(error){
       errorsForm.value = error.response.data.errors;
-      /* console.log(error.response) */
     }
 }
 </script>

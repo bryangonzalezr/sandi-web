@@ -8,7 +8,7 @@ import { useRouter } from 'vue-router';
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
@@ -62,19 +62,19 @@ const GetData = async () => {
 };
 
 const goBack = () => {
-  router.push('/');
+  router.push({ name: 'Patients'});
 };
 
 const goEdit = () => {
-  router.push(`/patient/${props.id}/edit`);
+  router.push({ name: 'PatientsEdit', params: { id: props.id } });
 };
 
 const goToConsult = () => {
-  router.push(`/patient/${props.id}/consult`);
+  router.push({ name: 'PatientConsult', params: { id: props.id } });
 };
 
 const goToProgress = () => {
-  router.push(`/patient/${props.id}/progress`);
+  router.push({ name: 'PatientProgress', params: { id: props.id } });
 };
 
 onMounted(async () => {
@@ -87,7 +87,15 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col py-2 px-10 gap-y-3">
     <!-- Titulo sección -->
-    <div class="flex flex-col bg-pink rounded p-4">
+    <div class="flex flex-col">
+      <AppButton
+          class="w-fit border-0 px-0 my-2"
+          type="button"
+          text="Volver"
+          :icons="['fas', 'arrow-left']"
+          @click="goBack"
+        />
+
       <h1 class="uppercase text-2xl">Paciente</h1>
       <h2>Gestión del paciente: {{ user.name }}</h2>
       <AppButton
@@ -268,11 +276,12 @@ onMounted(async () => {
                   <tbody>
                     <tr>
                       <td class="border border-black px-4 py-2">Plan Nutricional Anterior</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Sí' : 'No' }}</td>
+                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Si' : 'No especificado' }}</td>
                     </tr>
                     <tr>
                       <td class="border border-black px-4 py-2">Consumo de Agua</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Sí' : 'No' }}</td>
+                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Si' : 'No especificado' }}</td>
+
                     </tr>
                   </tbody>
                 </table>
