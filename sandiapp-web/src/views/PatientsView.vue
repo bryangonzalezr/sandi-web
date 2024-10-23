@@ -32,6 +32,10 @@ const viewPatientDetails = (patient) => {
   router.push({ name: "PatientsShow", params: { id: patient }});
 };
 
+const goToArchivedPlans = () => {
+  router.push({ name: 'ArchivedPlans' });
+};
+
 const setValue = (value) => {
   email.value = event.target.value;
   delete errorsForm.value[value];
@@ -102,6 +106,7 @@ onMounted(async () => {
           type="button"
           text="Planes archivados"
           :icons="['fas', 'box-archive']"
+          @click="goToArchivedPlans"
         />
       </div>
       <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end relative">

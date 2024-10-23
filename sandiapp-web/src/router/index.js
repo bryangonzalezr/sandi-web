@@ -148,6 +148,13 @@ const router = createRouter({
       },
       component: () => import('@/components/RecipesEdit.vue')
     },
+    {
+      path: '/planes-archivados',
+      name: 'ArchivedPlans',
+      meta: { requiresAuth: true },
+      component: () => import('@/components/NutritionistPlanFiled.vue')
+      
+    }
   ]
 })
 
