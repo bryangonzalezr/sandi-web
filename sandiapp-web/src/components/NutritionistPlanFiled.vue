@@ -1,13 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useNutritionalPlanStore } from '@/stores';
+import { usePlanStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 import AppInput from '@/common/AppInput.vue';
 
 
 const router = useRouter();
-const usePlan = useNutritionalPlanStore();
+const usePlan = usePlanStore();
 
 const loading = ref(true);
 const plansFiled = ref([]);
