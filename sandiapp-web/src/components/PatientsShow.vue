@@ -86,7 +86,9 @@ const GetData = async () => {
     await patientStore.ShowProgress(props.id);
     user.value = perfilStore.GetData.user;
     nutritional_profile.value = perfilStore.GetData.nutritional_profile;
-    createPlan.value = perfilStore.GetData.nutritional_plan.length == 0 ? false : true;
+    if(perfilStore.GetData.nutritional_plan){
+      createPlan.value = perfilStore.GetData.nutritional_plan.length == 0 ? false : true;
+    }
     buttonProgress.value = patientStore.GetProgress.length == 0 ? false : true;
     loading.value = false;
 };
