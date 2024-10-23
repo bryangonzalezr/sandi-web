@@ -95,8 +95,8 @@ onMounted(() => {
     <form @submit.prevent="saveConsult">
       <!-- Tabla para ingresar los datos de la consulta -->
       <div class="overflow-x-auto relative">
-        <table class="w-full text-sm text-left text-black rounded-lg border border-gray-200">
-          <thead class="text-xs text-black uppercase bg-gray-400">
+        <table class="w-full text-sm text-left text-black rounded-lg border">
+          <thead class="text-xs text-black uppercase bg-test-beige">
             <tr>
               <th scope="col" class="px-6 py-3">Campo</th>
               <th scope="col" class="px-6 py-3">Valor</th>
@@ -106,104 +106,104 @@ onMounted(() => {
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Altura (m)</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.height" type="number" step="0.01" class="input w-full rounded-lg" />
+                <input v-model="consulta.height" type="number" step="0.01" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Peso (kg)</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.weight" type="number" step="0.1" class="input w-full rounded-lg" />
+                <input v-model="consulta.weight" type="number" step="0.1" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <!-- Añadir más filas para los otros campos de la consulta -->
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Pliegue Bicipital</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.bicipital_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.bicipital_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Pliegue Tricipital</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.tricipital_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.tricipital_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Pliegue Subescapular</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.subscapular_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.subscapular_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Pliegue Supraespinal</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.supraspinal_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.supraspinal_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Pliegue Suprailíaco</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.suprailiac_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.suprailiac_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Pliegue Muslo</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.thigh_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.thigh_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Pliegue Pantorrilla</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.calf_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.calf_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Pliegue Abdominal</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.abdomen_skinfold" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.abdomen_skinfold" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">PB Relajado</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.pb_relaj" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.pb_relaj" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">PB Contraído</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.pb_contra" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.pb_contra" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Antebrazo</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.forearm" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.forearm" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Muslo</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.thigh" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.thigh" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Pantorrilla</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.calf" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.calf" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-forest-green border-b">
               <td class="px-6 py-4">Cintura</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.waist" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.waist" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
             <tr class="bg-warm-beige border-b">
               <td class="px-6 py-4">Tórax</td>
               <td class="px-6 py-4">
-                <input v-model="consulta.thorax" type="number" class="input w-full rounded-lg" />
+                <input v-model="consulta.thorax" type="number" class="input w-full rounded bg-input-green border" />
               </td>
             </tr>
           </tbody>

@@ -40,6 +40,8 @@ export default {
       'teal': '#219653',
       'emerald': '#6FCF97',
       'lime': '#A5DE37',
+      'input-green': '#DEE7D2',
+      'test-beige': '#F4E5D6'
     }
   },
   plugins: [],
