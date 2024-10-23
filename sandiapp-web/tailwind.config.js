@@ -6,7 +6,8 @@ export default {
       
     },
     fontFamily: {
-      'Poppins': 'Poppins'
+      'Poppins': 'Poppins',
+      'PoppinsBold': 'PoppinsBold'
     },
     screens: {
       'sm': '640px', // => @media (min-width: 640px) { ... }

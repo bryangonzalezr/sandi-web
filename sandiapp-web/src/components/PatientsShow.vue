@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useNutritionalProfileStore } from '@/stores';
+import { useNutritionalProfileStore, usePatientsStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 import { useRouter } from 'vue-router';
 
@@ -13,11 +13,14 @@ const props = defineProps({
   },
 });
 
-const patientStore = useNutritionalProfileStore();
+const perfilStore = useNutritionalProfileStore();
+const patientStore = usePatientsStore();
 const user = ref({});
 const nutritional_profile = ref({});
 const router = useRouter();
 const loading = ref(true);
+const createPlan = ref(false);
+const buttonProgress = ref(false);
 
 const allergyTranslations = {
   'alcohol-free': 'Alcohol',
@@ -53,14 +56,6 @@ const translateAllergies = (allergies) => {
   return allergies.map(allergy => allergyTranslations[allergy] || allergy);
 };
 
-const GetData = async () => {
-    loading.value = true;
-    await patientStore.ShowPatientProfile(props.id);
-    user.value = patientStore.GetData.user;
-    nutritional_profile.value = patientStore.GetData.nutritional_profile;
-    loading.value = false;
-};
-
 const goBack = () => {
   router.push({ name: 'Patients'});
 };
@@ -73,9 +68,25 @@ const goToConsult = () => {
   router.push({ name: 'PatientConsult', params: { id: props.id } });
 };
 
+const goToCreatePlan = () => {
+  router.push({ name: 'PatientPlan', params: { id: props.id } });
+}
+
 const goToProgress = () => {
   router.push({ name: 'PatientProgress', params: { id: props.id } });
 };
+
+const GetData = async () => {
+    loading.value = true;
+    await perfilStore.ShowPatientProfile(props.id);
+    await patientStore.ShowProgress(props.id);
+    user.value = perfilStore.GetData.user;
+    nutritional_profile.value = perfilStore.GetData.nutritional_profile;
+    createPlan.value = perfilStore.GetData.nutritional_plan.length == 0 ? false : true;
+    buttonProgress.value = patientStore.GetProgress.length == 0 ? false : true;
+    loading.value = false;
+};
+
 
 onMounted(async () => {
     GetData();
@@ -98,13 +109,6 @@ onMounted(async () => {
 
       <h1 class="uppercase text-2xl">Paciente</h1>
       <h2>Gestión del paciente: {{ user.name }}</h2>
-      <AppButton
-          class="w-fit border-0 px-0 my-1 bg-forest-green enabled:hover:bg-white enabled:hover:text-black"
-          type="button"
-          text="Volver"
-          :icons="['fas', 'arrow-left']"
-          @click="goBack"
-        />
     </div>
 
     <div class="grid grid-cols-2 justify-between">
@@ -115,11 +119,22 @@ onMounted(async () => {
           :icons="['fas', 'plus']"
           @click="goToConsult"
         />
-        <AppButton
-          type="button"
-          text="Agregar plan nutricional"
-          :icons="['fas', 'plus']"
-        />
+        <template v-if="buttonProgress">
+            <AppButton
+              v-if="!createPlan"
+              type="button"
+              text="Agregar plan nutricional"
+              :icons="['fas', 'plus']"
+              @click="goToCreatePlan"
+            />
+            <AppButton
+              v-else
+              type="button"
+              text="Editar plan nutricional"
+              :icons="['fas', 'pencil']"
+              @click="goToCreatePlan"
+            />
+        </template>
         <AppButton
           type="button"
           text="Progreso"

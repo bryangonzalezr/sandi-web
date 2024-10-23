@@ -76,14 +76,18 @@ const changeSelect = () => {
         >
           {{ props.firstOptionValue }}
         </option>
-        <option 
+        <template 
           v-for="(option, key) in props.options" 
-          :key="key" 
-          :value="key" 
-          :selected="key == props.selectedOption"
+          :key="key"
         >
-          {{ option }}
-        </option>
+          <option  
+            v-if="option['required'] ?? true"
+            :value="key" 
+            :selected="key == props.selectedOption"
+          >
+            {{ option['text'] ?? option}}
+          </option>
+        </template>
       </select>
     </div>
     <p v-if="props.error" class="text-xs text-bold-red flex gap-1 items-center">

@@ -144,6 +144,36 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
+            <!--Tabla anidada para estado paciente -->
+            <tr class="bg-white border-b">
+              <td class="px-6 py-4 font-medium text-black">Estado paciente</td>
+              <td class="px-6 py-4">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
+                  <tbody>
+                    <tr class="bg-warm-beige border-b">
+                      <td class="px-6 py-4">Nivel de Actividad Física</td>
+                      <td class="px-6 py-4">
+                        <AppSelect 
+                          :options="{'Leve': 'Leve', 'Moderada': 'Moderada', 'Pesada': 'Pesada'}" 
+                          :firstOptionValue="'Selecciona nivel de actividad física'" 
+                          v-model:selectedOption="nutritional_profile.physical_status" 
+                        />
+                      </td>
+                    </tr>
+                    <tr class="bg-warm-beige border-b">
+                      <td class="px-6 py-4">Tipo de Paciente</td>
+                      <td class="px-6 py-4">
+                        <AppSelect 
+                          :options="{'Ambulatorio': 'Ambulatorio', 'Enfermo': 'Enfermo'}" 
+                          :firstOptionValue="'Selecciona tipo de paciente'" 
+                          v-model:selectedOption="nutritional_profile.patient_type" 
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
             <!-- Tabla anidada para hábitos -->
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Hábitos</td>

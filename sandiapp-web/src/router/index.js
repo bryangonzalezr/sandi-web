@@ -39,7 +39,7 @@ const router = createRouter({
         const id = route.params.id;
         return { id };
       }, 
-      component: () => import('../components/PatientsShow.vue') 
+      component: () => import('@/components/PatientsShow.vue') 
     },
 
     {
@@ -50,7 +50,7 @@ const router = createRouter({
         const id = route.params.id;
         return { id };
       },
-      component: () => import('../components/PatientsEdit.vue')
+      component: () => import('@/components/PatientsEdit.vue')
     },
 
     {
@@ -61,9 +61,18 @@ const router = createRouter({
         const id = route.params.id;
         return { id };
       },
-      component: () => import('../components/PatientsConsult.vue')
+      component: () => import('@/components/PatientsConsult.vue')
     },
-
+    {
+      path: '/paciente/:id/crear-plan-nutricional',
+      name: 'PatientPlan',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('@/components/PatientsPlan.vue')
+    },
     {
       path : '/paciente/:id/progreso',
       name: 'PatientProgress',
@@ -72,7 +81,7 @@ const router = createRouter({
         const id = route.params.id;
         return { id };
       },
-      component: () => import('../components/PatientsProgress.vue')
+      component: () => import('@/components/PatientsProgress.vue')
     },
     {
       path: '/chat/paciente/:id',

@@ -64,6 +64,7 @@ const changeType = () => {
                 @input="$emit('update:modelValue', modelValue)"
                 @change="$emit('update:modelValue', modelValue)"
                 :disabled="props.disabled"
+                :min="props.type == 'number' ? '0' : ''"
               >
               </input>
               <font-awesome-icon

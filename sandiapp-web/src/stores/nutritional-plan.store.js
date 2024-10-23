@@ -1,7 +1,7 @@
 import { APIAxios } from "./baseURL";
-import { defineStore  } from "pinia";
+import { defineStore } from "pinia";
 
-export const useNutritionalPlanStore = defineStore('nutritional-plan', {
+export const usePlanStore = defineStore('plan', {
   state: () => ({
     plan_nutritional: {},
     requirements: {},
