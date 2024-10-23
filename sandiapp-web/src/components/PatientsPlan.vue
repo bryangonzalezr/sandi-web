@@ -74,7 +74,7 @@ const getPauta = async (plan) => {
   plan.service_portion_id = portionsServices.value['_id']
   try{
     await planStore.CreatePauta(plan)
-    pauta.value = planStore.GetPauta.data.data;
+    pauta.value = planStore.GetPauta;
     if(currentStep.value == 5){
         router.push({ name: "PatientsShow", params: { id: props.id }});
       }
@@ -89,7 +89,7 @@ const getData = async () => {
         const data = patientsStore.GetPatient
         patient.value = data.user
         patientType.value = data.nutritional_profile.patient_type;
-        if(data.nutritional_plan.length > 0){
+        if(data.nutritional_plan){
           existPlan.value = true;
           await planStore.ShowRequeriments(props.id)
           await planStore.ShowPortions(props.id)
@@ -101,7 +101,7 @@ const getData = async () => {
           portionsGroup.value = planStore.GetPortions.data.data[0];
           totalCalories.value = portionsGroup.value.total_calorias ? portionsGroup.value.total_calorias: 0;
           portionsServices.value = planStore.GetPortionsServices.data.data;
-          pauta.value = planStore.GetPauta.data.data[0];
+          pauta.value = planStore.GetPauta;
           if(patientType.value == 'Ambulatorio'){
             lastMethodResult.value.rest_type = ''
           }else{

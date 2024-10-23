@@ -81,7 +81,7 @@ onMounted(() => {
                         class="grid grid-cols-5 bg-white border border-gray"
                     >
                         <div class="capitalize border-r border-r-gray px-2">Total calorías</div>
-                        <div class="px-2 col-span-4">{{ plan.service_portion.total_calorias }}</div>
+                        <div class="px-2 col-span-4">{{  }}</div>
                     </div>
                 </div>
             </div>
