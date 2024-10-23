@@ -76,6 +76,10 @@ const goToProgress = () => {
   router.push({ name: 'PatientProgress', params: { id: props.id } });
 };
 
+const goToGuide = () => {
+  router.push({ name: 'PatientShowPlan', params: { id: props.id } });
+};
+
 const GetData = async () => {
     loading.value = true;
     await perfilStore.ShowPatientProfile(props.id);
@@ -107,7 +111,7 @@ onMounted(async () => {
           @click="goBack"
         />
 
-      <h1 class="uppercase text-2xl">Paciente</h1>
+      <h1 class="uppercase text-2xl">Perfil paciente</h1>
       <h2>Gestión del paciente: {{ user.name }}</h2>
     </div>
 
@@ -137,9 +141,16 @@ onMounted(async () => {
         </template>
         <AppButton
           type="button"
-          text="Progreso"
+          text="Ver Progreso"
           :icons="['fas', 'eye']"
           @click="goToProgress"
+        />
+        <AppButton
+          v-if="buttonProgress && createPlan"
+          type="button"
+          text="Ver Pauta"
+          :icons="['fas', 'eye']"
+          @click="goToGuide"
         />
       </div>
       <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">

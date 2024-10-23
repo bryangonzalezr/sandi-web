@@ -19,7 +19,7 @@ export const usePlanStore = defineStore('plan', {
     GetIndicadores: (state) => state.indicadores,
     GetPortions: (state) => state.portions,
     GetPortionsServices: (state) => state.portionsServices,
-    GetPauta: (state) => state.pauta,
+    GetPauta: (state) => state.pauta.data.data,
   },
 
   actions: {

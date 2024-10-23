@@ -74,6 +74,16 @@ const router = createRouter({
       component: () => import('@/components/PatientsPlan.vue')
     },
     {
+      path: '/paciente/:id/pauta',
+      name: 'PatientShowPlan',
+      meta: { requiresAuth: true },
+      props: (route) => {
+        const id = route.params.id;
+        return { id };
+      },
+      component: () => import('@/components/PatientsShowPlan.vue')
+    },
+    {
       path : '/paciente/:id/progreso',
       name: 'PatientProgress',
       meta: { requiresAuth: true },
