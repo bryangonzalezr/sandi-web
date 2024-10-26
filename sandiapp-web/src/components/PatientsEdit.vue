@@ -87,17 +87,15 @@ const allergiesMapping = {
   'wheat-free': 'Trigo'
 };
 
-// New ref for allergies input
 const allergiesInput = ref('');
+const recognizedAllergies = ref([]);
 
-// Computed property to convert allergies array to string
-/* const allergiesString = computed({
-  get: () => nutritional_profile.value.allergies.join(', '),
-  set: (val) => {
-    nutritional_profile.value.allergies = val.split(',').map(item => item.trim()).filter(item => item !== '');
-  }
-}); */
-
+const handleAllergyInput = () => {
+  const input = allergyInput.value.split(',').map(item => item.trim());
+  recognizedAllergies.value = input.map(allergy => {
+    return Object.keys(allergiesMapping).find(key => allergiesMapping[key].toLowerCase() === allergy.toLowerCase());
+  }).filter(Boolean);
+};
 
 // Cargar los datos actuales del perfil al montar el componente
 const loadPatientProfile = async () => {
@@ -243,6 +241,7 @@ onMounted(() => {
                           v-model="allergiesInput"
                           class="w-full p-2 border rounded"
                           placeholder="Ingrese alergias separadas por comas (e.j., gluten, lactosa, maní)"
+                          @input="handleAllergyInput"
                         ></textarea>
                       </td>
                     </tr>

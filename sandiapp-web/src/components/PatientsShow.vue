@@ -88,14 +88,6 @@ onMounted(async () => {
   <div class="flex flex-col py-2 px-10 gap-y-3">
     <!-- Titulo sección -->
     <div class="flex flex-col">
-      <AppButton
-          class="w-fit border-0 px-0 my-2"
-          type="button"
-          text="Volver"
-          :icons="['fas', 'arrow-left']"
-          @click="goBack"
-        />
-
       <h1 class="uppercase text-2xl">Paciente</h1>
       <h2>Gestión del paciente: {{ user.name }}</h2>
       <AppButton

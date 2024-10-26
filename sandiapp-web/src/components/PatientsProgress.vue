@@ -8,6 +8,7 @@ import AppButton from '@/common/AppButton.vue';
 Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale);
 
 const patientsStore = usePatientsStore();
+const loading = ref(true);
 
 const props = defineProps({
   id: {
@@ -27,12 +28,15 @@ const imcprogress = ref([]);
 
 const loadData = async () => {
   try {
+    loading.value = true;
     await patientsStore.ShowProgress(props.id);
     const fetchedProgress = patientsStore.GetProgress || [];
 
     progress.value = fetchedProgress;
 
-    if (!progress.value.length) {
+    if (!progress.value.length) {}
+    if (!fetchedProgress.length) {
+      loading.value = false;
       return;
     }
 
@@ -63,6 +67,7 @@ const loadData = async () => {
     // Asegurarse de que el DOM esté actualizado antes de dibujar gráficos
     await nextTick();
     loadCharts();
+    loading.value = false;
   } catch (error) {
     console.error('Error cargando los datos del progreso:', error);
   }
@@ -256,6 +261,31 @@ onMounted(() => {
 
 <template>
   <div class="p-4">
+    
+    <div v-if="loading" class="flex justify-center items-center">
+      <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
+      <span class="visually-hidden">  Loading...</span>
+    </div>
+
+    <div v-else-if="!progress.length">
+      <p class="text-center text-xl font-bold mt-4">No tiene progreso registrado.</p>
+      <div class="grid grid-flow-col auto-cols-max gap-2 justify-center mt-4">
+        <AppButton 
+          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+          type="button" 
+          text="Crear Consulta"
+          :icons="['fas', 'plus']" 
+          @click="goToConsults" 
+        />
+        <AppButton 
+          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+          type="button" 
+          text="Volver al perfil"
+          :icons="['fas', 'arrow-left']" 
+          @click="goBack" 
+        />
+      </div>
+    </div>
     <div v-if="progress.length">
       <div class="grid grid-cols-2 gap-4">
         <div>
@@ -287,41 +317,23 @@ onMounted(() => {
 
       <div class="mt-8">
         <h2 class="text-xl font-bold mb-4">Gráficas de Progreso</h2>
-        <div>
-          <canvas id="heightChart"></canvas>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="h-64">
+            <canvas id="heightChart"></canvas>
+          </div>
+          <div class="h-64">
+            <canvas id="weightChart"></canvas>
+          </div>
+          <div class="h-64">
+            <canvas id="fatChart"></canvas>
+          </div>
+          <div class="h-64">
+            <canvas id="muscleChart"></canvas>
+          </div>
+          <div class="col-span-2 h-96">
+            <canvas id="imcChart"></canvas>
+          </div>
         </div>
-        <div class="mt-8">
-          <canvas id="weightChart"></canvas>
-        </div>
-        <div class="mt-8">
-          <canvas id="imcChart"></canvas>
-        </div>
-        <div class="mt-8">
-          <canvas id="fatChart"></canvas>
-        </div>
-        <div class="mt-8">
-          <canvas id="muscleChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <div v-else>
-      <p class="text-center text-xl font-bold mt-4">No tiene progreso registrado.</p>
-      <div class="grid grid-flow-col auto-cols-max gap-2 justify-center mt-4">
-        <AppButton 
-          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
-          type="button" 
-          text="Crear Consulta"
-          :icons="['fas', 'plus']" 
-          @click="goToConsults" 
-        />
-        <AppButton 
-          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
-          type="button" 
-          text="Volver al perfil"
-          :icons="['fas', 'arrow-left']" 
-          @click="goBack" 
-        />
       </div>
     </div>
   </div>
