@@ -57,16 +57,46 @@ const nutritional_profile = ref({
   patient_type: ''
 });
 
+const allergiesMapping = {
+  'alcohol-free': 'Alcohol',
+  'crustacean-free': 'Crustaceos',
+  'dairy-free': 'Lacteos',
+  'egg-free': 'Huevos',
+  'fish-free': 'Pescado',
+  'gluten-free': 'Gluten',
+  'keto-friendly': 'Keto Amigable',
+  'kidney-friendly': 'Apto Para Riñones',
+  'kosher': 'Kosher',
+  'lupine-free': 'Lupino',
+  'mediterranean': 'Mediterraneo',
+  'mollusk-free': 'Molusco',
+  'mustard-free': 'Mostaza',
+  'no-oil-added': 'Aceite',
+  'paleo': 'Dieta Paleo',
+  'peanut-free': 'Mani',
+  'pescatarian': 'Pescetariano',
+  'pork-free': 'Cerdo',
+  'red-meat-free': 'Carne Roja',
+  'sesame-free': 'Sesamo',
+  'shellfish-free': 'Marisco',
+  'soy-free': 'Soya',
+  'sugar-conscious': 'Azucar Consciente',
+  'tree-nut-free': 'Frutos Secos',
+  'vegan': 'Vegano',
+  'vegetarian': 'Vegetariano',
+  'wheat-free': 'Trigo'
+};
+
 // New ref for allergies input
 const allergiesInput = ref('');
 
 // Computed property to convert allergies array to string
-const allergiesString = computed({
+/* const allergiesString = computed({
   get: () => nutritional_profile.value.allergies.join(', '),
   set: (val) => {
     nutritional_profile.value.allergies = val.split(',').map(item => item.trim()).filter(item => item !== '');
   }
-});
+}); */
 
 
 // Cargar los datos actuales del perfil al montar el componente
@@ -144,6 +174,36 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
+            <!--Tabla anidada para estado paciente -->
+            <tr class="bg-white border-b">
+              <td class="px-6 py-4 font-medium text-black">Estado paciente</td>
+              <td class="px-6 py-4">
+                <table class="w-full text-sm text-left text-black rounded border border-black">
+                  <tbody>
+                    <tr class="bg-warm-beige border-b">
+                      <td class="px-6 py-4">Nivel de Actividad Física</td>
+                      <td class="px-6 py-4">
+                        <AppSelect 
+                          :options="{'Leve': 'Leve', 'Moderada': 'Moderada', 'Pesada': 'Pesada'}" 
+                          :firstOptionValue="'Selecciona nivel de actividad física'" 
+                          v-model:selectedOption="nutritional_profile.physical_status" 
+                        />
+                      </td>
+                    </tr>
+                    <tr class="bg-warm-beige border-b">
+                      <td class="px-6 py-4">Tipo de Paciente</td>
+                      <td class="px-6 py-4">
+                        <AppSelect 
+                          :options="{'Ambulatorio': 'Ambulatorio', 'Enfermo': 'Enfermo'}" 
+                          :firstOptionValue="'Selecciona tipo de paciente'" 
+                          v-model:selectedOption="nutritional_profile.patient_type" 
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
             <!-- Tabla anidada para hábitos -->
             <tr class="bg-white border-b">
               <td class="px-6 py-4 font-medium text-black">Hábitos</td>
@@ -206,7 +266,7 @@ onMounted(() => {
                 <table class="w-full text-sm text-left text-black rounded border border-black">
                   <tbody>
                     <!-- Añadir Alergias aqui -->
-                    <tr class="bg-white border-b">
+                    <tr class="bg-warm-beige border-b">
                       <td class="px-6 py-4 font-medium text-black">Alergias</td>
                       <td class="px-6 py-4">
                         <textarea 

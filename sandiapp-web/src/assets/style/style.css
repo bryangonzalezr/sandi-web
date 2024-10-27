@@ -13,4 +13,11 @@
       font-display: swap;
       src: url("@/assets/fonts/Poppins-Regular.ttf") format("truetype");
     }
+    @font-face {
+      font-style: normal;
+      font-family: "PoppinsBold";
+      font-weight: 800;
+      font-display: swap;
+      src: url("@/assets/fonts/Poppins-Bold.ttf") format("truetype");
+    }
 }

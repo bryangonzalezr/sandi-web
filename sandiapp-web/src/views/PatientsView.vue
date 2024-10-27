@@ -54,7 +54,6 @@ const AddPatient = async () => {
     addPatient.value = false;
   } catch (error) {
     errorsForm.value = error.response.data.errors;
-    console.log(errorsForm.value)
   }
 }
 
