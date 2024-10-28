@@ -5,7 +5,6 @@ import { storeToRefs } from "pinia";
 import { useAuthStore, usePatientsStore } from '@/stores';
 import AppButton from "@/common/AppButton.vue";
 import LogoMonocromatic from '@/assets/images/Logo_monocroma.svg';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const patientStore = usePatientsStore()
 const { firstPatient } = storeToRefs(patientStore);
@@ -81,16 +80,20 @@ const navLinks = [
 .topbar {
   min-width: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr 0.6fr;
+  grid-template-columns: 1fr 3fr 0.5fr;
   &__brand {
     align-items: center;
     justify-content: center;
+    justify-items: center;
     padding: 0.625rem 0rem 0.625rem 1.875rem;
+    font-size: 13px;
+    color: white;
     img {
       max-height: 4.375rem;
     }
   }
   &__links {
+    position: relative;
     display: grid;
     align-items: center;
   }
@@ -98,8 +101,8 @@ const navLinks = [
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 0 20px;
+    gap: 9px;
+    padding: 0 15px;
   }
 }
 
