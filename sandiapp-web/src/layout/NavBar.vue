@@ -34,7 +34,7 @@ const navLinks = [
 </script>
 
 <template>
-  <div class="topbar bg-[#FBF8F3] text-black border-b">
+  <div class="topbar bg-[#FBF8F3] text-black border-b border-b-light-beige">
       <!-- Brand section -->
       <RouterLink to="/" class="topbar__brand">
         <img :src="LogoMonocromatic" alt="Logo Sandi" class="logo" />
