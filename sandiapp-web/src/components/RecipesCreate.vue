@@ -1,0 +1,248 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from "vue-router";
+import { getMealType, getDietLabels, getHealth, getDishType } from "@/utilities"
+import { useRecipeStore, useAuthStore } from '@/stores';
+import AppButton from '@/common/AppButton.vue';
+import AppInput from '@/common/AppInput.vue';
+import VueMultiselect from 'vue-multiselect';
+import Swal from "sweetalert2";
+
+const router = useRouter();
+
+const recipeStore = useRecipeStore()
+const authStore = useAuthStore()
+
+const HealthLabels = Object.values(getHealth())
+const DietLabels = Object.values(getDietLabels())
+const MealTypeOptions = Object.values(getMealType())
+const DishTypeOptions = Object.values(getDishType())
+
+const ingredient = ref({})
+const editIngredient = ref([])
+const recipe = ref({
+  healthLabels: [],
+  ingredientLines: [],
+  mealType: [],
+  dishType: [],
+})
+const errorsForm = ref({})
+
+const setIngredient = (value) => {
+  ingredient.value.ingredient = event.target.value;
+}
+
+const setValue = (value) => {
+  recipe.value[value] = event.target.value;
+  delete errorsForm.value[value];
+}
+
+const agregarIngrediente = () => {
+  if (ingredient.value.ingredient != '') {
+    recipe.value.ingredientLines.push(ingredient.value['ingredient']);
+    editIngredient.value.push(false)
+    ingredient.value.ingredient = '';
+  }
+}
+
+const activeEdit = (index) => {
+  editIngredient.value[index] =!editIngredient.value[index]
+}
+
+const editarIngrediente = (index) => {
+  recipe.value.ingredientLines[index] = event.target.value;
+}
+
+const deleteIngredient = (index) => {
+  Swal.fire({
+    title: "¿Segur@ que quieres eliminar el ingrediente?",
+    showDenyButton: true,
+    confirmButtonText: "Si",
+    confirmButtonColor: "#76A95C",
+    denyButtonText: `No`,
+    denyButtonColor: "#DE3E3E",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      recipe.value.ingredientLines.splice(index, 1);
+    }
+  });
+}
+
+const SaveRecipe = async() => {
+  try{
+    recipe.value.sandi_recipe = false;
+    recipe.value.user_id = authStore.userInfo.id;
+    await recipeStore.CreateRecipe(recipe.value);
+    router.push({ name: 'ListRecipes'})
+  }catch(error){
+    errorsForm.value = error.response.data.errors;
+  }
+}
+</script>
+
+<template>
+  <div class="flex flex-col py-2 px-6 gap-y-5">
+    <div class="grid grid-cols-2">
+      <div class="flex flex-col">
+        <AppButton
+          class="w-fit border-0 px-0 py-1"
+          type="button"
+          text="Volver"
+          :icons="['fas', 'arrow-left']"
+          @click="router.push({name: 'ListRecipes'})"
+        />
+        <h1 class="uppercase text-2xl">Crear nueva receta</h1>
+        <h2>Ingresa los datos de la receta</h2>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-2 justify-between">
+      <div class="grid p-5 gap-2 col-span-2 bg-lavender">
+        <div class="grid grid-cols-2 gap-2">
+          <AppInput
+            type="text"
+            v-model="recipe.label"
+            label="Nombre:"
+            placeholder="Ingresa el nombre"
+            :error="errorsForm.label ? true : false"
+            :errorMessage="errorsForm.label"
+            @update:modelValue="setValue('label')"
+          />
+          <AppInput
+            type="number"
+            v-model="recipe.calories"
+            label="Calorías"
+            placeholder="Ingresa cantidad de calorías"
+            :error="errorsForm.calories ? true : false"
+            :errorMessage="errorsForm.calories"
+            @update:modelValue="setValue('calories')"
+          />
+        </div>
+        <div>
+          <label class="text-sm">Etiquetas de Salud:</label>
+          <VueMultiselect
+            v-model="recipe.healthLabels"
+            :options="HealthLabels"
+            :multiple="true"
+            :close-on-select="false"
+            :clear-on-select="false"
+            :searchable="false"
+            >
+          </VueMultiselect>
+        </div>
+  
+        <div>
+          <label class="text-sm">Etiquetas dietéticas:</label>
+          <VueMultiselect
+            v-model="recipe.dietLabels"
+            :options="DietLabels"
+            :multiple="true"
+            :close-on-select="false"
+            :clear-on-select="false"
+            :searchable="false"
+            >
+          </VueMultiselect>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-sm">Tipo de comida</label>
+            <VueMultiselect
+              v-model="recipe.mealType"
+              :options="MealTypeOptions"
+              :searchable="false"
+              :multiple="true"
+              :close-on-select="true"
+              :show-labels="false"
+              placeholder="Selecciona una opción"
+            />
+          </div>
+        
+          <div>
+            <label class="text-sm">Tipo de plato</label>
+            <VueMultiselect
+              v-model="recipe.dishType"
+              :options="DishTypeOptions"
+              :searchable="false"
+              :multiple="true"
+              :close-on-select="true"
+              :show-labels="false"
+              placeholder="Selecciona una opción"
+            />
+          </div>
+        </div>
+        <div>
+          <h1 class="text-sm">Instrucciones:</h1>
+          <textarea 
+            class="w-full min-h-24 rounded border border-white hover:border-[#aaaeb7] focus:border-[#aaaeb7] transition-all outline-0"
+            v-model="recipe.instructions"
+          ></textarea>
+        </div>
+        <AppButton
+            type="button"
+            text="Guardar Receta"
+            :icons="['fas', 'plus']"
+            @click="SaveRecipe"
+          />
+      </div>
+      <div class="flex flex-col bg-pink justify-between p-5 gap-2">
+        <div class="flex gap-2 w-full" :class="errorsForm.ingredientLines ? 'items-center' : 'items-end'">
+          <AppInput
+            type="text"
+            class="flex-nowrap w-full"
+            v-model="ingredient.ingredient"
+            label="Ingresar Ingredientes"
+            placeholder="Ej: 1/2 de taza de arroz"
+            :error="errorsForm.ingredientLines ? true : false"
+            :errorMessage="errorsForm.ingredientLines"
+            @update:modelValue="setIngredient('ingredient')"
+            @keypress.enter="agregarIngrediente"
+          />
+          <AppButton
+            class="text-black bg-lavender py-[6px] px-2 rounded"
+            type="icon"
+            hoverText="Agregar ingredinte"
+            :icons="['fas', 'plus']"
+            @click="agregarIngrediente"
+          />
+        </div>
+        <div class="flex-grow">
+          <h1 class="text-sm">Lista de Ingredientes:</h1>
+          <div class="bg-white py-3 rounded px-2 flex flex-col gap-2 h-[360px] overflow-y-auto">
+            <div v-if="recipe.ingredientLines.length == 0">Sin ingredientes añadidos</div>
+            <div v-else class="px-3 gap-2 flex justify-between items-center" v-for="(ingredient,index) in recipe.ingredientLines">
+              <div 
+                v-if="!editIngredient[index]"
+                class="flex-nowrap bg-pink rounded p-2 w-full"
+              >
+                {{ ingredient }}
+              </div>
+              <AppInput 
+                v-else
+                type="text"
+                class="flex-nowrap w-full"
+                v-model="recipe.ingredientLines[index]"
+                @update:modelValue="editarIngrediente(index)"
+              />
+              <AppButton
+                class="text-violet"
+                type="icon"
+                :hoverText="!editIngredient[index] ? 'Editar' : 'Guardar'"
+                :icons="!editIngredient[index] ? ['fas','pencil'] : ['fas','check']"
+                @click="activeEdit(index)"
+              />
+              <AppButton
+                class="text-violet"
+                type="icon"
+                hoverText="Eliminar ingrediente"
+                :icons="['fas','trash-can']"
+                @click="deleteIngredient(index)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
