@@ -203,70 +203,46 @@ watch(daySelected, (newVal) => {
 
 <template>
     <div class="flex flex-col py-2 px-10 gap-y-4 w-full h-full">
-        <div class="flex flex-col">
-            <!--Boton volver atras-->
-            <AppButton
-              class="w-fit border-0 px-0 my-2"
-              type="button"
-              text="Volver"
-              :icons="['fas', 'arrow-left']"
-              @click="router.push({name: 'ListMenus'})"
-            />
-            <h1 class="uppercase text-2xl">Crear Menú</h1>
+        <div class="flex items-center gap-2 mt-6 mb-4">
+            <font-awesome-icon :icon="['fas', 'book']"/>
+            <h1 class="text-2xl font-bold">Crear menú</h1>
         </div>
         <div class="flex gap-x-4 w-full max-h-[470px]">
             <div 
-                v-if="form.type"
                 :class="days.length > 7 ? 'max-w-[30%]' : 'min-w-max'"
             >
-                <div class="bg-lavender text-center p-2">
+            <div class="w-full bg-light-green text-dark-green rounded-lg shadow-md p-4">
+                <div class="bg-dark-green text-white text-center p-2 font-bold rounded">
+                    <font-awesome-icon :icon="['fas', 'book-open']" class="mr-2"/>
                     Mis recetas
                 </div>
-                <!--Lista de recetas creadas-->
-                <div class="h-full overflow-y-auto">
-                    <div 
-                        class="flex flex-col gap-1 bg-lavender p-2"
-                        @drop="handleDrop($event, 'listRecipes')"
-                        @dragenter.prevent
-                        @dragover.prevent
-                    >
-                        <template v-if="listRecipes.length == 0">
-                            <div
-                                class="p-2"
-                                :draggable="false"
-                                @dragstart="handleDragStart($event, 0, 'listRecipes')"
-                            >
-                                Arrastra recetas que no usaras aquí
-                            </div>
-                        </template>
-                        <template v-else>
-                            <div 
-                                class="bg-white rounded p-2 shadow-lg"
-                                v-for="(item, index) in listRecipes" 
-                                :key="index"
-                                :draggable="true"
-                                @dragstart="handleDragStart($event, index, 'listRecipes')"
-                            >
-                                <div>Nombre: {{ item.label }}</div>
-                                <div class="flex gap-x-2">
-                                    <div class="text-nowrap">Tipo de plato:</div>
-                                    <div class="flex flex-wrap gap-1">
-                                        <div 
-                                            class="bg-lavender px-2 rounded-full"
-                                            v-for="dish in item.mealType" 
-                                            :key="dish"
-                                        > 
-                                            {{ dish }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+                <!-- Lista de recetas creadas -->
+                <div class="h-full overflow-y-auto p-2 bg-light-green rounded-b-lg"
+                     @drop="handleDrop($event, 'listRecipes')" 
+                     @dragenter.prevent 
+                     @dragover.prevent>
+                    <template v-if="listRecipes.length == 0">
+                        <div class="p-2 text-center text-sm text-gray-600">
+                            Arrastra recetas que no usaras aquí
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div 
+                            class="bg-white rounded p-3 shadow-md mb-2 border-l-4 border-dark-green"
+                            v-for="(item, index) in listRecipes" 
+                            :key="index"
+                            :draggable="true"
+                            @dragstart="handleDragStart($event, index, 'listRecipes')"
+                        >
+                            <div class="font-semibold text-sm">Nombre: {{ item.label }}</div>
+                            <div class="text-sm text-gray-700">Tipo de plato: {{ item.mealType.join(', ') }}</div>
+                        </div>
+                    </template>
                 </div>
             </div>
+            </div>
             <!--Creación de Menú-->
-            <div class="flex flex-col flex-grow gap-y-4 " :class="days.length > 7 ? 'max-w-[70%]' : ''">
+            <div class="flex flex-col flex-grow gap-y-4 ">
                 <form
                     class="flex flex-col gap-y-4"
                     @submit.prevent="SendMenu()"
@@ -281,21 +257,25 @@ watch(daySelected, (newVal) => {
                       :errorMessage="errorsForm.name"
                       @update:modelValue="setValue('name')"
                     />
-                    <AppSelect  
-                        label="Tipo de Menú:"
-                        :displayRow="true"
-                        :options="typesMenus"
-                        firstOptionValue="Selecciona tipo de menú"
-                        :disabledFirstOption='true' 
-                        @update:selectedOption="setValue('type')"
-                    />
+                    <div class="flex items-center gap-2">
+                        <AppSelect  
+                            :displayRow="true"
+                            v-model="form.type"
+                            label="Tipo de Menú:"
+                            :options="typesMenus"
+                            firstOptionValue="Selecciona tipo de menú"
+                            :disabledFirstOption='true' 
+                            classOption="bg-light-violet text-dark-gray"
+                            @update:selectedOption="setValue('type')"
+                        />
+                    </div>
                     <div class="flex gap-x-2 items-center">
                         <label class="text-sm text-nowrap">Asignar a: </label>
                         <div class="flex flex-col w-full">
                             <VueMultiselect
                                 v-model="users"
                                 :options="patients"
-                                :searchable="false"
+                                :searchable="true"
                                 :multiple="true"
                                 :show-labels="false"
                                 placeholder="Selecciona pacientes"
@@ -307,14 +287,14 @@ watch(daySelected, (newVal) => {
                         </div>
                     </div>
                     <div 
-                        v-if="form.type"
-                        class="flex gap-x-2 overflow-x-auto bg-pink p-2 rounded justify-between"
+                        v-if="form.type && days.length > 1"
+                        class="flex gap-1 bg-light-violet p-2 rounded-lg overflow-hidden justify-around"
                     >
                         <div 
                             v-for="day in days"
                             :key="day"
-                            class=" py-4 px-6 rounded flex-grow text-center cursor-pointer shadow-sm hover:text-white hover:bg-bold-red"
-                            :class="daySelected == day ? 'bg-bold-red text-white' : 'bg-white text-bold-red'"
+                            class="rounded-lg flex-grow h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
+                            :class="daySelected === day ? 'bg-light-green text-dark-green font-bold scale-110 shadow-md' : 'bg-white text-bold-green'"
                             @click="daySelected = day"
                         >
                             {{ day }}
@@ -322,43 +302,53 @@ watch(daySelected, (newVal) => {
                     </div>
                     <!-- Lista de recetas elegidas-->
                     <div 
-                        class="bg-light-green rounded p-2 min-h-[50px]"
+                        class="bg-light-violet rounded p-4 min-h-[100px] h-auto flex flex-col gap-2 transition-all duration-300"
                         v-if="form.type"
+                        @drop="handleDrop($event, 'newlistRecipes')"
+                        @dragenter.prevent
+                        @dragover.prevent
                     >
-                        <div 
-                            class="flex flex-wrap gap-1"
-                            @drop="handleDrop($event, 'newlistRecipes')"
-                            @dragenter.prevent
-                            @dragover.prevent
-                        >
+                        <div class="flex flex-col gap-3">
                             <template v-if="newlistRecipes.length == 0">
                                 <div 
-                                    class="p-2"
+                                    class="p-4 text-center text-dark-green"
                                     :draggable="false"
                                     @dragstart="handleDragStart($event, 0, 'newlistRecipes')"
                                 >
-                                    Arrastra las recetas para añadir al día {{ daySelected }}
+                                    Arrastra las recetas que quieras aquí
                                 </div>
                             </template>
                             <template v-else>
                                 <div 
-                                    class="bg-white rounded p-2 shadow-lg"
+                                    class="bg-white rounded p-2 shadow-md flex items-center gap-2"
                                     v-for="(item, index) in newlistRecipes" 
                                     :key="index"
                                     :draggable="true"
                                     @dragstart="handleDragStart($event, index, 'newlistRecipes')"
                                 >
-                                        {{ item.label }}
-                                
+                                    <input type="radio" :id="'recipe' + index" name="recipe" class="mr-2" />
+                                    <label :for="'recipe' + index" class="text-dark-green">{{ item.label }}</label>
                                 </div>
                             </template>
                         </div>
                     </div>
-                    <AppButton 
-                        :isDisabled="disabledSendForm"
-                        text="Guardar Menú"
-                        type="submit"
-                    />
+                    <!-- Botones de guardar y cancelar -->
+                    <div class="flex justify-end mt-4">
+                        <AppButton 
+                            :isDisabled="disabledSendForm"
+                            text="Guardar menú"
+                            type="submit"
+                            class="bg-mid-green text-dark-green hover:bg-mid-green px-4 py-2 rounded border-0 flex items-center gap-2 mr-4"
+                            :icons="['fas', 'save']"
+                        />
+                        <AppButton
+                            text="Cancelar"
+                            type="button"
+                            class="bg-mid-red text-dark-red hover:bg-mid-red px-4 py-2 rounded border-0 flex items-center gap-2"
+                            :icons="['fas', 'circle-xmark']"
+                            @click="router.push({name: 'ListMenus'})"
+                        />
+                    </div>
                 </form>
             </div>
         </div>
