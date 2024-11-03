@@ -173,6 +173,7 @@ router.beforeEach((to, from, next) => {
       localStorage.removeItem("rolUser");
       localStorage.removeItem("roles");
       localStorage.removeItem("authToken");
+      localStorage.removeItem("shouldDisplayHeader");
 
       next({ name: "Login"})
     }

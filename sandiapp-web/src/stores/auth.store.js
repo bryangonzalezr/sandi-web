@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('auth', {
                 role: ''
             },
             isLoading: false,
+            shouldDisplayHeader: JSON.parse(localStorage.getItem("shouldDisplayHeader")) || false,
         }),
     
         getters: {
@@ -67,6 +68,8 @@ export const useAuthStore = defineStore('auth', {
                     this.user = user;
                     this.rolUser = role;
                     this.roles = roles.data;
+                    this.shouldDisplayHeader = true;
+                    localStorage.setItem("shouldDisplayHeader", true);
                     localStorage.setItem("user", JSON.stringify(user))
                     localStorage.setItem("rolUser", JSON.stringify(role))
                     localStorage.setItem("roles", JSON.stringify(roles))
@@ -77,6 +80,8 @@ export const useAuthStore = defineStore('auth', {
             async Logout(){
                 try{
                     this.user = null
+                    this.shouldDisplayHeader = false;
+                    localStorage.removeItem("shouldDisplayHeader");
                     localStorage.removeItem("user");
                     localStorage.removeItem("rolUser");
                     localStorage.removeItem("roles");
