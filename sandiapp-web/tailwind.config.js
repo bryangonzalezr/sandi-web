@@ -25,7 +25,7 @@ export default {
       'light-gray': '#D4D4D4',
       'neutral-gray': '#D9D9D9',
       'dark-gray': '#7A7A7A ',
-      'light-beige': '#D9D1C3',
+      'light-beige': '#EDDDC433',
       'neutral-beige': '#F3E6D6',
       'mid-beige': '#F7EFE4',
       'light-violet': '#EADFFF',
@@ -34,7 +34,6 @@ export default {
       'mid-red': '#EC9B98',
       'dark-red': '#DE3E3E',
       'extralight-green': '#DEE7D2', 
-      'extralight-green': '#DEE7D2',
       'light-green': '#B9D1A7',
       'mid-green': '#B8D0A7',
       'neutral-green': '#77A95C',
@@ -42,7 +41,21 @@ export default {
       'light-orange': '#FCD0A7',
       'dark-orange': '#D47013',
       'dark-brown': '#5A413A'
-    }
+    },
+    animation: {
+      'spin-slow' : 'spin 3s linear infinite',
+      'blink': 'blink 1.8s infinite both'
+    },    
+    keyframes: {
+      blink: {
+        '0%, 100%': { opacity: 0 },
+        '50%': { opacity: 1 },
+      },
+      spin: {
+        '0%': { transform: 'rotate(0deg)' },
+        '100%': { transform: 'rotate(360deg)' },
+      },
+    },
   },
   plugins: [],
 }

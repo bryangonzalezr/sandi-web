@@ -109,13 +109,16 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col py-2 px-10 gap-y-5">
     <div class="flex flex-col">
-      <h1 class="uppercase text-2xl">Mis menús</h1>
+      <div class="flex flex-row items-center gap-2">
+        <font-awesome-icon :icon="['fas','book']"></font-awesome-icon>
+        <h1 class="uppercase text-2xl">Mis menús</h1>
+      </div>
       <h2>Gestión de menús asignados a pacientes</h2>
     </div>
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
         <AppButton
-          class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
           type="button"
           text="Crear menú"
           :icons="['fas', 'plus']"
@@ -125,14 +128,14 @@ onMounted(async () => {
       <div class="grid w-full relative">
         <div class="flex gap-x-2 justify-self-end">
           <AppButton
-            class=" bg-white border-black hover:text-white hover:border-white hover:bg-black"
+            class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
             text="Limpiar Filtros" 
             :icons="['fas', 'filter-circle-xmark']"
             @click="GetData"
           />
           <AppButton
-            class=" hover:text-white hover:border-white hover:bg-black"
-            :class="!activeFilter ? 'bg-white border-black' : 'text-white border-white bg-black'"
+            class=" border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
+            :class="!activeFilter ? 'bg-light-violet  text-dark-violet' : 'text-white border-white bg-black'"
             text="Filtrar" 
             :icons="['fas', 'filter']"
             @click="activeFilter = !activeFilter"
@@ -140,7 +143,7 @@ onMounted(async () => {
         </div>
         <div
           v-if="activeFilter"
-          class="absolute z-30 rounded bg-warm-beige shadow-md top-7 grid grid-rows-4 w-full p-2 gap-2"
+          class="absolute z-30 rounded bg-light shadow-md top-7 grid grid-rows-4 w-full p-2 gap-2"
         >
           <AppSelect  
               label="Tipo de Menu:"
@@ -167,7 +170,7 @@ onMounted(async () => {
               @update:selectedOption="setValue('id_patient')"
           />
           <AppButton 
-            class="w-fit justify-self-center bg-forest-green text-white border-forest-green hover:bg-white hover:text-forest-green"
+            class="w-fit justify-self-center bg-light-violet text-dark-violet border-0 p-1"
             text="Aplicar filtros"
             @click="filterMenu"
           />
@@ -180,12 +183,12 @@ onMounted(async () => {
     </div>
     <div v-else>
       <table class="min-w-full">
-        <thead class="bg-forest-green">
+        <thead class="rounded-md">
           <tr class="w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)]"></tr>
           <th
           v-for="header in headers"
           :key="header"
-          class="px-3 py-3 border-b border-gray text-left leading-4 text-black tracking-wider items-center" 
+          class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center" 
           >
             <div class="flex items-center gap-2">
               {{ header }}
@@ -196,7 +199,7 @@ onMounted(async () => {
           <tr
             v-for="item in listMenus"
             :key="item._id"
-            class="bg-white w-full px-11 border-b border-b-gray"
+            class="bg-white w-full px-11 border-b border-b-light-gray"
           >
           <td class="p-3" v-for="key in atributesBody">
             <div v-if="key == 'updated_at'">
