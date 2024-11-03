@@ -235,7 +235,7 @@ watch(daySelected, (newVal) => {
     <div class="flex flex-col py-2 px-10 gap-y-4 w-full h-full">
         <div class="flex flex-col">
             <AppButton
-              class="w-fit border-0 px-0 my-2"
+              class="w-fit border-0 px-0 mb-2"
               type="button"
               text="Volver"
               :icons="['fas', 'arrow-left']"
