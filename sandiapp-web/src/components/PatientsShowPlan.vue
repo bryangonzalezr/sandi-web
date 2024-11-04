@@ -37,7 +37,6 @@ const getData = async () => {
         patient.value = patientsStore.GetPatient.user
         plan.value = planStore.GetPauta;
         requerimientos.value = planStore.GetPauta.nutritional_requirement
-        console.log(plan.value);
     }catch(error){
         console.log(error)
     }
@@ -62,7 +61,7 @@ onMounted(() => {
                         class="bg-mid-red text-dark-red hover:bg-mid-red px-4 py-2 rounded border-0 flex items-center gap-2"
                         text="Volver"
                         :icons="['fas', 'reply']"
-                        @click="UndoChanges"
+                        @click="goBack"
                     />
                 </div>
             </div>
@@ -80,7 +79,7 @@ onMounted(() => {
                 <div>
                     <template v-for="servicio in ['desayuno', 'almuerzo', 'colacion', 'once', 'cena']">
                         <div 
-                            v-if="plan[servicio] != ''"
+                            v-if="plan[servicio] != null"
                             class="grid grid-cols-5 bg-white border border-light-gray rounded-lg mb-2"
                         >
                             <div class="capitalize border-r border-r-light-gray px-3 py-2 font-semibold text-dark-brown bg-neutral-beige rounded-l-lg">{{ servicio }}</div>
@@ -89,7 +88,7 @@ onMounted(() => {
                     </template>
                     <div class="grid grid-cols-5 bg-white border border-light-gray rounded-lg">
                         <div class="capitalize border-r border-r-light-gray px-3 py-2 font-semibold text-dark-brown bg-neutral-beige rounded-l-lg">Total calorías</div>
-                        <div class="px-3 py-2 col-span-4 text-dark-black">{{ totalCalories }}</div>
+                        <div class="px-3 py-2 col-span-4 text-dark-black">{{ plan.total_calorias }} [cal]</div>
                     </div>
                 </div>
             </div>
@@ -105,7 +104,8 @@ onMounted(() => {
                     <template v-for="requerimiento in ['get', 'carbohidratos', 'proteina', 'lipidos', 'agua']">
                         <div class="grid grid-cols-5 bg-white border border-light-gray rounded-lg mb-2">
                             <div class="capitalize border-r border-r-light-gray px-3 py-2 font-semibold text-dark-brown bg-neutral-beige rounded-l-lg">{{ requerimiento }}</div>
-                            <div class="px-3 py-2 col-span-4 text-dark-black">{{ requerimientos[requerimiento] }}</div>
+                            <div class="px-3 py-2 col-span-4 text-dark-black" v-if="requerimiento != 'agua'">{{ requerimientos[requerimiento] }} [calorias/dia]</div>
+                            <div class="px-3 py-2 col-span-4 text-dark-black" v-else>{{ requerimientos[requerimiento] }} [cc/calorias]</div>
                         </div>
                     </template>
                 </div>
