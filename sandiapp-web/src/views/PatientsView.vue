@@ -32,6 +32,10 @@ const viewPatientDetails = (patient) => {
   router.push({ name: "PatientsShow", params: { id: patient }});
 };
 
+const goToArchivedPlans = () => {
+  router.push({ name: 'ArchivedPlans' });
+};
+
 const setValue = (value) => {
   email.value = event.target.value;
   delete errorsForm.value[value];
@@ -50,7 +54,6 @@ const AddPatient = async () => {
     addPatient.value = false;
   } catch (error) {
     errorsForm.value = error.response.data.errors;
-    console.log(errorsForm.value)
   }
 }
 
@@ -93,21 +96,25 @@ onMounted(async () => {
   <div class="flex flex-col py-2 px-10 gap-y-5">
     <!--Titulo sección-->
     <div class="flex flex-col">
-      <h1 class="uppercase text-2xl">Pacientes</h1>
+      <div class="flex flex-row items-center gap-2">
+        <font-awesome-icon class="" :icon="['fas','user-group']"></font-awesome-icon><h1 class="uppercase text-2xl">Pacientes</h1>
+      </div>
       <h2>Gestión de Pacientes</h2>
     </div>
     <!--Botones de acciones-->
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
         <AppButton
+          class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
           type="button"
           text="Planes archivados"
           :icons="['fas', 'box-archive']"
+          @click="goToArchivedPlans"
         />
       </div>
       <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end relative">
         <AppButton
-          class="bg-lavender text-black border-lavender enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
           type="button"
           text="Agregar paciente"
           :icons="['fas', 'plus']"
@@ -115,7 +122,7 @@ onMounted(async () => {
         />
         <AppButton
           v-if="!deletePatients"
-          class="bg-pink text-black border-pink enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+          class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
           type="button"
           text="Eliminar paciente/s"
           :icons="['fas', 'trash-can']"
@@ -123,15 +130,15 @@ onMounted(async () => {
         />
         <AppButton
           v-if="deletePatients"
-          class="enabled:hover:bg-pink enabled:hover:text-black enabled:hover:border-pink bg-white text-black border-black"
+          class="bg-mid-red text-dark-red border-0 p-1"
           type="button"
-          text="Cancelar Eliminación"
+          text="Cancelar eliminación"
           :icons="['fas', 'x']"
           @click="deletePatients = !deletePatients"
         />
         <div
           v-if="addPatient"
-          class="absolute z-30 rounded bg-warm-beige shadow-md top-7 flex flex-col w-fit p-2 gap-2"
+          class="absolute z-30 rounded bg-neutral-beige shadow-md top-7 flex flex-col w-fit p-2 gap-2"
         >
           <AppInput
             type="text"
@@ -143,7 +150,7 @@ onMounted(async () => {
             @update:modelValue="setValue('patient_email')"
           />
           <AppButton 
-            class="w-fit h-fit self-center bg-forest-green text-white border-forest-green hover:bg-white hover:text-forest-green"
+            class="w-fit h-fit self-center bg-mid-green text-dark-green border-0 p-1 border-forest-green hover:bg-white hover:text-forest-green"
             text="Agregar Paciente"
             @click="AddPatient"
           />
@@ -158,14 +165,14 @@ onMounted(async () => {
 
     <div v-else class="">
       <table class="min-w-full">
-        <thead class="bg-forest-green">
+        <thead class="rounded-md">
           <tr
             class="w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)"
           ></tr>
           <th
             v-for="header in headers"
             :key="header"
-            class="px-3 py-3 border-b border-gray text-left leading-4 text-black tracking-wider items-center"
+            class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center"
           >
             <div class="flex items-center gap-2">
               {{ header }}
@@ -176,7 +183,7 @@ onMounted(async () => {
           <tr
             v-for="item in patients"
             :key="item.id"
-            class="bg-white w-full px-11 border-b border-b-gray"
+            class="bg-white w-full px-11 border-b border-b-light-gray"
           >
             <td class="p-3" v-for="key in atributesBody">
               {{ item[key] }}

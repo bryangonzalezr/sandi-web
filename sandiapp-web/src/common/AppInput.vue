@@ -61,9 +61,10 @@ const changeType = () => {
                 :value="modelValue"
                 :type="props.type == 'password' ? type : props.type"
                 :placeholder="props.placeholder"
-                @input="$emit('update:modelValue', modelValue)"
-                @change="$emit('update:modelValue', modelValue)"
+                @input="$emit('update:modelValue', $event.target.value)"
+                @change="$emit('update:modelValue', $event.target.value)"
                 :disabled="props.disabled"
+                :min="props.type == 'number' ? '0' : ''"
               >
               </input>
               <font-awesome-icon
