@@ -94,52 +94,67 @@ onMounted(async () => {
                     </th>
                 </thead>
                 <tbody class="overflow-y-scroll">
-                    <tr
-                        v-for="item in listRecipes"
-                        :key="item.id"
-                        class="bg-white w-full px-11 border-b border-b-light-gray"
-                    >
-                    <td class="p-2"><div>
-                        {{ item['label'] }}
-                    </div></td>
-                    <td class="p-2">
-                        <div v-for="(mealType , index) in item['mealType']" :key="index">
-                            {{ mealType }}
-                        </div>
-                    </td>
-                    <td class="p-2 flex gap-x-2 flex-wrap">
-                        <div v-for="(health, index) in item['healthLabels']" :key="index">
-                            {{ health }}
-                        </div>
-                    </td>
-                    <td class="p-2"><div>
-                        {{ Math.round(item['calories']) }}
-                    </div></td>
-                    <td class="p-2"><div>
-                        {{ formatDate(item['updated_at']) }}
-                    </div></td>
-                    <td class="flex p-2 justify-center gap-x-2">
-                        <AppButton
-                            class="text-black"
-                            type="icon"
-                            hoverText="Editar"
-                            text=""
-                            :icons="['fas','pencil']"
-                            @click="router.push({name: 'RecipesEdit', params: {id: item['_id']}})"
-                        />
-                        <AppButton
-                            class="text-bold-red"
-                            type="icon"
-                            hoverText="Eliminar"
-                            text=""
-                            :icons="['fas','trash-can']"
-                            @click="DeleteRecipeSelected(item['_id'])"
-                        />
-                    </td>
-                    </tr>
+                    <template v-if="listRecipes.length > 0">
+                        <tr
+                            v-for="item in listRecipes"
+                            :key="item.id"
+                            class="bg-white w-full px-11 border-b border-b-light-gray"
+                        >
+                            <td class="p-2">
+                                <div>
+                                    {{ item['label'] }}
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <div v-for="(mealType , index) in item['mealType']" :key="index">
+                                    {{ mealType }}
+                                </div>
+                            </td>
+                            <td class="p-2 flex gap-x-2 flex-wrap">
+                                <div v-for="(health, index) in item['healthLabels']" :key="index">
+                                    {{ health }}
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <div>
+                                    {{ Math.round(item['calories']) }}
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <div>
+                                    {{ formatDate(item['updated_at']) }}
+                                </div>
+                            </td>
+                            <td class="flex p-2 justify-center gap-x-2">
+                                <AppButton
+                                    class="text-black"
+                                    type="icon"
+                                    hoverText="Editar"
+                                    text=""
+                                    :icons="['fas','pencil']"
+                                    @click="router.push({name: 'RecipesEdit', params: {id: item['_id']}})"
+                                />
+                                <AppButton
+                                    class="text-bold-red"
+                                    type="icon"
+                                    hoverText="Eliminar"
+                                    text=""
+                                    :icons="['fas','trash-can']"
+                                    @click="DeleteRecipeSelected(item['_id'])"
+                                />
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr class="bg-white w-full px-11 border-b border-b-light-gray">
+                            <td class="p-2 text-center" :colspan="headers.length">
+                                No tienes recetas creadas
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
-            <AppPagination :meta="meta" :links="links" @handlePage="GetData" />
+            <AppPagination v-if="listRecipes.length > 0" :meta="meta" :links="links" @handlePage="GetData" />
         </div>
     </div>
 

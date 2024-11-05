@@ -23,11 +23,16 @@ export const usePatientsStore = defineStore('patients',{
 
   actions: {
     async IndexPatient(archivados = 0, page, paginate = 0) {
-      const res = await APIAxios.get(`/api/pacientes?page=${page}&archivados=${archivados}&paginate=${paginate}`);
-      this.patientslist = res.data.data;
-      this.firstPatient = res.data.data[0].id
-      this.links = res.data.links ? res.data.links : {};
-      this.meta = res.data.meta ? res.data.meta : {};
+      try{
+        const res = await APIAxios.get(`/api/pacientes?page=${page}&archivados=${archivados}&paginate=${paginate}`);
+        this.patientslist = res.data.data;
+        this.firstPatient = res.data.data[0].id
+        this.links = res.data.links ? res.data.links : {};
+        this.meta = res.data.meta ? res.data.meta : {};
+      }catch(error){
+        this.patientslist = [];
+        this.firstPatient = null;
+      }
     },
 
     async ShowPatient(id){

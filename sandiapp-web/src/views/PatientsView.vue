@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
-import { usePatientsStore } from '@/stores';
+import { usePatientsStore, usePlanStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 import AppPagination from '@/common/AppPagination.vue';
 import AppInput from '@/common/AppInput.vue';
@@ -12,12 +12,14 @@ const router = useRouter();
 const loading = ref(true);
 
 const patientStore = usePatientsStore()
+const planStore = usePlanStore();
 
 const patients = ref([])
 const links = ref({})
 const meta = ref({})
 const deletePatients = ref(false)
 const addPatient = ref(false)
+const showPlanFiled = ref(false)
 const email = ref('')
 const errorsForm = ref({})
 
@@ -79,12 +81,19 @@ const RemovePatient = (id) => {
 }
 
 const GetData = async (page = 1) => {
-  loading.value = true;
-  await patientStore.IndexPatient(0,page,1)
-  patients.value = patientStore.GetPatients
-  links.value = patientStore.GetLinks
-  meta.value = patientStore.GetMeta
-  loading.value = false;
+  try{
+    loading.value = true;
+    await patientStore.IndexPatient(0,page,1)
+    await planStore.ShowPlanfiled();
+    patients.value = patientStore.GetPatients
+    links.value = patientStore.GetLinks
+    meta.value = patientStore.GetMeta
+    showPlanFiled.value = planStore.GetPlansfiled.length > 0 ? true : false;
+    loading.value = false;
+  }catch(error){
+    console.log(error)
+    patient.value = []
+  }
 }
 
 onMounted(async () => {
@@ -105,6 +114,7 @@ onMounted(async () => {
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
         <AppButton
+          v-if="showPlanFiled"
           class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
           type="button"
           text="Planes archivados"
@@ -180,39 +190,48 @@ onMounted(async () => {
           </th>
         </thead>
         <tbody class="overflow-y-scroll">
-          <tr
-            v-for="item in patients"
-            :key="item.id"
-            class="bg-white w-full px-11 border-b border-b-light-gray"
-          >
-            <td class="p-3" v-for="key in atributesBody">
-              {{ item[key] }}
-            </td>
-            <td class="flex p-3 justify-center gap-x-2">
-              <AppButton
-                class="text-violet"
-                type="icon"
-                hoverText="Ver detalles"
-                :icons="['fas', 'eye']"
-                @click="viewPatientDetails(item.id)"
-              />
-              <AppButton
-                class="text-violet"
-                type="icon"
-                hoverText="Ir al chat"
-                :icons="['fas', 'message']"
-                @click="goToChat(item.id)"
-              />
-              <AppButton
-                v-if="deletePatients"
-                class="text-bold-red"
-                type="icon"
-                hoverText="Eliminar y Archivar"
-                :icons="['fas', 'trash-can']"
-                @click="RemovePatient(item.id)"
-              />
-            </td>
-          </tr>
+          <template v-if="patients.length > 0">
+            <tr
+              v-for="item in patients"
+              :key="item.id"
+              class="bg-white w-full px-11 border-b border-b-light-gray"
+            >
+              <td class="p-3" v-for="key in atributesBody">
+                {{ item[key] }}
+              </td>
+              <td class="flex p-3 justify-center gap-x-2">
+                <AppButton
+                  class="text-violet"
+                  type="icon"
+                  hoverText="Ver detalles"
+                  :icons="['fas', 'eye']"
+                  @click="viewPatientDetails(item.id)"
+                />
+                <AppButton
+                  class="text-violet"
+                  type="icon"
+                  hoverText="Ir al chat"
+                  :icons="['fas', 'message']"
+                  @click="goToChat(item.id)"
+                />
+                <AppButton
+                  v-if="deletePatients"
+                  class="text-bold-red"
+                  type="icon"
+                  hoverText="Eliminar y Archivar"
+                  :icons="['fas', 'trash-can']"
+                  @click="RemovePatient(item.id)"
+                />
+              </td>
+            </tr>
+          </template>
+          <template v-else>
+            <tr class="bg-white w-full px-11 border-b border-b-light-gray">
+              <td class="p-3 text-center" :colspan="headers.length">
+                No tienes pacientes asignados
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
       <AppPagination :meta="meta" :links="links" @handlePage="GetData" />

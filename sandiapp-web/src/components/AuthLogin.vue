@@ -35,6 +35,7 @@ const Login = async () => {
       }
     }catch(error){
       loading.value = false;
+      console.log(error)
       errorsForm.value = error.response.data.errors;
     }finally{
       loading.value = false;

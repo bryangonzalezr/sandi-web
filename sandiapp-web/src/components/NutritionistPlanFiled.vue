@@ -7,7 +7,7 @@ import AppInput from '@/common/AppInput.vue';
 
 
 const router = useRouter();
-const usePlan = usePlanStore();
+const planStore = usePlanStore();
 
 const loading = ref(true);
 const plansFiled = ref([]);
@@ -43,8 +43,8 @@ const obtainDate = () => {
 
 const getData = async (date) => {
   loading.value = true;
-  await usePlan.ShowPlanfiled(date);
-  plansFiled.value = usePlan.GetPlansfiled;
+  await planStore.ShowPlanfiled(date);
+  plansFiled.value = planStore.GetPlansfiled;
   loading.value = false;
 };
 

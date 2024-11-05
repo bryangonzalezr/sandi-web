@@ -44,15 +44,29 @@ const navLinks = [
       <!-- Navigation links -->
       <div class="topbar__links ">
         <nav class="flex justify-start gap-20">
-          <RouterLink 
+          <template
             v-for="(link, index) in navLinks" 
             :key="index"
-            :to="link.to"
-            class="text-gray-600 hover:text-black text-lg font-bold relative nav-link"
-            active-class="active-link"
           >
-            {{ link.text }}
-          </RouterLink>
+            <template v-if="link.text == 'Chats'">
+              <RouterLink 
+                v-if="firstPatient != null"
+                :to="link.to"
+                class="text-gray-600 hover:text-black text-lg font-bold relative nav-link"
+                active-class="active-link"
+              >
+                {{ link.text }}
+              </RouterLink>
+            </template>
+            <RouterLink 
+              v-else
+              :to="link.to"
+              class="text-gray-600 hover:text-black text-lg font-bold relative nav-link"
+              active-class="active-link"
+            >
+              {{ link.text }}
+            </RouterLink>
+          </template>
         </nav>
       </div>
 
