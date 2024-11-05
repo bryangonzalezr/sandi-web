@@ -54,10 +54,10 @@ const changeType = () => {
     <div :class="displayRow ? 'flex gap-2 items-center w-full' : 'flex flex-col'">
         <label class="text-sm text-nowrap" v-if="props.label">{{props.label}}</label>
         <div class="flex flex-col w-full">
-          <div class="w-full flex items-center bg-white rounded">
+          <div class="w-full flex items-center bg-white rounded" :class="props.type == 'password' ? 'border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061]' : ''">
             <input
-                class="py-[6px] px-1 rounded w-full border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061] transition-all outline-0"
-                :class="props.error ? 'border border-bold-red': ''"
+                class="py-[6px] px-1 rounded w-full transition-all outline-0"
+                :class="[props.error ? 'border border-bold-red': '', props.type == 'password' ? '' : 'border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061]']"
                 :value="modelValue"
                 :type="props.type == 'password' ? type : props.type"
                 :placeholder="props.placeholder"
