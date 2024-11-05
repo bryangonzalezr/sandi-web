@@ -45,11 +45,12 @@ const setValue = (value) => {
 const Register = async () => {
   try{
     isloading.value = true;
-    await authStore.Register(form.value).then(() => {
-      isloading.value = false;
-    })
+    await authStore.Register(form.value)
   }catch(error){
-      errorsForm.value = error.response.data.errors;
+    isloading.value = false;
+    errorsForm.value = error.response.data.errors;
+  }finally{
+    isloading.value = false;
   }
 };
 
@@ -58,11 +59,11 @@ const Register = async () => {
 </script>
 
 <template>
-  <div class="w-screen content-center justify-items-center bg-light-beige">
-  <div class="flex flex-col bg-mid-green self-center pt-10 pb-5 px-10 w-3/6 rounded-2xl">
+  <div class="w-screen flex justify-center justify-items-center bg-light-beige">
+  <div class="flex flex-col bg-extralight-green self-center pt-10 pb-5 px-10 w-4/6 rounded-2xl">
     <!-- Titulo y descripción -->
-    <h1 class="text-2xl mb-3 text-bold text-center">Estás a un paso de conectar con tus pacientes</h1>
-    <h2 class="text-base mb-3 text-center">Completa el formulario y regístrate ahora</h2>
+    <h1 class="text-xl mb-3 text-bold text-center">Estás a un paso de conectar con tus pacientes</h1>
+    <h2 class="text-sm mb-3 text-center">Completa el formulario y regístrate ahora como nutricionista</h2>
     <form 
       class="my-5" 
       @submit.prevent="Register(form)"
@@ -171,7 +172,7 @@ const Register = async () => {
       </div>
       <div class="flex flex-col items-center justify-center mt-5">
         <AppButton 
-          class="bg-dark-red border-0 m-3 text-white hover:bg-mid-red hover:border hover:border-dark-red hover:text-dark-red" 
+          class="bg-mid-red border-0 m-3 text-white hover:bg-white hover:border hover:border-mid-red hover:text-mid-red" 
           text="Registrarse"
           type="submit"          
         />

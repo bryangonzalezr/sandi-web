@@ -96,7 +96,19 @@ export const useAuthStore = defineStore('auth', {
             },
     
             async Register(credentials) {
-                await APIAxios.post(`api/register`, credentials)
+                credentials.role = 'nutricionista'
+                await APIAxios.post(`api/register`, credentials).then(() => {
+                    Swal.fire({
+                        title: "¡Registro exitoso!",
+                        text: "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.",
+                        icon: "success",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#EC9B98",
+                        confirmButtonText: "Aceptar",
+                        heightAuto: false,
+                      });
+                    router.push({name: 'Login'});  
+                })
             }
 
         },
