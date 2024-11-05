@@ -55,6 +55,18 @@ export const usePatientsStore = defineStore('patients',{
       });
     },
 
+    async RestorePatient(id){
+      await APIAxios.put(`api/paciente/restore/${id}`).then(() => {
+        Swal.fire({
+          title: "Se ha restaurado al paciente exitosamente",
+          icon: "success",
+          timer: 1000,
+          showConfirmButton: false,
+          heightAuto: false,
+        });
+      })
+    },
+
     async ShowProgress(id){
       const res = await APIAxios.get(`/api/progreso/${id}`)
       this.patientprogress = res.data.data;

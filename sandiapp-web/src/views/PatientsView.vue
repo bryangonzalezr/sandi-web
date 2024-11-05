@@ -20,6 +20,7 @@ const meta = ref({})
 const deletePatients = ref(false)
 const addPatient = ref(false)
 const showPlanFiled = ref(false)
+const showPatientFiled = ref(false)
 const email = ref('')
 const errorsForm = ref({})
 
@@ -47,6 +48,21 @@ const changeAddPatient = () => {
   addPatient.value = !addPatient.value
   delete errorsForm.value.patient_email
   email.value = ''
+}
+
+const ShowPatientsFiled = async (page) => {
+  try{
+    loading.value = true;
+    await patientStore.IndexPatient(1,page,1)
+    patients.value = patientStore.GetPatients
+    links.value = patientStore.GetLinks
+    meta.value = patientStore.GetMeta
+    showPatientFiled.value = true;
+    loading.value = false;
+  }catch(error){
+    console.log(error)
+    patient.value = []
+  }
 }
 
 const AddPatient = async () => {
@@ -80,6 +96,26 @@ const RemovePatient = (id) => {
   }
 }
 
+const RestorePatient = (id) => {
+  try{
+    Swal.fire({
+        title: "¿Segur@ que quieres restaurar al usuario como paciente?",
+        showDenyButton: true,
+        confirmButtonText: "Si",
+        confirmButtonColor: "#76A95C",
+        denyButtonText: `No`,
+        denyButtonColor: "#DE3E3E",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await patientStore.RestorePatient(id);
+          GetData();
+        }
+      });
+  }catch (error) {
+    errorsForm.value = error.response.data.errors;
+  }
+}
+
 const GetData = async (page = 1) => {
   try{
     loading.value = true;
@@ -89,6 +125,7 @@ const GetData = async (page = 1) => {
     links.value = patientStore.GetLinks
     meta.value = patientStore.GetMeta
     showPlanFiled.value = planStore.GetPlansfiled.length > 0 ? true : false;
+    showPatientFiled.value = false;
     loading.value = false;
   }catch(error){
     console.log(error)
@@ -114,7 +151,23 @@ onMounted(async () => {
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
         <AppButton
-          v-if="showPlanFiled"
+          v-if="showPlanFiled && !showPatientFiled"
+          class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
+          type="button"
+          text="Pacientes archivados"
+          :icons="['fas', 'box-archive']"
+          @click="ShowPatientsFiled"
+        />
+        <AppButton
+          v-if="showPlanFiled && showPatientFiled"
+          class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
+          type="button"
+          text="Pacientes activos"
+          :icons="['fas', 'eye']"
+          @click="GetData"
+        />
+        <AppButton
+          v-if="showPlanFiled && showPatientFiled"
           class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
           type="button"
           text="Planes archivados"
@@ -131,7 +184,7 @@ onMounted(async () => {
           @click="changeAddPatient"
         />
         <AppButton
-          v-if="!deletePatients"
+          v-if="!deletePatients && !showPatientFiled"
           class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
           type="button"
           text="Eliminar paciente/s"
@@ -139,11 +192,11 @@ onMounted(async () => {
           @click="deletePatients = !deletePatients"
         />
         <AppButton
-          v-if="deletePatients"
-          class="bg-mid-red text-dark-red border-0 p-1"
+          v-if="deletePatients && !showPatientFiled"
+          class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
           type="button"
           text="Cancelar eliminación"
-          :icons="['fas', 'x']"
+          :icons="['far', 'circle-xmark']"
           @click="deletePatients = !deletePatients"
         />
         <div
@@ -173,7 +226,7 @@ onMounted(async () => {
       <span class="visually-hidden">  Loading...</span>
     </div>
 
-    <div v-else class="">
+    <div v-else>
       <table class="min-w-full">
         <thead class="rounded-md">
           <tr
@@ -201,6 +254,7 @@ onMounted(async () => {
               </td>
               <td class="flex p-3 justify-center gap-x-2">
                 <AppButton
+                  v-if="!showPatientFiled"
                   class="text-violet"
                   type="icon"
                   hoverText="Ver detalles"
@@ -208,6 +262,7 @@ onMounted(async () => {
                   @click="viewPatientDetails(item.id)"
                 />
                 <AppButton
+                  v-if="!showPatientFiled"
                   class="text-violet"
                   type="icon"
                   hoverText="Ir al chat"
@@ -215,12 +270,20 @@ onMounted(async () => {
                   @click="goToChat(item.id)"
                 />
                 <AppButton
-                  v-if="deletePatients"
-                  class="text-bold-red"
+                  v-if="deletePatients && !showPatientFiled"
+                  class="text-dark-red"
                   type="icon"
                   hoverText="Eliminar y Archivar"
                   :icons="['fas', 'trash-can']"
                   @click="RemovePatient(item.id)"
+                />
+                <AppButton
+                  v-if="showPatientFiled"
+                  class="text-dark-red"
+                  type="icon"
+                  hoverText="Restaurar paciente"
+                  :icons="['fas', 'rotate']"
+                  @click="RestorePatient(item.id)"
                 />
               </td>
             </tr>
