@@ -19,7 +19,15 @@ export const useMenuStore = defineStore('menu', {
 
     actions: {
         async IndexMenus(page,id_patient = '', type = '', sandi = ''){
-            const res = await APIAxios.get(`/api/all-menus?page=${page}&patient=${id_patient}&type=${type}&sandi=${sandi}`)
+            const res = await APIAxios.get(`/api/all-menus`, {
+                params:{
+                  page: page,
+                  patient: id_patient,
+                  type:type,
+                  sandi: sandi,
+                  paginate: 1
+                }
+              })
             this.menus = res.data.data
             this.links = res.data.links
             this.meta = res.data.meta
