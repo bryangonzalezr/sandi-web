@@ -25,6 +25,7 @@ export default {
       'light-gray': '#D4D4D4',
       'neutral-gray': '#D9D9D9',
       'dark-gray': '#7A7A7A ',
+      'extralight-beige': '#D9D1C3',
       'light-beige': '#EDDDC433',
       'neutral-beige': '#F3E6D6',
       'mid-beige': '#F7EFE4',

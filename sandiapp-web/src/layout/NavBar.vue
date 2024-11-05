@@ -1,17 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router'
-import { storeToRefs } from "pinia";
 import { useAuthStore, usePatientsStore } from '@/stores';
 import AppButton from "@/common/AppButton.vue";
 import LogoMonocromatic from '@/assets/images/Logo_monocroma.svg';
 
 const patientStore = usePatientsStore()
-const { firstPatient } = storeToRefs(patientStore);
 
 const authStore = useAuthStore();
 const authUser = localStorage.getItem('user')
 const currentUser = JSON.parse(authUser.toString());
+
+const firstPatient = ref(null);
+const navLinks = ref([])
 
 const Logout = () => {
   authStore.Logout();
@@ -19,22 +20,22 @@ const Logout = () => {
 
 const GetData = async () => {
   await patientStore.IndexPatient()
+  firstPatient.value = patientStore.GetFirstPatient
+  navLinks.value = [
+  { text: 'Pacientes', to: { name: 'Patients' } },
+  { text: 'Chats', to: { name: 'ChatPatients', params: { id: firstPatient.value  }} },
+  { text: 'Recetas', to: { name: 'ListRecipes' } },
+  { text: 'Menús', to: { name: 'ListMenus' } },
+];
 }
 
 onMounted(() => {
   GetData(); 
 })
-
-const navLinks = [
-  { text: 'Pacientes', to: { name: 'Patients' } },
-  { text: 'Chats', to: { name: 'ChatPatients', params: { id: firstPatient }} },
-  { text: 'Recetas', to: { name: 'ListRecipes' } },
-  { text: 'Menús', to: { name: 'ListMenus' } },
-];
 </script>
 
 <template>
-  <div class="topbar bg-[#FBF8F3] text-black border-b border-b-light-beige">
+  <div class="topbar bg-light text-black border-b border-b-extralight-beige">
       <!-- Brand section -->
       <RouterLink to="/" class="topbar__brand">
         <img :src="LogoMonocromatic" alt="Logo Sandi" class="logo" />

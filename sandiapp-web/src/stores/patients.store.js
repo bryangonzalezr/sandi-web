@@ -10,6 +10,7 @@ export const usePatientsStore = defineStore('patients',{
     patientprogress: [],
     patient: {},
     firstPatient: 0,
+    patientfiled: false,
   }),
 
   getters: {
@@ -19,16 +20,21 @@ export const usePatientsStore = defineStore('patients',{
     GetProgress: (state) => state.patientprogress,
     GetPatient: (state) => state.patient,
     GetFirstPatient: (state) => state.firstPatient,
+    GetVerifyFiled: (state) => state.patientfiled,
   },
 
   actions: {
-    async IndexPatient(archivados = 0, page, paginate = 0) {
+    async IndexPatient(archivados = 0, page, paginate = 0, verify = false) {
       try{
         const res = await APIAxios.get(`/api/pacientes?page=${page}&archivados=${archivados}&paginate=${paginate}`);
-        this.patientslist = res.data.data;
-        this.firstPatient = res.data.data[0].id
-        this.links = res.data.links ? res.data.links : {};
-        this.meta = res.data.meta ? res.data.meta : {};
+        if(!verify){
+          this.patientslist = res.data.data;
+          this.firstPatient = (this.patientslist[0]).id
+          this.links = res.data.links ? res.data.links : {};
+          this.meta = res.data.meta ? res.data.meta : {};
+        }else{
+          this.patientfiled = res.data.data.length > 0 ? true : false;
+        }
       }catch(error){
         this.patientslist = [];
         this.firstPatient = null;
@@ -44,8 +50,19 @@ export const usePatientsStore = defineStore('patients',{
       const res =await APIAxios.delete(`/api/paciente/${id}`);
     },
 
+    async RegisterPatient(form) {
+      await APIAxios.post(`/api/paciente`, form);
+      Swal.fire({
+        title: "Se ha registrado al paciente con exito",
+        icon: "success",
+        timer: 1000,
+        showConfirmButton: false,
+        heightAuto: false,
+      });
+    },
+
     async AssociatePatient(email) {
-      await APIAxios.post(`/api/paciente` , { patient_email: email});
+      await APIAxios.post(`/api/basico-paciente` , { patient_email: email });
       Swal.fire({
         title: "Se ha añadido un nuevo paciente",
         icon: "success",

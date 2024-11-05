@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 import { useAuthStore } from '@/stores';
+import { getCivilstatus, getSex } from '@/utilities'
 import VueDatePicker from "@vuepic/vue-datepicker";
 import AppButton from '@/common/AppButton.vue';
 import AppInput from '@/common/AppInput.vue';
@@ -11,18 +12,8 @@ const router = useRouter();
 
 const authStore = useAuthStore();
 
-const sexo = {
-  'Masculino': 'Masculino',
-  'Femenino' : 'Femenino'
-}
-
-const civil_status = {
-  'Soltero(a)': 'Soltero(a)',
-  'Divorciad(a)': 'Divorciad(a)',
-  'Casado(a)': 'Casado(a)',
-  'Viudo(a)': 'Viudo(a)',
-  'Conviviente civil': 'Conviviente civil'
-}
+const sexo = getSex()
+const civil_status = getCivilstatus()
 
 const errorsForm = ref({});
 const form = ref({});
