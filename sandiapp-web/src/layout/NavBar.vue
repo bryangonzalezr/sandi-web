@@ -30,6 +30,7 @@ const navLinks = [
   { text: 'Chats', to: { name: 'ChatPatients', params: { id: firstPatient }} },
   { text: 'Recetas', to: { name: 'ListRecipes' } },
   { text: 'Menús', to: { name: 'ListMenus' } },
+  { text: 'Tarjeta de Contacto', to: { name: 'PublicProfile' } },
 ];
 </script>
 
