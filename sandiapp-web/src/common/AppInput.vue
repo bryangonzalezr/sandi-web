@@ -81,3 +81,10 @@ const changeType = () => {
         </div>
     </div>
 </template>
+
+<style>
+.number-beige{
+    background-color: #F5F5F5;
+}
+
+</style>
