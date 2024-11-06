@@ -30,7 +30,6 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import('@/views/PatientsView.vue')
     },
-      
     { 
       path: '/paciente/:id', 
       name: 'PatientsShow',
@@ -41,7 +40,6 @@ const router = createRouter({
       }, 
       component: () => import('@/components/PatientsShow.vue') 
     },
-
     {
       path: '/paciente/:id/editar',
       name: 'PatientsEdit',
@@ -178,6 +176,12 @@ const router = createRouter({
       name: 'PublicProfileEdit',
       meta: { requiresAuth: true },
       component: () => import('@/components/PublicProfileEdit.vue')
+    },
+    {
+      path: '/perfil',
+      name: 'Profile',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/ProfileView.vue')
     }
   ]
 })

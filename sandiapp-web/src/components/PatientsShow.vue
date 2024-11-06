@@ -174,7 +174,7 @@ onMounted(async () => {
 
     <div v-if="loading" class="flex justify-center items-center">
       <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">Cargando...</span>
     </div>
 
     <div v-else class="grid grid-cols-2 gap-4">
@@ -184,7 +184,7 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Datos Personales</div>
-          <div class="bg-white w-full px-11 border-b border-b-light-gray">
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
               <div v-for="(field, label) in {
               'Nombre': user.name,
               'Apellido': user.last_name,
@@ -207,7 +207,7 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Hábitos</div>
-          <div class="bg-white w-full px-11 border-b border-b-light-gray">
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
               <div class="grid grid-cols-2 border-b">
               <div class="p-2 border-r">Alcohol</div>
               <div class="p-2">{{ nutritional_profile.habits?.alcohol || 'No especificado' }}</div>
@@ -223,7 +223,7 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Anamnesis Nutricional</div>
-            <div class="bg-white w-full px-11 border-b border-b-light-gray">
+            <div class="bg-white w-full px-2 border-b border-b-light-gray">
               <div class="grid grid-cols-2 border-b">
               <div class="p-2 border-r">Plan nutricional anterior</div>
               <div class="p-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Sí' : 'No' }}</div>
@@ -243,7 +243,7 @@ onMounted(async () => {
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Antecedentes Personales
           </div>
-          <div class="bg-white w-full px-11 border-b border-b-light-gray">
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
             <div v-for="(field, label) in {
               'DM2': nutritional_profile.morbid_antecedents?.dm2 ? 'Sí' : 'No',
               'HTA': nutritional_profile.morbid_antecedents?.hta ? 'Sí' : 'No',
@@ -265,7 +265,7 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Antecedentes Familiares</div>
-          <div class="bg-white w-full px-11 border-b border-b-light-gray">
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
             <div v-for="(field, label) in {
               'DM2': nutritional_profile.family_antecedents?.dm2 ? 'Sí' : 'No',
               'HTA': nutritional_profile.family_antecedents?.hta ? 'Sí' : 'No',
