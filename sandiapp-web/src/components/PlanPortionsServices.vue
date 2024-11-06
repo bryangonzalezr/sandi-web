@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, watchEffect, onMounted, watch } from 'vue';
+import { reactive, watchEffect, onMounted, watch, ref } from 'vue';
 import AppInput from '@/common/AppInput.vue';
 import AppButton from '@/common/AppButton.vue';
 const props = defineProps({
@@ -30,6 +30,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["goToStep", "getPortionsServices"]);
+
+// const portion_service_id = 
 
 const food = {
     "cereales": "Cereales",
@@ -149,9 +151,12 @@ const percentages = reactive({
     cena: 0
 })
 
+const filteredPort=ref([])
+
 const Next = () =>{
     emit("goToStep", props.currentStep + 1);
-    emit("getPortionsServices", portionsFood)
+    emit("getPortionsServices", portionsFood, props.portionsServices['_id']? props.portionsServices['_id'] : null);
+
 }
 
 const Previous = () =>{
@@ -212,6 +217,7 @@ watchEffect(() => {
 
 watch(() => props.portionsServices, () => {
   getData()
+
 })
 
 onMounted(() => {
@@ -219,178 +225,99 @@ onMounted(() => {
     getData()
   }
 })
+
+
+
 </script>
 
 <template>
     <div class="flex flex-col gap-4">
-        <div class="flex gap-2">
-          <div class="font-PoppinsBold">
-            Paso 3:
+      <div class="flex gap-2">
+        <div class="font-PoppinsBold">Paso 3:</div>
+        Definición de porciones por tipo de servicio
+      </div>
+      
+      <div class="flex flex-col gap-y-2">
+        <div>Porciones definidas anteriormente</div>
+        <div class="w-full flex flex-wrap gap-2">
+          <div
+            v-for="(group, key) of food"
+            :key="key"
+            class="bg-light-green rounded-xl px-2"
+          >
+            {{ group }}: {{ portionsGroup[key] }}
           </div>
-          Definición de porciones por tipo de servicio
         </div>
-        <div class="flex flex-col gap-y-2">
-            <div>Porciones definidas anteriormente</div>
-            <div class="w-full flex flex-wrap gap-2">
-                <div 
-                    v-for="(group, key) of food" 
-                    :key="key"
-                    class="bg-light-green rounded-xl px-2"
-                >
-                    {{ group }}: {{ portionsGroup[key] }}
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col gap-y-2">
-            <div>Definición de porciones por servicio</div>
-            <div class="grid grid-cols-2 grid-rows-3 gap-2 grid-flow-row">
-                <!--Porciones en desyauno-->
-                <div class="flex flex-col">
-                    <div class="bg-pink text-center rounded-t">Desayuno</div>
-                    <div class="grid grid-cols-3 gap-2 p-2 bg-lavender rounded-b">
-                        <div
-                            v-for="(value, key) of food" 
-                            :key="key"
-                        >
-                            <AppInput
-                              type="number"
-                              v-model="portionsFood.desayuno[key]"
-                              :label="`${value}:`"
-                              @update:modelValue="setValue('desayuno', key)"
-                            />
-                        </div>
-                        <div class="grid grid-rows-2 col-span-2 justify-end">
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">Total calorías:</div>
-                                <div class="text-center">{{ totales.desayuno }}</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">%Calorías:</div>
-                                <div class="text-center">{{ percentages.desayuno }}%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Porciones en Almuerzo-->
-                <div class="flex flex-col">
-                    <div class="bg-pink text-center rounded-t">Almuerzo</div>
-                    <div class="grid grid-cols-3 gap-2 p-2 bg-lavender rounded-b">
-                        <div
-                            v-for="(value, key) of food" 
-                            :key="key"
-                        >
-                            <AppInput
-                              type="number"
-                              v-model="portionsFood.almuerzo[key]"
-                              :label="`${value}:`"
-                              @update:modelValue="setValue('almuerzo', key)"
-                            />
-                        </div>
-                        <div class="grid grid-rows-2 col-span-2 justify-end">
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">Total calorías:</div>
-                                <div class="text-center">{{ totales.almuerzo }}</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">%Calorías:</div>
-                                <div class="text-center">{{ percentages.almuerzo }}%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Porciones en colación-->
-                <div class="flex flex-col">
-                    <div class="bg-pink text-center rounded-t">Colación</div>
-                    <div class="grid grid-cols-3 gap-2 p-2 bg-lavender rounded-b">
-                        <div
-                            v-for="(value, key) of food" 
-                            :key="key"
-                        >
-                            <AppInput
-                              type="number"
-                              v-model="portionsFood.colacion[key]"
-                              :label="`${value}:`"
-                              @update:modelValue="setValue('colacion', key)"
-                            />
-                        </div>
-                        <div class="grid grid-rows-2 col-span-2 justify-end">
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">Total calorías:</div>
-                                <div class="text-center">{{ totales.colacion }}</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">%Calorías:</div>
-                                <div class="text-center">{{ percentages.colacion }}%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Porciones en once-->
-                <div class="flex flex-col">
-                    <div class="bg-pink text-center rounded-t">Once</div>
-                    <div class="grid grid-cols-3 gap-2 p-2 bg-lavender rounded-b">
-                        <div
-                            v-for="(value, key) of food" 
-                            :key="key"
-                        >
-                            <AppInput
-                              type="number"
-                              v-model="portionsFood.once[key]"
-                              :label="`${value}:`"
-                              @update:modelValue="setValue('once', key)"
-                            />
-                        </div>
-                        <div class="grid grid-rows-2 col-span-2 justify-end">
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">Total calorías:</div>
-                                <div class="text-center">{{ totales.once }}</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">%Calorías:</div>
-                                <div class="text-center">{{ percentages.once }}%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Porciones en cena-->
-                <div class="flex flex-col">
-                    <div class="bg-pink text-center rounded-t">Cena</div>
-                    <div class="grid grid-cols-3 gap-2 p-2 bg-lavender rounded-b">
-                        <div
-                            v-for="(value, key) of food" 
-                            :key="key"
-                        >
-                            <AppInput
-                              type="number"
-                              v-model="portionsFood.cena[key]"
-                              :label="`${value}:`"
-                              @update:modelValue="setValue('cena', key)"
-                            />
-                        </div>
-                        <div class="grid grid-rows-2 col-span-2 justify-end">
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">Total calorías:</div>
-                                <div class="text-center">{{ totales.cena }}</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="text-right">%Calorías:</div>
-                                <div class="text-center">{{ percentages.cena }}%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flex justify-between m-2 w-full">
-            <AppButton
-              text="Volver"
-              @click="Previous()" 
-            />
-            <AppButton
-              text="Siguiente"
-              @click="Next()" 
-              :disabled="(totales.desayuno == 0 || totales.almuerzo == 0 || (totales.colacion == 0 && totales.once == 0 && totales.cena == 0))"
-            />
-        </div>
+      </div>
+  
+      <div class="flex flex-col gap-y-2">
+        <div class="text-center text-2xl font-bold">Definición de porciones por servicio</div>
+        
+        <!-- Single table for all service keys -->
+        <table class="w-full text-sm text-left bg-forest-green text-black rounded">
+          <thead class="bg-neutral-beige text-left leading-4 text-black tracking-wider">
+            <tr>
+              <th class="px-4 py-2">Alimento</th>
+              <th
+                v-for="serviceKey in Object.keys(portionsFood).filter(key => key !== 'patient_id' && key !== 'total_calorias')"
+                :key="serviceKey"
+                class="px-4 py-2 text-center"
+              >
+                {{ serviceKey.charAt(0).toUpperCase() + serviceKey.slice(1) }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows for each food item -->
+            <tr v-for="(label, key) in food" :key="key" class="border-b border-light-gray">
+              <td class="px-4 py-2">{{ label }}</td>
+              <td
+                v-for="serviceKey in Object.keys(portionsFood).filter(key => key !== 'patient_id' && key !== 'total_calorias')"
+                :key="`${serviceKey}-${key}`"
+                class=" px-4 py-2"
+              >
+                <AppInput
+                  type="number"
+                  v-model="portionsFood[serviceKey][key]"
+                  @update:modelValue="setValue(serviceKey, key)"
+                />
+              </td>
+            </tr>
+            <!-- Row for total calories per service -->
+            <tr class="border-b border-light-gray">
+              <td class="px-4 py-2 font-bold">Total calorías</td>
+              <td
+                v-for="serviceKey in Object.keys(portionsFood).filter(key => key !== 'patient_id' && key !== 'total_calorias')"
+                :key="`total-${serviceKey}`"
+                class=" px-4 py-2 text-center"
+              >
+                {{ totales[serviceKey] }}
+              </td>
+            </tr>
+            <!-- Row for calorie percentages per service -->
+            <tr>
+              <td class=" px-4 py-2 font-bold">% Calorías</td>
+              <td
+                v-for="serviceKey in Object.keys(portionsFood).filter(key => key !== 'patient_id' && key !== 'total_calorias')"
+                :key="`percent-${serviceKey}`"
+                class="px-4 py-2 text-center"
+              >
+                {{ percentages[serviceKey] }}%
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="flex justify-between m-2 w-full">
+        <AppButton text="Volver" @click="Previous()" />
+        <AppButton
+          text="Siguiente"
+          @click="Next()"
+          :disabled="Object.values(totales).some(total => total === 0)"
+        />
+      </div>
     </div>
-</template>
+  </template>
+  
+

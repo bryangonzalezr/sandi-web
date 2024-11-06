@@ -1,4 +1,4 @@
-<script setup>
+ <script setup>
 import { reactive , ref, watch, onMounted } from 'vue';
 import { usePlanStore } from "@/stores";
 import AppSelect from '@/common/AppSelect.vue';
@@ -137,6 +137,7 @@ onMounted(() => {
                 :selectedOption="selectedMethod.method"
                 firstOptionValue="Selecciona el método"
                 @update:selectedOption="setValue('method')"
+                class="profile-edit"
             />
             <AppSelect  
                 v-if="selectedMethod.method == 'Harris-Benedict'"
@@ -150,8 +151,8 @@ onMounted(() => {
         <div v-if="viewResults"
           class="flex flex-col w-full"
         >
-          <div class="border border-black p-2 bg-lavender">Resultados</div>
-          <div class="grid grid-cols-5 bg-pink border border-black ">
+          <div class="border border-black p-2 bg-neutral-violet">Resultados</div>
+          <div class="grid grid-cols-5 bg-light-violet border border-black ">
             <div class="text-center border-r border-black">
               GEB: {{ Results.value.get }}
             </div>
@@ -173,7 +174,7 @@ onMounted(() => {
           <AppButton
             text="Siguiente"
             @click="Next()" 
-            :disabled="selectedMethod.method=='' || (selectedMethod.method=='Harris-Benedict' && selectedMethod.rest_type=='')"
+            :disabled="selectedMethod.method=='' || (selectedMethod.method=='Harris-Benedict' && selectedMethod.rest_type=='') || !viewResults"
           />
         </div>
     </div>
