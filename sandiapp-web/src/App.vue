@@ -1,31 +1,20 @@
 <script setup>
-import { computed } from "vue";
-import { useRoute, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import { useAuthStore } from '@/stores';
 import NavBar from '@/layout/NavBar.vue'
 
-const route = useRoute();
-
-const excludedRoutes = ["Login", "Register"];
-
-const isExcludedRoute = computed(() =>
-  excludedRoutes.some(
-    (excludedRoute) => route.name?.includes(excludedRoute) === true
-  )
-);
+const authStore = useAuthStore();
 </script>
 
 <template>
-  <template v-if="isExcludedRoute">
-    <RouterView />
-  </template>
-  <template v-else>
+  <template v-if="authStore.shouldDisplayHeader">
     <header>
       <NavBar/>
     </header>
-    <main class="flex flex-col gap-6 2xl:gap-10 pb-21 pt-[90px]">
-      <RouterView />
-    </main>
-  </template> 
+  </template>
+  <main :class="authStore.shouldDisplayHeader ? 'bg-light w-full pt-[90px]' : ''">
+    <RouterView />
+  </main>
 </template>
 
 <style scoped>

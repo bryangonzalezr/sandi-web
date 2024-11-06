@@ -16,6 +16,7 @@ const authStore = useAuthStore();
 // Definir variables referenciales o reactivas
 const errorsForm = ref({});
 const form = ref({});
+const loading = ref(false);
 
 // Definir funciones de redireccionamiento, normales, asincronicas y eventos en ese orden
 const setValue = (value) => {
@@ -26,71 +27,85 @@ const setValue = (value) => {
 /* Realiza login con las credenciales ingresadas en los inputs */
 const Login = async () => {
   try{
+      loading.value = true;
       await authStore.Login(form.value)
       form.value = {
         email: '',
         password: ''
       }
     }catch(error){
+      loading.value = false;
+      console.log(error)
       errorsForm.value = error.response.data.errors;
+    }finally{
+      loading.value = false;
     }
 }
 </script>
 
 <template>
-  <!-- Lado derecho -->
-  <div class="w-2/3 flex flex-col gap-2 justify-center items-center">
+  <div v-if="loading" class="bg-light flex flex-col fixed top-0 left-0 z-40 w-screen h-screen justify-center items-center ">
+    <img
+      class="w-1/6 p-5 rounded-full animate-spin-slow"
+      src="@/assets/images/Logo_instagram.svg"
+    />
+     <div class="text-2xl animate-blink">Iniciando sesión...</div>
+  </div>
+  <div class="flex flex-col items-center bg-light-beige">
     <!-- Logo, titulo y descripción -->
-    <div class="w-1/2 flex flex-col gap-1">
+    <div class="flex flex-col items-center">
       <img 
-        class="w-1/2 self-center"
-        src="@/assets/images/Logo_monocroma.svg"
+        class="w-1/4 my-16"
+        src="@/assets/images/Logo_color_inicio.svg"
       />
-      <h1 class="text-2xl">Inicia sesión en tu Cuenta</h1>
-      <h2 class="text-base">Gestiona a tus pacientes</h2>
+      <h1 class="text-3xl font-extrabold mb-3">Inicia sesión en tu cuenta</h1>
+      <h2 class="text-base text-dark-brown mb-3">Gestiona a tus pacientes</h2>
     </div>
     <!--Formulario para iniciar sesión-->
     <form 
-      class="w-1/2" 
+      class="flex flex-col gap-5 w-1/4" 
       @submit.prevent="Login()"
     >
       <AppInput
         type="text"
         v-model="form.email"
-        label="Correo:"
-        placeholder="Ingresa tu correo"s
+        label=""
+        placeholder="Correo"
         :error="errorsForm.email ? true : false"
         :errorMessage="errorsForm.email"
         @update:modelValue="setValue('email')"
+        @keypress.enter="Login()"
       />
       <AppInput
         type="password"
         v-model="form.password"
-        label="Contraseña:"
-        placeholder="Ingresa tu contraseña"
+        label=""
+        placeholder="Contraseña"
         :error="errorsForm.password ? true : false"
         :errorMessage="errorsForm.password"
         @update:modelValue="setValue('password')"
+        @keypress.enter="Login()"
       />
-
-      <div class="flex justify-center m-2">
+  
+      <div class="flex justify-center m-3">
         <AppButton 
-          class="bg-bold-red border-0 text-white hover:bg-white hover:border hover:border-bold-red hover:text-bold-red" 
+          class="bg-dark-red border-0 text-white hover:bg-mid-red hover:border hover:border-dark-red hover:text-dark-red" 
           text="Ingresar"
           type="submit"          
         />
       </div>
     </form>
     <!-- Redirección para crear una cuenta -->
-    <div class="text-sm">
+    <div class="text-sm mt-5">
         ¿No tienes cuenta?
         <RouterLink
-          class="text-bold-red"
+          class="text-dark-red"
           to="/auth/registro"
         >
           Crear una cuenta
         </RouterLink>
-      </div>
+    </div>
+
   </div>
   
 </template>

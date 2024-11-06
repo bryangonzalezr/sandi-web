@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 import { useAuthStore } from '@/stores';
+import { getCivilstatus, getSex } from '@/utilities'
 import VueDatePicker from "@vuepic/vue-datepicker";
 import AppButton from '@/common/AppButton.vue';
 import AppInput from '@/common/AppInput.vue';
@@ -11,18 +12,8 @@ const router = useRouter();
 
 const authStore = useAuthStore();
 
-const sexo = {
-  'Masculino': 'Masculino',
-  'Femenino' : 'Femenino'
-}
-
-const civil_status = {
-  'Soltero(a)': 'Soltero(a)',
-  'Divorciad(a)': 'Divorciad(a)',
-  'Casado(a)': 'Casado(a)',
-  'Viudo(a)': 'Viudo(a)',
-  'Conviviente civil': 'Conviviente civil'
-}
+const sexo = getSex()
+const civil_status = getCivilstatus()
 
 const errorsForm = ref({});
 const form = ref({});
@@ -45,11 +36,12 @@ const setValue = (value) => {
 const Register = async () => {
   try{
     isloading.value = true;
-    await authStore.Register(form.value).then(() => {
-      isloading.value = false;
-    })
+    await authStore.Register(form.value)
   }catch(error){
-      errorsForm.value = error.response.data.errors;
+    isloading.value = false;
+    errorsForm.value = error.response.data.errors;
+  }finally{
+    isloading.value = false;
   }
 };
 
@@ -58,22 +50,16 @@ const Register = async () => {
 </script>
 
 <template>
-  <!-- Lado derecho -->
-  <div class="w-2/3 flex flex-col gap-2 justify-center items-center">
-    <!-- Logo, titulo y descripción -->
-    <div class="w-3/4 flex flex-col gap-1">
-      <img 
-        class="w-1/3 self-center"
-        src="@/assets/images/Logo_monocroma.svg"
-      />
-      <h1 class="text-xl">Estás a un paso de conectar con tus pacientes</h1>
-      <h2 class="text-base">Completa el formulario y regístrate ahora</h2>
-    </div>
+  <div class="w-screen flex justify-center justify-items-center bg-light-beige">
+  <div class="flex flex-col bg-extralight-green self-center pt-10 pb-5 px-10 w-4/6 rounded-2xl">
+    <!-- Titulo y descripción -->
+    <h1 class="text-xl mb-3 text-bold text-center">Estás a un paso de conectar con tus pacientes</h1>
+    <h2 class="text-sm mb-3 text-center">Completa el formulario y regístrate ahora como nutricionista</h2>
     <form 
-      class="w-3/4" 
+      class="my-5" 
       @submit.prevent="Register(form)"
     >
-      <div class="grid grid-cols-2 gap-x-2">
+      <div class="grid grid-cols-2 gap-x-3 mb-2">
         <AppInput
           type="text"
           v-model="form.name"
@@ -93,7 +79,7 @@ const Register = async () => {
           @update:modelValue="setValue('last_name')"
         />
       </div>
-      <div class="grid grid-cols-2 gap-x-2">
+      <div class="grid grid-cols-2 gap-x-3 mb-2">
         <AppInput
           type="text"
           v-model="form.phone_number"
@@ -122,7 +108,7 @@ const Register = async () => {
           />
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-x-2">
+      <div class="grid grid-cols-2 gap-x-3 mb-2">
         <AppSelect
           label="Sexo:"
           :options="sexo"
@@ -142,42 +128,58 @@ const Register = async () => {
           @update:selectedOption="setValue('civil_status')"
         />
       </div>
-      <AppInput
-        type="text"
-        v-model="form.email"
-        label="Correo:"
-        placeholder="Correo"s
-        :error="errorsForm.email ? true : false"
-        :errorMessage="errorsForm.email"
-        @update:modelValue="setValue('email')"
-      />
-      <AppInput
-        type="password"
-        v-model="form.password"
-        label="Contraseña:"
-        placeholder="Contraseña"
-        :error="errorsForm.password ? true : false"
-        :errorMessage="errorsForm.password"
-        @update:modelValue="setValue('password')"
-      />
-      <AppInput
-        type="password"
-        v-model="form.password_confirmation"
-        label="Confirma tu contraseña:"
-        placeholder="Ingresa nuevamente tu contraseña"
-        :error="errorsForm.password_confirmation ? true : false"
-        :errorMessage="errorsForm.password_confirmation"
-        @update:modelValue="setValue('password_confirmation')"
-      />
-      <div class="flex justify-center m-2">
+      <div class="mb-2">
+        <AppInput
+          type="text"
+          v-model="form.email"
+          label="Correo:"
+          placeholder="Correo"s
+          :error="errorsForm.email ? true : false"
+          :errorMessage="errorsForm.email"
+          @update:modelValue="setValue('email')"
+        />
+      </div>
+      <div class="mb-2">
+        <AppInput
+          type="password"
+          v-model="form.password"
+          label="Contraseña:"
+          placeholder="Contraseña"
+          :error="errorsForm.password ? true : false"
+          :errorMessage="errorsForm.password"
+          @update:modelValue="setValue('password')"
+        />
+      </div>
+      <div class="mb-2">
+        <AppInput
+          type="password"
+          v-model="form.password_confirmation"
+          label="Confirma tu contraseña:"
+          placeholder="Ingresa nuevamente tu contraseña"
+          :error="errorsForm.password_confirmation ? true : false"
+          :errorMessage="errorsForm.password_confirmation"
+          @update:modelValue="setValue('password_confirmation')"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center mt-5">
         <AppButton 
-          class="bg-bold-red border-0 text-white hover:bg-white hover:border hover:border-bold-red hover:text-bold-red" 
+          class="bg-mid-red border-0 m-3 text-white hover:bg-white hover:border hover:border-mid-red hover:text-mid-red" 
           text="Registrarse"
           type="submit"          
         />
+        <div class="text-sm mt-5">
+          ¿Ya tienes cuenta?
+          <RouterLink
+            class="text-dark-red"
+            to="/auth/login"
+          >
+            Inicia sesión
+          </RouterLink>
+        </div>
       </div>
     </form>
   </div>
+</div>
 </template>
 
 <style lang="postcss">

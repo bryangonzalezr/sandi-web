@@ -60,12 +60,14 @@ onMounted(async () => {
 <template>
     <div class="flex flex-col py-2 px-10 gap-y-5">
         <div class="flex flex-col">
-            <h1 class="uppercase text-2xl">Mis recetas</h1>
+            <div class="flex flex-row gap-2 items-center">
+                <font-awesome-icon :icon="['fas', 'book-bookmark']" /><h1 class="uppercase text-2xl">Mis recetas</h1>
+            </div>
             <h2>Gestión de recetas</h2>
         </div>
         <div class="grid grid-flow-col auto-cols gap-2 w-fit">
             <AppButton
-                class="bg-lavender text-black border-lavender enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+                class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
                 type="button"
                 text="Crear receta"
                 :icons="['fas','plus']"
@@ -84,7 +86,7 @@ onMounted(async () => {
                     <th
                         v-for="header in headers"
                         :key="header"
-                        class="px-3 py-3 border-b border-gray text-left leading-4 text-black tracking-wider items-center"
+                        class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center"
                     >
                     <div class="flex items-center gap-2">
                         {{ header }}
@@ -92,52 +94,67 @@ onMounted(async () => {
                     </th>
                 </thead>
                 <tbody class="overflow-y-scroll">
-                    <tr
-                        v-for="item in listRecipes"
-                        :key="item.id"
-                        class="bg-white w-full px-11 border-b border-b-gray"
-                    >
-                    <td class="p-2"><div>
-                        {{ item['label'] }}
-                    </div></td>
-                    <td class="p-2">
-                        <div v-for="(mealType , index) in item['mealType']" :key="index">
-                            {{ mealType }}
-                        </div>
-                    </td>
-                    <td class="p-2 flex gap-x-2 flex-wrap">
-                        <div v-for="(health, index) in item['healthLabels']" :key="index">
-                            {{ health }}
-                        </div>
-                    </td>
-                    <td class="p-2"><div>
-                        {{ Math.round(item['calories']) }}
-                    </div></td>
-                    <td class="p-2"><div>
-                        {{ formatDate(item['updated_at']) }}
-                    </div></td>
-                    <td class="flex p-2 justify-center gap-x-2">
-                        <AppButton
-                            class="text-black"
-                            type="icon"
-                            hoverText="Editar"
-                            text=""
-                            :icons="['fas','pencil']"
-                            @click="router.push({name: 'RecipesEdit', params: {id: item['_id']}})"
-                        />
-                        <AppButton
-                            class="text-bold-red"
-                            type="icon"
-                            hoverText="Eliminar"
-                            text=""
-                            :icons="['fas','trash-can']"
-                            @click="DeleteRecipeSelected(item['_id'])"
-                        />
-                    </td>
-                    </tr>
+                    <template v-if="listRecipes.length > 0">
+                        <tr
+                            v-for="item in listRecipes"
+                            :key="item.id"
+                            class="bg-white w-full px-11 border-b border-b-light-gray"
+                        >
+                            <td class="p-2">
+                                <div>
+                                    {{ item['label'] }}
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <div v-for="(mealType , index) in item['mealType']" :key="index">
+                                    {{ mealType }}
+                                </div>
+                            </td>
+                            <td class="p-2 flex gap-x-2 flex-wrap">
+                                <div v-for="(health, index) in item['healthLabels']" :key="index">
+                                    {{ health }}
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <div>
+                                    {{ Math.round(item['calories']) }}
+                                </div>
+                            </td>
+                            <td class="p-2">
+                                <div>
+                                    {{ formatDate(item['updated_at']) }}
+                                </div>
+                            </td>
+                            <td class="flex p-2 justify-center gap-x-2">
+                                <AppButton
+                                    class="text-black"
+                                    type="icon"
+                                    hoverText="Editar"
+                                    text=""
+                                    :icons="['fas','pencil']"
+                                    @click="router.push({name: 'RecipesEdit', params: {id: item['_id']}})"
+                                />
+                                <AppButton
+                                    class="text-bold-red"
+                                    type="icon"
+                                    hoverText="Eliminar"
+                                    text=""
+                                    :icons="['fas','trash-can']"
+                                    @click="DeleteRecipeSelected(item['_id'])"
+                                />
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr class="bg-white w-full px-11 border-b border-b-light-gray">
+                            <td class="p-2 text-center" :colspan="headers.length">
+                                No tienes recetas creadas
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
-            <AppPagination :meta="meta" :links="links" @handlePage="GetData" />
+            <AppPagination v-if="listRecipes.length > 0" :meta="meta" :links="links" @handlePage="GetData" />
         </div>
     </div>
 

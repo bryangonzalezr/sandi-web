@@ -39,6 +39,14 @@ const props = defineProps({
   displayRow: {
     type: Boolean,
     default: false,
+  },
+  classSelect: {
+    type: String,
+    default: '',
+  },
+  classOption: {
+    type: String,
+    default: '',
   }
 });
 
@@ -55,7 +63,7 @@ const changeSelect = () => {
 <template>
   <div :class="displayRow ? 'flex gap-2 items-center w-full' : 'flex flex-col'">
     <label class="text-sm">{{ props.label }}</label>
-    <div :class="displayRow ? 'relative flex-grow' : 'w-full relative'">
+    <div :class="[displayRow ? 'relative flex-grow' : 'w-full relative', props.classSelect]">
       <select
         id="selectRef"
         class="w-full rounded py-1.5 pl-1 pr-7 custom-select border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061] transition-all outline-0"
@@ -73,6 +81,7 @@ const changeSelect = () => {
           :disabled="props.disabledFirstOption"
           value=""
           selected
+          :class="props.classOption"
         >
           {{ props.firstOptionValue }}
         </option>
@@ -84,6 +93,7 @@ const changeSelect = () => {
             v-if="option['required'] ?? true"
             :value="key" 
             :selected="key == props.selectedOption"
+            :class="props.classOption"
           >
             {{ option['text'] ?? option}}
           </option>
@@ -104,7 +114,7 @@ const changeSelect = () => {
   appearance: none;
   cursor: pointer;
   background: url(@/assets/icons/chevron-down-solid.svg) no-repeat;
-  background-position: 96% 50%;
+  background-position: 99% 50%;
   background-size: 1.25rem;
   background-color: white;
   color: black;

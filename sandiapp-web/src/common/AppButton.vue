@@ -38,7 +38,11 @@ const props = defineProps({
         >
           <font-awesome-icon v-if="props.icons != '' && first" :icon="props.icons" />
         </button>
-        <div class="absolute right-0 z-10 invisible group-hover:visible bg-white shadow-md p-2 text-xs text-nowrap">
+        <div 
+          v-if="props.hoverText"
+          class="absolute right-0 z-10 invisible bg-white shadow-md p-2 text-xs text-nowrap"
+          :class="props.isDisabled ? 'group-hover:invisible' : 'group-hover:visible'"
+        >
           {{ props.hoverText }}
         </div>
       </div>

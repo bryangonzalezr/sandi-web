@@ -15,9 +15,9 @@ const TextDisplay = {
 
 const ColorDisplay = {
     receta: "bg-[#a3e635]",
-    diario: "bg-[#34d399]",
-    semanal: "bg-[#22d3ee]",
-    mensual: "bg-[#c084fc]",
+    diario: "bg-mid-green",
+    semanal: "bg-light-orange",
+    mensual: "bg-mid-red",
 }
 
 </script>

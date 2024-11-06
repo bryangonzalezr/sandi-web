@@ -71,7 +71,7 @@ const onClickLastPage = () => {
       <nav class="relative z-0 inline-flex shadow-sm text-xl sm:text-base gap-2 lg:gap-1.5">
         <!-- BOTONES DE PRIMERA Y ANTERIOR PÁGINA -->
         <div class="inline-flex gap-2 lg:gap-1.5">
-          <a class="relative inline-flex items-center py-1 px-2 bg-neutral-light text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-light-green active transition ease-in-out duration-150"
+          <a class="relative inline-flex items-center py-1 px-2 bg-mid-green text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-dark-green active transition ease-in-out duration-150"
             role="button" rel="prev" :disabled="isInFirstPage" :class="{
               'cursor-not-allowed': isInFirstPage(),
               'opacity-60': isInFirstPage(),
@@ -80,7 +80,7 @@ const onClickLastPage = () => {
             <font-awesome-icon icon="angle-double-left" />
           </a>
           <a role="button"
-            class="relative inline-flex items-center py-1 px-2.5 bg-neutral-light text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-light-green active transition ease-in-out duration-150"
+            class="relative inline-flex items-center py-1 px-2.5 bg-mid-green text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-dark-green active transition ease-in-out duration-150"
             aria-label="Previous" :disabled="isInFirstPage" :class="{
               'cursor-not-allowed': isInFirstPage(),
               'opacity-50': isInFirstPage(),
@@ -95,10 +95,10 @@ const onClickLastPage = () => {
           <a v-if="page >= props.meta.current_page - 1 &&
             page <= props.meta.current_page + 3
             "
-            class="relative inline-flex items-center py-1 px-2.5 border-none leading-5 focus:z-10 focus:outline-none active:bg-light-green active:text-gray transition ease-in-out duration-150 hover:bg-light-green cursor-pointer"
+            class="relative inline-flex items-center  py-1 px-2.5 border-none leading-5 focus:z-10 focus:outline-none active:bg-dark-green active:text-gray transition ease-in-out duration-150 hover:bg-dark-green cursor-pointer"
             :class="{
-              'text-white bg-forest-green': isPageActive(page),
-              'hover:text-black bg-neutral-light text-gray': !isPageActive(page),
+              'text-white bg-neutral-green': isPageActive(page),
+              'hover:text-black bg-mid-green text-gray': !isPageActive(page),
             }" aria-current="page" @click="onClickPage(page)">
             {{ page }}
           </a>
@@ -107,7 +107,7 @@ const onClickLastPage = () => {
         <!-- BOTONES DE SIGUIENTE Y ÚLTIMA PÁGINA -->
         <div class="inline-flex gap-2 lg:gap-1.5">
           <a role="button"
-            class="relative inline-flex items-center py-1 px-2.5 p bg-neutral-light text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-light-green active transition ease-in-out duration-150"
+            class="relative inline-flex items-center py-1 px-2.5 p bg-mid-green text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-dark-green active transition ease-in-out duration-150"
             aria-label="Next" :disabled="isInLastPage" :class="{
               'cursor-not-allowed': isInLastPage(),
               'opacity-50': isInLastPage(),
@@ -115,7 +115,7 @@ const onClickLastPage = () => {
             }" @click="onClickNextPage">
             <font-awesome-icon icon="angle-right" />
           </a>
-          <a class="relative inline-flex items-center py-1 px-2 bg-neutral-light text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-light-green active transition ease-in-out duration-150"
+          <a class="relative inline-flex items-center py-1 px-2 bg-mid-green text-gray border-none leading-5 focus:z-10 focus:outline-none active:bg-dark-green active transition ease-in-out duration-150"
             rel="next" role="button" :disabled="isInLastPage" :class="{
               'cursor-not-allowed': isInLastPage(),
               'opacity-50': isInLastPage(),
