@@ -116,7 +116,7 @@ const changeSelect = () => {
         </template>
       </select>
     </div>
-    <p v-if="props.error" class="text-xs text-bold-red flex gap-1 items-center">
+    <p v-if="props.error" class="text-xs text-dark-red flex gap-1 items-center">
       <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
       {{ props.errorMessage[0] }}
     </p>
