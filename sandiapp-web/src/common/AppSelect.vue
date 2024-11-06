@@ -10,6 +10,13 @@ const props = defineProps({
   options: {
     type: [Array, Object],
   },
+  optionText: {
+    type: String,
+  },
+  value: {
+    type: String,
+    default: ''
+  },
   firstOptionValue: {
     type: String,
     required: false,
@@ -85,18 +92,27 @@ const changeSelect = () => {
         >
           {{ props.firstOptionValue }}
         </option>
-        <template 
-          v-for="(option, key) in props.options" 
-          :key="key"
-        >
-          <option  
-            v-if="option['required'] ?? true"
+        <template
+          v-if="props.value == ''">
+          <option 
+            v-for="(option, key) in props.options" 
+            :key="key" 
             :value="key" 
             :selected="key == props.selectedOption"
-            :class="props.classOption"
           >
-            {{ option['text'] ?? option}}
+            {{ option }}
           </option>
+        </template>
+        <template
+          v-else>
+          <option
+            v-for="option in options"
+            :key="option[props.value]"
+            :value="option[props.value]"
+            :selected="option[props.value] == props.selectedOption"
+          >
+            {{ option[props.optionText] }}
+        </option>
         </template>
       </select>
     </div>
