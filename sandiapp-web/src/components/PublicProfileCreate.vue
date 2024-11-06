@@ -46,7 +46,7 @@ const loadRegions = async () => {
   regions.value = regionStore.GetRegions;
 
   // Verificamos que se están cargando las regiones
-  console.log("Regiones cargadas:", regions.value);
+  /* console.log("Regiones cargadas:", regions.value); */
   loading.value = false;
 };
 
@@ -57,7 +57,7 @@ const loadCommunes = async (regionOrdinal) => {
   communes.value = regionStore.GetCommunes;
 
   // Verificamos que se están cargando las comunas
-  console.log("Comunidades cargadas para el ordinal", regionOrdinal, ":", communes.value);
+  /* console.log("Comunidades cargadas para el ordinal", regionOrdinal, ":", communes.value); */
   loading.value = false;
 };
 
@@ -106,11 +106,9 @@ const EliminateExperience = async (id) => {
 
 const saveContactCard = async () => {
   loading.value = true;
-  console.log(contactCard.value);
   await contactCardStore.CreateContactCard(contactCard.value);
   loading.value = false;
   await contactCardStore.ShowContactCard(currentUser.id);
-  console.log(contactCard.value);
   goProfile();
 };
 

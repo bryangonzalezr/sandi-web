@@ -29,12 +29,11 @@ const experience = ref({
 const loadExperienceTypes = async () => {
   await contactCardStore.EnumExperienceType();
   experienceTypes.value = contactCardStore.experience_type; // Accede directamente al estado
-  console.log("Tipos de experiencias cargadas:", experienceTypes.value);
 };
 
 const saveExperience = async () => {
   try {
-    console.log("Guardando experiencia:", experience.value);
+    /* console.log("Guardando experiencia:", experience.value); */
     
     // Comprobación para asegurar que `type` tiene un valor válido
     if (!experience.value.type) {
@@ -45,8 +44,6 @@ const saveExperience = async () => {
     // Aquí haríamos la llamada a la API usando el store
     await contactCardStore.CreateExperience(experience.value);
 
-
-    console.log("Experiencia guardada exitosamente.");
    
     closeModal();
   } catch (error) {

@@ -61,7 +61,7 @@ export const useContactCardStore = defineStore('contact_card', {
     async CreateExperience(experience){
       await APIAxios.post('/api/experiencia', experience).then((data) => {
         this.experience = data.data
-        console.log(this.experience)
+        /* console.log(this.experience) */
       })
     },
 
