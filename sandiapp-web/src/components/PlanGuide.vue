@@ -91,7 +91,7 @@ onMounted(() => {
           Rellenar Pauta
         </div>
         <!--Tarjeta con porciones y pauta de desayuno-->
-        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-pink rounded p-4">
+        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-light-violet rounded p-4">
             <div class="text-xl uppercase col-span-3">
                 Desayuno
             </div>
@@ -101,7 +101,7 @@ onMounted(() => {
                       class="bg-bold-red w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)"
                     >
                         <th
-                            class="px-3 py-3 border-b border-gray leading-4 text-white tracking-wider text-left"
+                            class="px-3 py-3 border-b border-dark-gray leading-4 text-black tracking-wider text-left"
                             colspan="2"
                         >
                             Porciones definidas anteriormente
@@ -129,7 +129,7 @@ onMounted(() => {
             </div>
         </div>
         <!--Tarjeta con porciones y pauta de almuerzo-->
-        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-pink rounded p-4">
+        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-light-violet rounded p-4">
             <div class="text-xl uppercase col-span-3">
                 Almuerzo
             </div>
@@ -139,7 +139,7 @@ onMounted(() => {
                       class="bg-bold-red w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)"
                     >
                         <th
-                            class="px-3 py-3 border-b border-gray leading-4 text-white tracking-wider text-left"
+                            class="px-3 py-3 border-b border-gray leading-4 text-black tracking-wider text-left"
                             colspan="2"
                         >
                             Porciones definidas anteriormente
@@ -167,7 +167,7 @@ onMounted(() => {
             </div>
         </div>
         <!--Tarjeta con porciones y pauta de colación-->
-        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-pink rounded p-4">
+        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-light-violet rounded p-4">
             <div class="text-xl uppercase col-span-3">
                 Colación
             </div>
@@ -177,7 +177,7 @@ onMounted(() => {
                       class="bg-bold-red w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)"
                     >
                         <th
-                            class="px-3 py-3 border-b border-gray leading-4 text-white tracking-wider text-left"
+                            class="px-3 py-3 border-b border-gray leading-4 text-black tracking-wider text-left"
                             colspan="2"
                         >
                             Porciones definidas anteriormente
@@ -205,7 +205,7 @@ onMounted(() => {
             </div>
         </div>
         <!--Tarjeta con porciones y pauta de once-->
-        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-pink rounded p-4">
+        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-light-violet rounded p-4">
             <div class="text-xl uppercase col-span-3">
                 Once
             </div>
@@ -215,7 +215,7 @@ onMounted(() => {
                       class="bg-bold-red w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)"
                     >
                         <th
-                            class="px-3 py-3 border-b border-gray leading-4 text-white tracking-wider text-left"
+                            class="px-3 py-3 border-b border-gray leading-4 text-black tracking-wider text-left"
                             colspan="2"
                         >
                             Porciones definidas anteriormente
@@ -243,7 +243,7 @@ onMounted(() => {
             </div>
         </div>
         <!--Tarjeta con porciones y pauta de cena-->
-        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-pink rounded p-4">
+        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-light-violet rounded p-4">
             <div class="text-xl uppercase col-span-3">
                 Cena
             </div>
@@ -253,7 +253,7 @@ onMounted(() => {
                       class="bg-bold-red w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)"
                     >
                         <th
-                            class="px-3 py-3 border-b border-gray leading-4 text-white tracking-wider text-left"
+                            class="px-3 py-3 border-b border-gray leading-4 text-black tracking-wider text-left"
                             colspan="2"
                         >
                             Porciones definidas anteriormente
@@ -281,7 +281,7 @@ onMounted(() => {
             </div>
         </div>
         <!--Tarjeta para recomendaciones, restricciones y libertades-->
-        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-pink rounded p-4">
+        <div class="grid grid-cols-3 grid-row-2 gap-2 bg-light-violet rounded p-4">
             <div class="text-xl uppercase col-span-3">
                 Recomendaciones
             </div>
