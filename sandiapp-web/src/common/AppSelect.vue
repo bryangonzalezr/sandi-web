@@ -160,10 +160,18 @@ const changeSelect = () => {
 
 .profile-edit .custom-select:hover {
   /* Hover effect */
-  background-color: var(--light-green);
   border-color: var(--dark-green); /* Optional: border color on hover */
   background-color: var(--dark-green);
   color: var(--light-green);
+}
+
+.profile-edit .custom-select:hover option {
+  /* Hover effect */
+  color: var(--dark-green);
+}
+.profile-edit .custom-select:hover option:hover {
+  /* Hover effect */
+  background-color: var(--dark-green);
 }
 
 .profile-edit .custom-select option {
