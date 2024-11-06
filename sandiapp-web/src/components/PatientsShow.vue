@@ -184,7 +184,7 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Datos Personales</div>
-          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+          <div class=" w-full px-2 border-b border-b-light-gray">
               <div v-for="(field, label) in {
               'Nombre': user.name,
               'Apellido': user.last_name,
@@ -196,8 +196,8 @@ onMounted(async () => {
               'Objetivo': user.objectives,
               'Alergias': nutritional_profile.allergies?.length > 0 ? translateAllergies(nutritional_profile.allergies).join(', ') : 'No especificadas',
               'Estado Físico': nutritional_profile.physical_status
-            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0">
-              <div class="p-2 border-r">{{ label }}</div>
+            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0 border-neutral-gray">
+              <div class="p-2 border-r border-neutral-gray">{{ label }}</div>
               <div class="p-2">{{ field || 'No especificado' }}</div>
             </div>
           </div>
@@ -207,13 +207,13 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Hábitos</div>
-          <div class="bg-white w-full px-2 border-b border-b-light-gray">
-              <div class="grid grid-cols-2 border-b">
-              <div class="p-2 border-r">Alcohol</div>
+            <div class=" w-full px-2 border-b border-light-gray">
+              <div class="grid grid-cols-2 border-b border-light-gray">
+                <div class="p-2 border-r border-neutral-gray">Alcohol</div>
               <div class="p-2">{{ nutritional_profile.habits?.alcohol || 'No especificado' }}</div>
             </div>
             <div class="grid grid-cols-2">
-              <div class="p-2 border-r">Tabaco</div>
+              <div class="p-2 border-r border-neutral-gray">Tabaco</div>
               <div class="p-2">{{ nutritional_profile.habits?.tabaco || 'No especificado' }}</div>
             </div>
           </div>
@@ -223,13 +223,13 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Anamnesis Nutricional</div>
-            <div class="bg-white w-full px-2 border-b border-b-light-gray">
-              <div class="grid grid-cols-2 border-b">
-              <div class="p-2 border-r">Plan nutricional anterior</div>
+            <div class=" w-full px-2 border-b border-light-gray">
+              <div class="grid grid-cols-2 border-b border-light-gray">
+              <div class="p-2 border-r border-light-gray">Plan nutricional anterior</div>
               <div class="p-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Sí' : 'No' }}</div>
             </div>
             <div class="grid grid-cols-2">
-              <div class="p-2 border-r">Consumo de agua</div>
+              <div class="p-2 border-r border-light-gray">Consumo de agua</div>
               <div class="p-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Sí' : 'No' }}</div>
             </div>
           </div>
@@ -243,7 +243,7 @@ onMounted(async () => {
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Antecedentes Personales
           </div>
-          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+          <div class=" w-full px-2 border-b border-b-light-gray">
             <div v-for="(field, label) in {
               'DM2': nutritional_profile.morbid_antecedents?.dm2 ? 'Sí' : 'No',
               'HTA': nutritional_profile.morbid_antecedents?.hta ? 'Sí' : 'No',
@@ -254,8 +254,8 @@ onMounted(async () => {
               'Farmacos': nutritional_profile.morbid_antecedents?.farmacos,
               'Examenes': nutritional_profile.morbid_antecedents?.exams,
               'Otros': nutritional_profile.otros?.length > 0 ? nutritional_profile.otros.join(', ') : 'No especificadas'
-            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0">
-              <div class="p-2 border-r">{{ label }}</div>
+            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0 border-light-gray">
+              <div class="p-2 border-r border-neutral-gray">{{ label }}</div>
               <div class="p-2">{{ field || 'No especificado' }}</div>
             </div>
           </div>
@@ -265,15 +265,15 @@ onMounted(async () => {
         <div class="rounded overflow-hidden">
           <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
             Antecedentes Familiares</div>
-          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+            <div class=" w-full px-2 border-b border-b-light-gray">
             <div v-for="(field, label) in {
               'DM2': nutritional_profile.family_antecedents?.dm2 ? 'Sí' : 'No',
               'HTA': nutritional_profile.family_antecedents?.hta ? 'Sí' : 'No',
               'Tiroides': nutritional_profile.family_antecedents?.tiroides ? 'Sí' : 'No',
               'Dislipidemia': nutritional_profile.family_antecedents?.dislipidemia ? 'Sí' : 'No',
               'Comentarios': nutritional_profile.family_antecedents?.comments
-            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0">
-              <div class="p-2 border-r">{{ label }}</div>
+            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0 border-light-gray">
+              <div class="p-2 border-r border-neutral-gray">{{ label }}</div>
               <div class="p-2">{{ field || 'No especificado' }}</div>
             </div>
           </div>

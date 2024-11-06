@@ -6,11 +6,14 @@ export const useChatStore = defineStore('chat',{
   state: () => ({
     messages: [],
     message: "",
+    all_messages: []
   }),
 
   getters: {
     GetMessages: (state) => state.messages,
+    GetAllMessages: (state) => state.all_messages
   },
+
 
   actions: {
     async ShowMessage(user_id) {
@@ -24,7 +27,12 @@ export const useChatStore = defineStore('chat',{
       const res = await APIAxios.post(`/api/messages/${receiver_id}`, form).then((res) => {
         this.messages.push(res.data.message) 
       });
+    },
+
+    async ShowAllMessages() {
+      const res = await APIAxios.get(`/api/all-messages`).then((res) => {
+        this.all_messages = res.data
+      });
     }
-      
   }
 })
