@@ -7,6 +7,8 @@ import AppMultiSteps from '@/common/AppMultiSteps.vue';
 import PlanRequirement from './PlanRequirement.vue';
 import PlanPortions from './PlanPortions.vue';
 import PlanPortionsServices from './PlanPortionsServices.vue';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+
 import PlanGuide from './PlanGuide.vue';
 const props = defineProps({
     id: {
@@ -17,9 +19,10 @@ const props = defineProps({
 
 const router = useRouter();
 
+const nutritional_plan_id = ref(null)
+
 const patientsStore = usePatientsStore();
 const planStore = usePlanStore();
-
 const existPlan = ref(false)
 // Estado reactivo para el paso actual del formulario
 const currentStep = ref(1);
@@ -57,14 +60,25 @@ const getRequirements = async (method) => {
   indicadores.value = planStore.GetIndicadores.data.data;
 }
 
-const getPortions = async (portions) => {
-  await planStore.CreatePortions(portions)
+const getPortions = async (portions, id) => {
+  if (existPlan && id){
+    await planStore.UpdatePortions(id,portions)
+
+  }else{
+    await planStore.CreatePortions(portions)
+  }
   portionsGroup.value = planStore.GetPortions.data.data;
   totalCalories.value = portionsGroup.value.total_calorias;
+  
 }
 
-const getPortionsServices = async (portions) => {
-  await planStore.CreatePortionsServices(portions)
+const getPortionsServices = async (portions, id) => {
+
+  if (existPlan && id){
+    await planStore.UpdatePortionsServices(id,portions)
+  }else{
+    await planStore.CreatePortionsServices(portions)
+  }
   portionsServices.value = planStore.GetPortionsServices.data.data;
 }
 
@@ -73,7 +87,11 @@ const getPauta = async (plan) => {
   plan.portion_id = portionsGroup.value.id
   plan.service_portion_id = portionsServices.value['_id']
   try{
-    await planStore.CreatePauta(plan)
+    if(existPlan && nutritional_plan_id.value){
+      await planStore.UpdatePauta(nutritional_plan_id.value, plan)
+    }else{
+      await planStore.CreatePauta(plan)
+    }
     pauta.value = planStore.GetPauta;
     if(currentStep.value == 5){
         router.push({ name: "PatientsShow", params: { id: props.id }});
@@ -91,6 +109,7 @@ const getData = async () => {
         patientType.value = data.nutritional_profile.patient_type;
         if(data.nutritional_plan){
           existPlan.value = true;
+          nutritional_plan_id.value= data.nutritional_plan['_id']
           await planStore.ShowRequeriments(props.id)
           await planStore.ShowPortions(props.id)
           await planStore.ShowPortionsServices(props.id)
@@ -120,25 +139,30 @@ onMounted(() => {
 </script>
 
 <template>
+   <AppButton
+    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 rounded-none rounded-b-lg"
+    type="button"
+    text="Volver"
+    :icons="['fas', 'arrow-left']"
+    @click="goBack"
+  />
     <div class="flex flex-col py-2 px-10 gap-y-5">
         <div class="flex flex-col">
-            <AppButton
-              class="w-fit border-0 px-0 my-2"
-              type="button"
-              text="Volver"
-              :icons="['fas', 'arrow-left']"
-              @click="goBack"
-            />
+
             <h1 
               v-if="!existPlan"
-              class="uppercase text-2xl"
+              class="text-2xl flex items-center gap-2"
             >
+              <font-awesome-icon :icon="faUser" class="text-black" />
+
               Crear Plan Nutricional
             </h1>
             <h1 
               v-else
-              class="uppercase text-2xl"
+              class="text-2xl flex items-center gap-2"
             >
+              <font-awesome-icon :icon="faUser" class="text-black" />
+
               Editar Plan Nutricional
             </h1>
             <h2>Paciente: {{ patient.name }} {{ patient.last_name }}</h2>

@@ -34,6 +34,8 @@ const Login = async () => {
         password: ''
       }
     }catch(error){
+      loading.value = false;
+      console.log(error)
       errorsForm.value = error.response.data.errors;
     }finally{
       loading.value = false;
@@ -72,6 +74,7 @@ const Login = async () => {
         :error="errorsForm.email ? true : false"
         :errorMessage="errorsForm.email"
         @update:modelValue="setValue('email')"
+        @keypress.enter="Login()"
       />
       <AppInput
         type="password"
@@ -81,6 +84,7 @@ const Login = async () => {
         :error="errorsForm.password ? true : false"
         :errorMessage="errorsForm.password"
         @update:modelValue="setValue('password')"
+        @keypress.enter="Login()"
       />
   
       <div class="flex justify-center m-3">

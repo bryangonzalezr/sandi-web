@@ -4,25 +4,7 @@ import Swal from "sweetalert2";
 
 export const useContactCardStore = defineStore('contact_card', {
   state: () => ({
-    /*contact-card: {
-        "nutritionist_id" = '',
-        "commune_id" = '',
-        "address" = '',
-        "slogan" = '',
-        "specialties" = '',
-        "description"= '',
-       }
-       */
     contact_card: {},
-    /*experience: {
-      "nutritionist_id": 3,
-      "type": "Trabajo de Tiempo Completo",
-      "title": "Nutricionista Centro de Cáncer Clínica Las Condes",
-      "institution": "Clínica Las Condes",
-      "description": "Nutricionista Centro de Cáncer Clínica Las Condes",
-      "start_date": "01/02/2024"
-      }  
-      */
     experiences: [],
     experience: {},
     experience_type: {},
@@ -43,7 +25,6 @@ export const useContactCardStore = defineStore('contact_card', {
     async EnumExperienceType(){
       await APIAxios.get('/api/enum/experience-types').then((data) => {
         this.experience_type = data.data
-        /* console.log(this.experience_type) */
       })
     },
 
@@ -61,7 +42,6 @@ export const useContactCardStore = defineStore('contact_card', {
     async CreateExperience(experience){
       await APIAxios.post('/api/experiencia', experience).then((data) => {
         this.experience = data.data
-        /* console.log(this.experience) */
       })
     },
 

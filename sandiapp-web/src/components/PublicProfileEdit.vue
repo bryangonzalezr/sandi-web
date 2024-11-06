@@ -166,7 +166,6 @@ watch(selectedRegionOption, (selectedCommuneOption) => { selectedCommuneOption =
 <template>
   <div class="max-w mx-auto p-5">
     <div class="mb-8 text-left">
-      <button @click="goBack" class="text-lg text-gray-800 mb-4">&larr; Volver</button>
       <h1 class="text-2xl font-bold uppercase">Editar Panel Publicitario</h1>
       <p class="text-gray-500 text-sm mt-1">
         Actualiza la información para que los usuarios puedan conocerte y contactarte

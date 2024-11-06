@@ -40,6 +40,21 @@ export const useAuthStore = defineStore('auth', {
                 return data.data;
             },
 
+            async UpdateProfile(id){
+                await APIAxios.put(`/api/usuario/${id}`).then((res) => {
+                    Swal.fire({
+                        title: "Se han actualizado tus datos",
+                        text: "Tu información se ha actualizado correctamente.",
+                        icon: "success",
+                        timer: 1000,
+                        showConfirmButton: false,
+                        heightAuto: false,
+                      });
+                    this.user = res.data.data
+                    localStorage.setItem("user", JSON.stringify(this.user))
+                })
+            },
+
             async Login(credentials){
                 // Hace el login
                 const data = await APIAxios.post(`/api/login`, credentials);
@@ -96,7 +111,19 @@ export const useAuthStore = defineStore('auth', {
             },
     
             async Register(credentials) {
-                await APIAxios.post(`api/register`, credentials)
+                credentials.role = 'nutricionista'
+                await APIAxios.post(`api/register`, credentials).then(() => {
+                    Swal.fire({
+                        title: "¡Registro exitoso!",
+                        text: "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.",
+                        icon: "success",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#EC9B98",
+                        confirmButtonText: "Aceptar",
+                        heightAuto: false,
+                      });
+                    router.push({name: 'Login'});  
+                })
             }
 
         },

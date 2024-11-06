@@ -19,7 +19,10 @@ const DietLabels = Object.values(getDietLabels())
 const MealTypeOptions = Object.values(getMealType())
 const DishTypeOptions = Object.values(getDishType())
 
-const ingredient = ref({})
+const food = ref('')
+const quantity = ref('')
+const measure = ref('')
+const ingredientsList = ref([])
 const editIngredient = ref([])
 const recipe = ref({
   healthLabels: [],
@@ -29,8 +32,8 @@ const recipe = ref({
 })
 const errorsForm = ref({})
 
-const setIngredient = (value) => {
-  ingredient.value.ingredient = event.target.value;
+const setIngretient = () => {
+  delete errorsForm.value.ingredientLines;
 }
 
 const setValue = (value) => {
@@ -39,10 +42,15 @@ const setValue = (value) => {
 }
 
 const agregarIngrediente = () => {
-  if (ingredient.value.ingredient != '') {
-    recipe.value.ingredientLines.push(ingredient.value['ingredient']);
+  if(food.value != '' && quantity.value != '' && measure.value != ''){
+    ingredientsList.value.push({food: food.value, quantity: quantity.value, measure: measure.value});
     editIngredient.value.push(false)
-    ingredient.value.ingredient = '';
+    food.value = '';
+    quantity.value = '';
+    measure.value = '';
+    console.log(ingredientsList.value);
+  }else{
+    errorsForm.value.ingredientLines = 'Por favor rellene todos los campos'
   }
 }
 
@@ -50,8 +58,8 @@ const activeEdit = (index) => {
   editIngredient.value[index] =!editIngredient.value[index]
 }
 
-const editarIngrediente = (index) => {
-  recipe.value.ingredientLines[index] = event.target.value;
+const editarIngrediente = (index, value) => {
+  ingredientsList.value[index][value] = event.target.value;
 }
 
 const deleteIngredient = (index) => {
@@ -64,15 +72,20 @@ const deleteIngredient = (index) => {
     denyButtonColor: "#DE3E3E",
   }).then((result) => {
     if (result.isConfirmed) {
-      recipe.value.ingredientLines.splice(index, 1);
+      ingredientsList.value.splice(index, 1);
     }
   });
 }
 
 const SaveRecipe = async() => {
   try{
+    recipe.value.ingredients = ingredientsList.value
     recipe.value.sandi_recipe = false;
     recipe.value.user_id = authStore.userInfo.id;
+    for (let index = 0; index < ingredientsList.value.length; index++) {
+      const ingredient = ingredientsList.value[index];
+      recipe.value.ingredientLines.push(`${ingredient.quantity} ${ingredient.measure} de ${ingredient.food}`);
+    }
     await recipeStore.CreateRecipe(recipe.value);
     router.push({ name: 'ListRecipes'})
   }catch(error){
@@ -181,22 +194,46 @@ const SaveRecipe = async() => {
         </div>
       </div>
       <div class="flex flex-col justify-between p-5 gap-1 bg-light-red rounded-lg">
-        <div class="flex gap-2 w-full" :class="errorsForm.ingredientLines ? 'items-center' : 'items-end'">
-          <AppInput
-            type="text"
-            class="flex-nowrap w-full"
-            v-model="ingredient.ingredient"
-            label="Ingresar Ingredientes"
-            placeholder="Ej: 1/2 de taza de arroz"
-            :error="errorsForm.ingredientLines ? true : false"
-            :errorMessage="errorsForm.ingredientLines"
-            @update:modelValue="setIngredient('ingredient')"
-            @keypress.enter="agregarIngrediente"
-          />
+        <div class="flex gap-2 w-full" :class="errorsForm.ingredientLines ? 'items-center': 'items-end'">
+          <div :class="errorsForm.ingredientLines ? 'flex flex-col' : ''">
+            <div class="flex gap-2">
+              <AppInput
+                type="text"
+                class="flex-nowrap w-full"
+                v-model="quantity"
+                label="Ingresar Cantidad"
+                placeholder="Ej: 1 1/2"
+                @update:modelValue="setIngretient"
+                @keypress.enter="agregarIngrediente"
+              />
+              <AppInput
+                type="text"
+                class="flex-nowrap w-full"
+                v-model="measure"
+                label="Ingresar Medida"
+                placeholder="Ej: Taza"
+                @update:modelValue="setIngretient"
+                @keypress.enter="agregarIngrediente"
+              />
+              <AppInput
+                type="text"
+                class="flex-nowrap w-full"
+                v-model="food"
+                label="Ingresar Ingredientes"
+                placeholder="Ej: Arroz"
+                @update:modelValue="setIngretient"
+                @keypress.enter="agregarIngrediente"
+              />
+            </div>
+            <p v-if="errorsForm.ingredientLines" class="text-xs text-dark-red flex gap-1 items-center">
+              <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
+              {{ errorsForm.ingredientLines }}
+            </p>
+          </div>
           <AppButton
-            class="text-black bg-lavender py-[6px] px-2 rounded"
+            class="text-black bg-lavender py-[6px] px-2 rounded disabled:cursor-not-allowed"
             type="icon"
-            hoverText="Agregar ingredinte"
+            hoverText="Agregar ingrediente"
             :icons="['fas', 'plus']"
             @click="agregarIngrediente"
           />
@@ -204,21 +241,34 @@ const SaveRecipe = async() => {
         <div class="flex-grow">
           <h1 class="text-sm">Lista de Ingredientes:</h1>
           <div class="bg-white py-3 rounded px-2 flex flex-col gap-2 h-[360px] overflow-y-auto">
-            <div v-if="recipe.ingredientLines.length == 0">Sin ingredientes añadidos</div>
-            <div v-else class="px-3 gap-2 flex justify-between items-center" v-for="(ingredient,index) in recipe.ingredientLines">
+            <div v-if="ingredientsList.length == 0">Sin ingredientes añadidos</div>
+            <div v-else class="px-3 gap-2 flex justify-between items-center" v-for="(value,index) in ingredientsList">
               <div 
                 v-if="!editIngredient[index]"
                 class="flex-nowrap bg-pink rounded p-2 w-full"
               >
-                {{ ingredient }}
+                {{ value.quantity }} {{ value.measure }} de {{ value.food }}
               </div>
-              <AppInput 
-                v-else
-                type="text"
-                class="flex-nowrap w-full"
-                v-model="recipe.ingredientLines[index]"
-                @update:modelValue="editarIngrediente(index)"
-              />
+              <div v-else class="flex gap-2">
+                <AppInput
+                  type="text"
+                  class="flex-nowrap w-full"
+                  v-model="ingredientsList[index].quantity"
+                  @update:modelValue="editarIngrediente(index,'quantity')"
+                />
+                <AppInput
+                  type="text"
+                  class="flex-nowrap w-full"
+                  v-model="ingredientsList[index].measure"
+                  @update:modelValue="editarIngrediente(index,'measure')"
+                />
+                <AppInput
+                  type="text"
+                  class="flex-nowrap w-full"
+                  v-model="ingredientsList[index].food"
+                  @update:modelValue="editarIngrediente(index,'food')"
+                />
+              </div>
               <AppButton
                 class="text-violet"
                 type="icon"

@@ -89,14 +89,19 @@ const GetPatients = async () => {
 }
 
 const GetData = async (page = 1) => {
-  currentPage.value = page
-  form.value = {}
-  loading.value = true;
-  await menuStore.IndexMenus(page)
-  listMenus.value = menuStore.GetMenus;
-  links.value = menuStore.GetLinks;
-  meta.value = menuStore.GetMeta;
-  loading.value = false;
+  try{
+    currentPage.value = page
+    form.value = {}
+    loading.value = true;
+    await menuStore.IndexMenus(page)
+    listMenus.value = menuStore.GetMenus;
+    links.value = menuStore.GetLinks;
+    meta.value = menuStore.GetMeta;
+    loading.value = false;
+  }catch(error){
+    loading.value = false;
+    listMenus.value = []
+  }
 }
 
 onMounted(async () => {
@@ -196,47 +201,56 @@ onMounted(async () => {
           </th>
         </thead>
         <tbody class="overflow-y-scroll">
-          <tr
-            v-for="item in listMenus"
-            :key="item._id"
-            class="bg-white w-full px-11 border-b border-b-light-gray"
-          >
-          <td class="p-3" v-for="key in atributesBody">
-            <div v-if="key == 'updated_at'">
-              {{ formatDate(item[key]) }}
-            </div>
-            <div v-else-if="key == 'type'">
-              <AppTag
-                :tipo="item[key]"
-              />
-            </div>
-            <div v-else-if="key == 'sandi_recipe'">
-              {{ item[key] ? 'Asistente' : 'Mi cuenta' }}
-            </div>
-            <div v-else>
-              {{ item[key] }}
-            </div>
-          </td>
-          <td class="flex p-3 justify-center gap-x-2">
-            <AppButton
-              class="text-black"
-              type="icon"
-              hoverText="Editar"
-              :icons="['fas','pencil']"
-              @click="goToEdit(item.type, item._id)"
-            />
-            <AppButton
-              class="text-red"
-              type="icon"
-              hoverText="Eliminar"
-              :icons="['fas','trash']"
-              @click="deleteMenu(item.type, item._id)"
-            />
-          </td>
-          </tr>
+          <template v-if="listMenus.length > 0">
+            <tr
+              v-for="item in listMenus"
+              :key="item._id"
+              class="bg-white w-full px-11 border-b border-b-light-gray"
+            >
+              <td class="p-3" v-for="key in atributesBody">
+                <div v-if="key == 'updated_at'">
+                  {{ formatDate(item[key]) }}
+                </div>
+                <div v-else-if="key == 'type'">
+                  <AppTag
+                    :tipo="item[key]"
+                  />
+                </div>
+                <div v-else-if="key == 'sandi_recipe'">
+                  {{ item[key] ? 'Asistente' : 'Mi cuenta' }}
+                </div>
+                <div v-else>
+                  {{ item[key] }}
+                </div>
+              </td>
+              <td class="flex p-3 justify-center gap-x-2">
+                <AppButton
+                  class="text-black"
+                  type="icon"
+                  hoverText="Editar"
+                  :icons="['fas','pencil']"
+                  @click="goToEdit(item.type, item._id)"
+                />
+                <AppButton
+                  class="text-red"
+                  type="icon"
+                  hoverText="Eliminar"
+                  :icons="['fas','trash']"
+                  @click="deleteMenu(item.type, item._id)"
+                />
+              </td>
+            </tr>
+          </template>
+          <template v-else>
+            <tr class="bg-white w-full px-11 border-b border-b-light-gray">
+              <td class="p-3 text-center" :colspan="headers.length">
+                No hay resultados para su búsqueda.
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
-      <AppPagination :meta="meta" :links="links" @handlePage="GetData" />
+      <AppPagination v-if="listMenus.length > 0" :meta="meta" :links="links" @handlePage="GetData" />
     </div>
   </div>
 </template>

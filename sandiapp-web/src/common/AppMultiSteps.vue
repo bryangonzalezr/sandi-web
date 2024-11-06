@@ -28,8 +28,8 @@ const props = defineProps({
             <div>{{ title }}</div>
             <div 
                     :class="{
-                        'bg-forest-green': props.currentStep >= index+1,
-                        'bg-gray': props.currentStep < index+1
+                        'bg-light-green': props.currentStep >= index+1,
+                        'bg-light-gray': props.currentStep < index+1
                     }"
                     class="p-2 rounded-full w-10 h-10 text-center text-white"
                 > 

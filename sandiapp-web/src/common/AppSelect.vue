@@ -73,7 +73,7 @@ const changeSelect = () => {
     <div :class="[displayRow ? 'relative flex-grow' : 'w-full relative', props.classSelect]">
       <select
         id="selectRef"
-        class="w-full rounded py-1.5 pl-1 pr-7 custom-select border border-[#aaaeb7] hover:border-[#5f6061] focus:border-[#5f6061] transition-all outline-0"
+        class="w-full rounded py-1.5 pl-1 pr-7 custom-select border border-[#aaaeb7] hover:border-light-green focus:border-light-green transition-all outline-0"
         :class="{
           'cursor-not-allowed': props.disabled,
           'border border-bold-red': error === true,
@@ -146,4 +146,28 @@ const changeSelect = () => {
   color: #9CA3AF;
 }
 
+.profile-edit .custom-select {
+  background-color: var(--light-green); /* Background color */
+  color: var(--dark-green); /* Text color */
+  border-color: transparent;
+  background-position: 99% 50%;
+  background-size: 1.25rem;
+  background-repeat: no-repeat;
+  /* Arrow color */
+  
+
+}
+
+.profile-edit .custom-select:hover {
+  /* Hover effect */
+  background-color: var(--light-green);
+  border-color: var(--dark-green); /* Optional: border color on hover */
+  background-color: var(--dark-green);
+  color: var(--light-green);
+}
+
+.profile-edit .custom-select option {
+  color: var(--gray); /* Text color */
+  background-color: var(--light-green);
+}
 </style>

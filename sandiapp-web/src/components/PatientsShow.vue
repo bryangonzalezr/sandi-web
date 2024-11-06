@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useNutritionalProfileStore, usePatientsStore } from '@/stores';
 import AppButton from '@/common/AppButton.vue';
 import { useRouter } from 'vue-router';
-
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 const props = defineProps({
@@ -93,55 +93,59 @@ const GetData = async () => {
     loading.value = false;
 };
 
-
 onMounted(async () => {
     GetData();
 });
 </script>
 
-
-
 <template>
+  <AppButton
+    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 rounded-none rounded-b-lg"
+    type="button"
+    text="Volver"
+    :icons="['fas', 'arrow-left']"
+    @click="goBack"
+  />
+  
   <div class="flex flex-col py-2 px-10 gap-y-3">
-    <!-- Titulo sección -->
     <div class="flex flex-col">
-      <AppButton
-          class="w-fit border-0 px-0 my-2"
-          type="button"
-          text="Volver"
-          :icons="['fas', 'arrow-left']"
-          @click="goBack"
-        />
-
-      <h1 class="uppercase text-2xl">Perfil paciente</h1>
-      <h2>Gestión del paciente: {{ user.name }}</h2>
+      <h1 class="text-2xl ">
+        <font-awesome-icon :icon="faUser" class="text-black" />
+        Pacientes
+      </h1>
+      
+      <h2>Gestión del paciente: <strong>{{ user.name }}</strong></h2>
     </div>
 
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
         <AppButton
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
           type="button"
           text="Agregar consulta"
           :icons="['fas', 'plus']"
           @click="goToConsult"
         />
         <template v-if="buttonProgress">
-            <AppButton
-              v-if="!createPlan"
-              type="button"
-              text="Agregar plan nutricional"
-              :icons="['fas', 'plus']"
-              @click="goToCreatePlan"
-            />
-            <AppButton
-              v-else
-              type="button"
-              text="Editar plan nutricional"
-              :icons="['fas', 'pencil']"
-              @click="goToCreatePlan"
-            />
+          <AppButton
+            v-if="!createPlan"
+            class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
+            type="button"
+            text="Agregar plan nutricional"
+            :icons="['fas', 'plus']"
+            @click="goToCreatePlan"
+          />
+          <AppButton
+            v-else
+            class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
+            type="button"
+            text="Editar plan nutricional"
+            :icons="['fas', 'pencil']"
+            @click="goToCreatePlan"
+          />
         </template>
         <AppButton
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
           type="button"
           text="Ver Progreso"
           :icons="['fas', 'eye']"
@@ -149,6 +153,8 @@ onMounted(async () => {
         />
         <AppButton
           v-if="buttonProgress && createPlan"
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
+
           type="button"
           text="Ver Pauta"
           :icons="['fas', 'eye']"
@@ -157,10 +163,10 @@ onMounted(async () => {
       </div>
       <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
         <AppButton
-          class="bg-warm-beige text-black border-warm-beige enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black"
+          class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
           type="button"
-          text="Editar perfil"
-          :icons="['fas', 'pen-to-square']"
+          text="Editar Perfil"
+          :icons="['fas', 'pen']"
           @click="goEdit"
         />
       </div>
@@ -168,226 +174,111 @@ onMounted(async () => {
 
     <div v-if="loading" class="flex justify-center items-center">
       <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
-      <span class="visually-hidden">  Loading...</span>
+      <span class="visually-hidden">Cargando...</span>
     </div>
-    
 
-    <div v-else>
-      <!-- Tabla principal -->
-      <table class="bg-white min-w-full table-auto border-collapse rounded border">
-        <thead class="bg-forest-green text-white">
-          <tr>
-            <th class="border border-black px-4 py-2" colspan="2">Datos Personales</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="border border-black px-4 py-2">Nombre</td>
-            <td class="border border-black px-4 py-2">{{ user.name }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Apellido</td>
-            <td class="border border-black px-4 py-2">{{ user.last_name }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Edad</td>
-            <td class="border border-black px-4 py-2">{{ user.age }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Fecha de nacimiento</td>
-            <td class="border border-black px-4 py-2">{{ user.birthdate }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Sexo</td>
-            <td class="border border-black px-4 py-2">{{ user.sex }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Celular</td>
-            <td class="border border-black px-4 py-2">{{ user.phone_number }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Estado Civil</td>
-            <td class="border border-black px-4 py-2">{{ user.civil_status }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Objetivo</td>
-            <td class="border border-black px-4 py-2">{{ user.objectives }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Alergias</td>
-            <td class="border border-black px-4 py-2">{{ nutritional_profile.allergies?.length > 0 ? translateAllergies(nutritional_profile.allergies).join(', ') : 'No especificadas' }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Comentario Físico</td>
-            <td class="border border-black px-4 py-2">{{ nutritional_profile.physical_comentario || 'No especificado' }}</td>
-          </tr>
-          <tr>
-            <td class="border border-black px-4 py-2">Estado Físico</td>
-            <td class="border border-black px-4 py-2">{{ nutritional_profile.physical_status || 'No especificado' }}</td>
-          </tr>
-          <!-- Hábitos (tabla dentro de la tabla) -->
-          <tr>
-            <td class=" bg-forest-green text-white text-center border border-black px-4 py-2" colspan="2" >Hábitos</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="border border-black px-4 py-2">
-              <table class="min-w-full table-auto">
-                <tbody>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Alcohol</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.habits?.alcohol || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Tabaco</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.habits?.tabaco || 'No especificado' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          <!-- Antecedentes Personales (tabla anidada) -->
-          <tr>
-            <td class=" bg-forest-green text-white text-center border border-black px-4 py-2" colspan="2" >Antecedentes Personales</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="border border-black px-4 py-2">
-              <table class="min-w-full table-auto">
-                <tbody>
-                  <tr>
-                    <td class="border border-black px-4 py-2">DM2</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.dm2 ? 'Sí' : 'No' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">HTA</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.hta ? 'Sí' : 'No' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Tiroides</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.tiroides ? 'Sí' : 'No' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Resistencia a la Insulina</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.insulin_resistance ? 'Sí' : 'No' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Dislipidemia</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.dislipidemia ? 'Sí' : 'No' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Cirugías</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.cirugias || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Farmacos</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.farmacos || 'No especificado' }}</td>
-                  </tr>
-                  <tr> 
-                    <td class="border border-black px-4 py-2">Examenes</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.morbid_antecedents?.exams || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Otros</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.otros?.length > 0 ? nutritional_profile.otros.join(', ') : 'No especificadas' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          <!-- Repetir la misma lógica para otros campos que contengan listas o múltiples valores -->
-          <!-- Antecedentes Familiares, Anamnesis Nutricional, etc. -->
-          <tr>
-            <td class=" bg-forest-green text-white text-center border border-black px-4 py-2" colspan="2" >Anamnesis Nutricional</td>
-          </tr>
-            <tr>
-              <td colspan="2" class="border border-black px-4 py-2">
-                <table class="min-w-full table-auto">
-                  <tbody>
-                    <tr>
-                      <td class="border border-black px-4 py-2">Plan Nutricional Anterior</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Si' : 'No especificado' }}</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-black px-4 py-2">Consumo de Agua</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Si' : 'No especificado' }}</td>
+    <div v-else class="grid grid-cols-2 gap-4">
+      <!-- Left Column -->
+      <div class="space-y-4">
+        <!-- Datos Personales -->
+        <div class="rounded overflow-hidden">
+          <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
+            Datos Personales</div>
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+              <div v-for="(field, label) in {
+              'Nombre': user.name,
+              'Apellido': user.last_name,
+              'Edad': user.age,
+              'Fecha de nacimiento': user.birthdate,
+              'Sexo': user.sex,
+              'Celular': user.phone_number,
+              'Estado Civil': user.civil_status,
+              'Objetivo': user.objectives,
+              'Alergias': nutritional_profile.allergies?.length > 0 ? translateAllergies(nutritional_profile.allergies).join(', ') : 'No especificadas',
+              'Estado Físico': nutritional_profile.physical_status
+            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0">
+              <div class="p-2 border-r">{{ label }}</div>
+              <div class="p-2">{{ field || 'No especificado' }}</div>
+            </div>
+          </div>
+        </div>
 
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          <tr>
-            <td class=" bg-forest-green text-white text-center border border-black px-4 py-2" colspan="2" >Antecedentes Familiares</td>
-          </tr>
-            <tr>
-              <td colspan="2" class="border border-black px-4 py-2">
-                <table class="min-w-full table-auto">
-                  <tbody>
-                    <tr>
-                      <td class="border border-black px-4 py-2">DM2</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.family_antecedents?.dm2 ? 'Sí' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-black px-4 py-2">HTA</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.family_antecedents?.hta ? 'Sí' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-black px-4 py-2">Tiroides</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.family_antecedents?.tiroides ? 'Sí' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-black px-4 py-2">Dislipidemia</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.family_antecedents?.dislipidemia ? 'Sí' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-black px-4 py-2">Comentarios</td>
-                      <td class="border border-black px-4 py-2">{{ nutritional_profile.family_antecedents?.comments || 'No especificado' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          <!-- Continuar con el resto de los campos -->
-          <tr>
-            <td class=" bg-forest-green text-white text-center border border-black px-4 py-2" colspan="2">Anamnesis Nutricional</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="border border-black px-4 py-2">
-              <table class="min-w-full table-auto">
-                <tbody>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Peso Usual</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.usual_weight || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Síntomas Gastrointestinales</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.gastrointestinal_symptoms || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Variación de Peso</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.weight_variation || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Apetito</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.appetite || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Digestión</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.digestion || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Frecuencia de Digestión</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.digestion_frequency || 'No especificado' }}</td>
-                  </tr>
-                  <tr>
-                    <td class="border border-black px-4 py-2">Medidas de Digestión</td>
-                    <td class="border border-black px-4 py-2">{{ nutritional_profile.subjective_assessment?.digestion_measures || 'No especificado' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <!-- Hábitos -->
+        <div class="rounded overflow-hidden">
+          <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
+            Hábitos</div>
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+              <div class="grid grid-cols-2 border-b">
+              <div class="p-2 border-r">Alcohol</div>
+              <div class="p-2">{{ nutritional_profile.habits?.alcohol || 'No especificado' }}</div>
+            </div>
+            <div class="grid grid-cols-2">
+              <div class="p-2 border-r">Tabaco</div>
+              <div class="p-2">{{ nutritional_profile.habits?.tabaco || 'No especificado' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anamnesis Nutricional -->
+        <div class="rounded overflow-hidden">
+          <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
+            Anamnesis Nutricional</div>
+            <div class="bg-white w-full px-2 border-b border-b-light-gray">
+              <div class="grid grid-cols-2 border-b">
+              <div class="p-2 border-r">Plan nutricional anterior</div>
+              <div class="p-2">{{ nutritional_profile.nutritional_anamnesis?.plan_anterior ? 'Sí' : 'No' }}</div>
+            </div>
+            <div class="grid grid-cols-2">
+              <div class="p-2 border-r">Consumo de agua</div>
+              <div class="p-2">{{ nutritional_profile.nutritional_anamnesis?.agua ? 'Sí' : 'No' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="space-y-4">
+        <!-- Antecedentes Personales -->
+        <div class="rounded overflow-hidden">
+          <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
+            Antecedentes Personales
+          </div>
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+            <div v-for="(field, label) in {
+              'DM2': nutritional_profile.morbid_antecedents?.dm2 ? 'Sí' : 'No',
+              'HTA': nutritional_profile.morbid_antecedents?.hta ? 'Sí' : 'No',
+              'Tiroides': nutritional_profile.morbid_antecedents?.tiroides ? 'Sí' : 'No',
+              'Resistencia a la Insulina': nutritional_profile.morbid_antecedents?.insulin_resistance ? 'Sí' : 'No',
+              'Dislipidemia': nutritional_profile.morbid_antecedents?.dislipidemia ? 'Sí' : 'No',
+              'Cirugías': nutritional_profile.morbid_antecedents?.cirugias,
+              'Farmacos': nutritional_profile.morbid_antecedents?.farmacos,
+              'Examenes': nutritional_profile.morbid_antecedents?.exams,
+              'Otros': nutritional_profile.otros?.length > 0 ? nutritional_profile.otros.join(', ') : 'No especificadas'
+            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0">
+              <div class="p-2 border-r">{{ label }}</div>
+              <div class="p-2">{{ field || 'No especificado' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Antecedentes Familiares -->
+        <div class="rounded overflow-hidden">
+          <div class="px-3 py-3 bg-neutral-beige text-left leading-4 text-black tracking-wider items-center">
+            Antecedentes Familiares</div>
+          <div class="bg-white w-full px-2 border-b border-b-light-gray">
+            <div v-for="(field, label) in {
+              'DM2': nutritional_profile.family_antecedents?.dm2 ? 'Sí' : 'No',
+              'HTA': nutritional_profile.family_antecedents?.hta ? 'Sí' : 'No',
+              'Tiroides': nutritional_profile.family_antecedents?.tiroides ? 'Sí' : 'No',
+              'Dislipidemia': nutritional_profile.family_antecedents?.dislipidemia ? 'Sí' : 'No',
+              'Comentarios': nutritional_profile.family_antecedents?.comments
+            }" :key="label" class="grid grid-cols-2 border-b last:border-b-0">
+              <div class="p-2 border-r">{{ label }}</div>
+              <div class="p-2">{{ field || 'No especificado' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

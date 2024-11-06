@@ -12,7 +12,7 @@ const authStore = useAuthStore();
       <NavBar/>
     </header>
   </template>
-  <main :class="authStore.shouldDisplayHeader ? 'flex flex-col bg-light-beige max-w-full 2xl:gap-10 pb-21  mt-[90px]' : ''">
+  <main :class="authStore.shouldDisplayHeader ? 'bg-light w-full pt-[90px]' : ''">
     <RouterView />
   </main>
 </template>
