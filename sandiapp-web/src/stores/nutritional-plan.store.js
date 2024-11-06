@@ -50,6 +50,8 @@ export const usePlanStore = defineStore('plan', {
         }
     },
 
+        
+
     async CreateIndicadores() {
         try{
             const res = await APIAxios.get(`/api/indicadores-alimentos`);
@@ -77,6 +79,15 @@ export const usePlanStore = defineStore('plan', {
         }
     },
 
+    async UpdatePortions(id, portions){
+        try{
+            const res = await APIAxios.put(`/api/porcion/${id}`, portions);
+            this.portions = res;
+        }catch(err){
+            return err
+        }
+    },
+
     async CreatePortionsServices(PortionsServices) {
         try{
             const res = await APIAxios.post(`/api/porcion-servicio`, PortionsServices);
@@ -89,6 +100,15 @@ export const usePlanStore = defineStore('plan', {
     async ShowPortionsServices(id) {
         try{
             const res = await APIAxios.get(`/api/porcion-servicio/${id}`);
+            this.portionsServices = res;
+        }catch(err){
+            return err
+        }
+    },
+
+    async UpdatePortionsServices(id, PortionsServices){
+        try{
+            const res = await APIAxios.put(`/api/porcion-servicio/${id}`, PortionsServices);
             this.portionsServices = res;
         }catch(err){
             return err
@@ -112,5 +132,14 @@ export const usePlanStore = defineStore('plan', {
             return err
         }
     },
+
+    async UpdatePauta(id, pauta){
+        try{
+            const res = await APIAxios.put(`/api/plan-nutricional/${id}`, pauta);
+            this.pauta = res;
+        }catch(err){
+            return err
+        }
+    }
   },
 })

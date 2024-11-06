@@ -75,12 +75,12 @@ onMounted(() => {
       
       <!-- User section -->
       <div class="topbar__session gap-20">
-        <div class="user-info flex items-center gap-3">
+        <RouterLink :to="{ name: 'Profile' }" class="user-info flex items-center gap-3">
           <font-awesome-icon :icon="['fas', 'circle-user']" class="user-icon text-2xl" />
           <span class="text-xl font-bold">
-        {{ currentUser.name }}
+            {{ currentUser.name }}
           </span>
-        </div>
+        </RouterLink>
         <AppButton
           text="Cerrar sesión"
           icons="fa-right-from-bracket"

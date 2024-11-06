@@ -30,6 +30,7 @@ export default {
       'neutral-beige': '#F3E6D6',
       'mid-beige': '#F7EFE4',
       'light-violet': '#EADFFF',
+      'neutral-violet': '#C4A9E4',
       'dark-violet': '#8963C7',
       'light-red': '#F5D2CE',
       'mid-red': '#EC9B98',

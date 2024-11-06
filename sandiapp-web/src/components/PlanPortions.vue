@@ -62,6 +62,8 @@ const dataPortions = reactive({
     total_calorias: computed(() => totales.calorias)
 })
 
+const portion_id = computed(() => props.portionsResult.id)
+
 const totales = reactive({
     calorias: 0,
     cho: 0,
@@ -78,7 +80,7 @@ const percentages = reactive({
 
 const Next = () =>{
     emit("goToStep", props.currentStep + 1);
-    emit("getPortions", dataPortions)
+    emit("getPortions", dataPortions, portion_id.value? portion_id.value : null);
 }
 
 const Previous = () =>{
@@ -147,8 +149,8 @@ onMounted(() => {
           </div>
           Definición de porciones
         </div>
-        <div class="grid grid-cols-2 gap-x-3">
-            <div class="flex flex-col gap-y-4 bg-pink p-2 rounded">
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-y-4 bg-light-violet p-2 rounded">
                 <div>Porciones por grupo de alimento</div>
                 <div class="grid grid-cols-2 gap-2">
                     <div v-for="(value, key) of portionsFood" :key="key">
@@ -185,7 +187,7 @@ onMounted(() => {
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(value, key, index) of portionsFood" 
+                        v-for="(value, key, index) in portionsFood" 
                         :key="key"
                         class="bg-white w-full border-b border-b-gray"
                       >

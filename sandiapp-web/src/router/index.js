@@ -30,7 +30,6 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import('@/views/PatientsView.vue')
     },
-      
     { 
       path: '/paciente/:id', 
       name: 'PatientsShow',
@@ -41,7 +40,6 @@ const router = createRouter({
       }, 
       component: () => import('@/components/PatientsShow.vue') 
     },
-
     {
       path: '/paciente/:id/editar',
       name: 'PatientsEdit',
@@ -154,6 +152,36 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: () => import('@/components/NutritionistPlanFiled.vue')
       
+    },
+    {
+      path: '/public-profile',
+      name: 'PublicProfile',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/PublicProfile.vue')
+    },
+    {
+      path: '/public-profile/experience',
+      name: 'Experience',
+      meta: { requiresAuth: true },
+      component: () => import('@/components/PublicProfileExperience.vue')
+    },
+    {
+      path: '/public-profile/new',
+      name: 'PublicProfileNew',
+      meta: { requiresAuth: true },
+      component: () => import('@/components/PublicProfileCreate.vue')
+    },
+    {
+      path: '/public-profile/edit',
+      name: 'PublicProfileEdit',
+      meta: { requiresAuth: true },
+      component: () => import('@/components/PublicProfileEdit.vue')
+    },
+    {
+      path: '/perfil',
+      name: 'Profile',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/ProfileView.vue')
     }
   ]
 })
