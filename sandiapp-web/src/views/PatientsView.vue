@@ -263,13 +263,13 @@ onMounted(async () => {
             />
             <AppTextarea
               type="text"
-              v-model="formAddPatient.objetives"
+              v-model="formAddPatient.objectives"
               :maxlength="200"
               label="Objetivo:"
               placeholder="Objetivo"
-              :error="errorsForm.objetives ? true : false"
-              :errorMessage="errorsForm.objetives"
-              @update:modelValue="setValue('objetives')"
+              :error="errorsForm.objectives ? true : false"
+              :errorMessage="errorsForm.objectives"
+              @update:modelValue="setValue('objectives')"
             />
             <div class="col-span-2 justify-self-center">
               <AppButton 
