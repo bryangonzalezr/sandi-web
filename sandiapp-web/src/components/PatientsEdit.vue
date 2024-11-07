@@ -153,15 +153,12 @@ onMounted(() => {
 });
 
 watch(selectedAllergies, (newAllergies) => {
-  console.log(newAllergies);
   nutritional_profile.value.allergies = newAllergies.map(allergy => allergy.value);
-  console.log("la wea",nutritional_profile.value.allergies);
   
 });
 
 
 watch(nutritional_profile, (newProfile) => {
-  console.log(newProfile);
   selectedAllergies.value = newProfile.allergies.map(allergy => {
     return options.find(option => option.value === allergy);
   });
@@ -172,7 +169,7 @@ watch(nutritional_profile, (newProfile) => {
 
 <template>
   <AppButton
-    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 rounded-none rounded-b-lg"
+    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 lg:rounded-none lg:rounded-b-lg"
     type="button"
     text="Volver"
     :icons="['fas', 'arrow-left']"
@@ -487,10 +484,10 @@ watch(nutritional_profile, (newProfile) => {
         text="Guardar Cambios" 
         />
         <AppButton 
-        class="bg-light-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-light-red"
+        class="bg-mid-red text-dark-red border-0 hover:bg-dark-red hover:text-mid-red p-1"
         type="button" 
         text="Cancelar" 
-        :icons="['fas', 'cancel']"
+        :icons="['fas', 'circle-xmark']"
 
         @click="goBack" 
         />

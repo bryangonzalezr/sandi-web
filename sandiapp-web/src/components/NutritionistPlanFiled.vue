@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { usePlanStore } from '@/stores';
+import Swal from "sweetalert2";
 import AppButton from '@/common/AppButton.vue';
-import AppInput from '@/common/AppInput.vue';
 
 
 const router = useRouter();
@@ -72,20 +72,19 @@ onMounted(() => {
 </script>
 
 <template>
+  <AppButton
+    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 lg:rounded-none lg:rounded-b-lg"
+    type="button"
+    text="Volver"
+    :icons="['fas', 'arrow-left']"
+    @click="goToBack"
+  />
   <div class="flex flex-col py-2 px-10 gap-y-5">
     <!-- Título sección -->
     <div class="flex flex-col">
-      <div class="flex items-center gap-4">
-        <h1 class="uppercase text-2xl">Planes Archivados</h1>
+      <div class="flex items-center gap-2">
+        <font-awesome-icon class="" :icon="['fas', 'box-archive']"></font-awesome-icon><h1 class="uppercase text-2xl">Tarjeta de Contacto</h1>
       </div>
-      <h2>Control de Planes Nutricionales</h2>
-      <AppButton
-        class="w-fit border-0 px-0 my-1 bg-forest-green enabled:hover:bg-white enabled:hover:text-black"
-        type="button"
-        text="Volver"
-        :icons="['fas', 'arrow-left']"
-        @click="goToBack"
-      />
     </div>
 
     <!-- Filtro de fecha -->
@@ -115,13 +114,13 @@ onMounted(() => {
 
     <!-- Tabla de planes -->
     <div v-else>
-      <table class="min-w-full" v-if="plansFiled.length > 0">
-        <thead class="bg-forest-green">
+      <table class="w-full" v-if="plansFiled.length > 0">
+        <thead class="bg-mid-beige">
           <tr class="w-full px-11 shadow-[0_1px_5px_rgb(0,0,0,0.1)]">
             <th
               v-for="header in headers"
               :key="header"
-              class="px-3 py-3 border-b border-gray text-left leading-4 text-black tracking-wider items-center"
+              class="p-3 border-b border-extralight-beige text-left text-black tracking-wider items-center"
             >
               <div class="flex items-center gap-2">
                 {{ header }}
@@ -129,28 +128,28 @@ onMounted(() => {
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white">
+        <tbody class="bg-light">
           <tr
             v-for="(plan, index) in plansFiled"
             :key="plan._id"
-            class="w-full px-11 border-b border-b-gray hover:bg-gray-50"
+            class="w-full border-b border-b-extralight-beige"
           >
             <td class="p-3">{{ index + 1 }}</td>
             <td class="p-3">{{ formatDate(plan.created_at) }}</td>
             <td class="p-3">
-              <div class="max-w-xs truncate">{{ plan.desayuno || '-' }}</div>
+              <div class="max-w-[90px] truncate">{{ plan.desayuno || '-' }}</div>
             </td>
             <td class="p-3">
-              <div class="max-w-xs truncate">{{ plan.almuerzo || '-' }}</div>
+              <div class="max-w-[90px] truncate">{{ plan.almuerzo || '-' }}</div>
             </td>
             <td class="p-3">
-              <div class="max-w-xs truncate">{{ plan.colacion || '-' }}</div>
+              <div class="max-w-[90px] truncate">{{ plan.colacion || '-' }}</div>
             </td>
             <td class="p-3">
-              <div class="max-w-xs truncate">{{ plan.once || '-' }}</div>
+              <div class="max-w-[90px] truncate">{{ plan.once || '-' }}</div>
             </td>
             <td class="p-3">
-              <div class="max-w-xs truncate">{{ plan.cena || '-' }}</div>
+              <div class="max-w-[90px] truncate">{{ plan.cena || '-' }}</div>
             </td>
             <td class="p-3">
               <div class="flex gap-2">

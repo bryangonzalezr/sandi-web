@@ -77,45 +77,49 @@ onMounted(() => {
       
       <!-- Contenido del formulario -->
       <div v-else>
-        <h2 class="text-xl font-bold text-black">Añadir Experiencia</h2>
+        <h2 class="text-xl font-PoppinsBold text-black">Añadir Experiencia</h2>
 
         <form @submit.prevent="saveExperience">
           <!-- Contenedor de dos columnas -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-black font-semibold">Título</label>
-              <AppInput v-model="experience.title" type="text" class="w-full bg-gray-100 border border-white rounded py-2" required />
-            </div>
+          <div class="grid grid-cols-2 gap-4">
+            <AppInput 
+              label="Título"
+              v-model="experience.title" 
+              type="text" 
+              class="w-full bg-gray-100 border border-white rounded py-2" 
+              required 
+            />
+            <AppSelect
+              label="Tipo"
+              :options="experienceTypes.data"
+              value="value"
+              optionText="name"
+              placeholder="Seleccione el tipo de experiencia"
+              class="w-full bg-gray-100 border border-white rounded py-2"
+              @update:selectedOption="setValue('type')"
+            /> 
+            <AppInput 
+              label="Organización"
+              v-model="experience.institution"
+              type="text" 
+              class="w-full bg-gray-100 border border-white rounded py-2" 
+              required 
+            />
+            <AppInput 
+              label="Descripción"
+              v-model="experience.description" 
+              type="text"
+              class="w-full bg-gray-100 border border-white rounded py-2" 
+              required 
+            />
 
-            <div>
-              <label class="block text-black font-semibold">Tipo</label>
-              <AppSelect
-                :options="experienceTypes.data"
-                value="value"
-                optionText="name"
-                placeholder="Seleccione el tipo de experiencia"
-                class="w-full bg-gray-100 border border-white rounded py-2"
-                @update:selectedOption="setValue('type')"
-              /> 
-            </div>
-
-            <div>
-              <label class="block text-black font-semibold">Organización</label>
-              <AppInput v-model="experience.institution" type="text" class="w-full bg-gray-100 border border-white rounded py-2" required />
-            </div>
-
-            <div>
-              <label class="block text-black font-semibold">Descripción</label>
-              <AppInput v-model="experience.description" type="text" class="w-full bg-gray-100 border border-white rounded py-2" required />
-            </div>
-
-            <div class="flex items-center col-span-1 md:col-span-2">
-              <label class="block text-black font-semibold mr-2">En curso</label>
+            <div class="flex items-center gap-x-2 col-span-2">
+              <label class="text-sm text-nowrap">En curso</label>
               <input v-model="inProgress" type="checkbox" class="form-checkbox text-indigo-600" />
             </div>
 
             <div>
-              <label class="block text-black font-semibold">Fecha de Inicio</label>
+              <label class="text-sm text-nowrap">Fecha de Inicio</label>
               <VueDatePicker
                 input-class-name="font-Poppins"
                 v-model="experience.start_date"
@@ -132,7 +136,7 @@ onMounted(() => {
             </div>
 
             <div>
-              <label class="block text-black font-semibold">Fecha de Término</label>
+              <label class="text-sm text-nowrap">Fecha de Término</label>
               <VueDatePicker
                 input-class-name="font-Poppins"
                 v-model="experience.end_date"
@@ -147,23 +151,22 @@ onMounted(() => {
                 text-input
                 :disabled="inProgress" 
               />
-              <!-- <p v-if="experience.startDate && experience.endDate && experience.startDate > experience.endDate" class="text-red-500 text-sm mt-1">
-                La fecha de término no puede ser anterior a la fecha de inicio.
-              </p> -->
             </div>
           </div>
 
           <div class="flex justify-end mt-6 space-x-4">
             <AppButton
-              text="Cancelar"
-              type="button"
-              class="bg-mid-red text-white px-4 py-2 mt-4 rounded hover:bg-light-red"
-              @click="closeModal"
-            />
-            <AppButton
               text="Guardar"
               type="submit"
-              class="bg-neutral-green text-white px-6 py-2 mt-4 rounded hover:bg-light-green"
+              :icons="['fas', 'floppy-disk']"
+              class="bg-mid-green text-dark-green border-0 hover:bg-dark-green hover:text-mid-green h-fit"
+            />
+            <AppButton
+              text="Cancelar"
+              type="button"
+              :icons="['fas', 'circle-xmark']"
+              class="bg-mid-red text-dark-red border-0 hover:bg-dark-red hover:text-mid-red h-fit"
+              @click="closeModal"
             />
           </div>
         </form>

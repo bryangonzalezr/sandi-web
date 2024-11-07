@@ -68,14 +68,14 @@ const changeSelect = () => {
 </script>
 
 <template>
-  <div :class="displayRow ? 'flex gap-2 items-center w-full' : 'flex flex-col'">
+  <div :class="[displayRow ? 'flex gap-2 items-center w-full' : 'flex flex-col']">
     <label class="text-sm">{{ props.label }}</label>
     <div :class="[displayRow ? 'relative flex-grow' : 'w-full relative', props.classSelect]">
       <select
         id="selectRef"
         class="w-full rounded py-1.5 pl-1 pr-7 custom-select border border-[#aaaeb7] hover:border-light-green focus:border-light-green transition-all outline-0"
         :class="{
-          'cursor-not-allowed': props.disabled,
+          'cursor-not-allowed opacity-50': props.disabled,
           'border border-bold-red': error === true,
           'select-placeholder': props.disabledFirstOption && selectedOption == '',
         }"

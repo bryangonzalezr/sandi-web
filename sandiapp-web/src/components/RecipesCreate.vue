@@ -48,7 +48,6 @@ const agregarIngrediente = () => {
     food.value = '';
     quantity.value = '';
     measure.value = '';
-    console.log(ingredientsList.value);
   }else{
     errorsForm.value.ingredientLines = 'Por favor rellene todos los campos'
   }
@@ -96,7 +95,7 @@ const SaveRecipe = async() => {
 
 <template>
   <AppButton
-    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 rounded-none rounded-b-lg "
+    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 lg:rounded-none lg:rounded-b-lg"
     type="button"
     text="Volver"
     :icons="['fas', 'arrow-left']"

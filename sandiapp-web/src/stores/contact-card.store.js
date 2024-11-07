@@ -30,10 +30,9 @@ export const useContactCardStore = defineStore('contact_card', {
 
     async IndexExperience(paginate = 0, page){
       await APIAxios.get(`/api/experiencias?paginate=${paginate}&page=${page}`).then((data) => {
-        this.experiences = data.data
-        this.links = data.data.links ? res.data.links : {};
-        this.meta = data.data.meta ? res.data.meta : {};
-        console.log(data.data)
+        this.experiences = data.data.data
+        this.links = data.data.links ? data.data.links : {};
+        this.meta = data.data.meta ? data.data.meta : {};
       }).catch((error) => {
         this.experiences = []
       })

@@ -28,6 +28,7 @@ const addPatientExist = ref(false)
 const formAddPatient = ref({})
 const showPlanFiled = ref(false)
 const showPatientFiled = ref(false)
+const verifyFiled = ref(false)
 const errorsForm = ref({})
 
 const headers = ['Nombre', 'Apellido', 'Edad', 'Sexo', 'Celular', 'Email', 'Objetivo', 'Acciones' ]
@@ -71,10 +72,14 @@ const ShowPatientsFiled = async (page) => {
     showPatientFiled.value = true;
     loading.value = false;
   }catch(error){
-    console.log(error)
     patients.value = []
   }
 }
+
+const VerifyFiled = async () => {
+  await patientStore.IndexPatient(1,1,0,true);
+  verifyFiled.value = patientStore.GetVerifyFiled;
+};
 
 const AddPatient = async () => {
   try {
@@ -144,13 +149,13 @@ const GetData = async (page = 1) => {
     showPatientFiled.value = false;
     loading.value = false;
   }catch(error){
-    console.log(error)
     patient.value = []
   }
 }
 
 onMounted(async () => {
   GetData();
+  VerifyFiled()
 });
 </script>
 
@@ -316,14 +321,16 @@ onMounted(async () => {
     <!--Botones de acciones-->
     <div class="grid grid-cols-2 justify-between">
       <div class="grid grid-flow-col auto-cols-max gap-2">
-        <AppButton
-          v-if="showPlanFiled && !showPatientFiled"
-          class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
-          type="button"
-          text="Pacientes archivados"
-          :icons="['fas', 'box-archive']"
-          @click="ShowPatientsFiled"
-        />
+        <template v-if="verifyFiled">
+          <AppButton
+            v-if="showPlanFiled && !showPatientFiled"
+            class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"
+            type="button"
+            text="Pacientes archivados"
+            :icons="['fas', 'box-archive']"
+            @click="ShowPatientsFiled"
+          />
+        </template>
         <AppButton
           v-if="showPlanFiled && showPatientFiled"
           class="bg-light-violet text-dark-violet border-0 p-1 hover:bg-dark-violet hover:text-light-violet"

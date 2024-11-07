@@ -173,7 +173,6 @@ const GetData = async () => {
             newlistRecipes.value = menuStore.GetMenu.recipes;
             form.value.recipes = []
             days.value = [1]
-            console.log(menuStore.GetMenu.recipes)
         }else if(props.type == 'semanal' || props.type == 'mensual'){
             await menuStore.ShowMenu(props.id)
             newlistRecipes.value = menuStore.GetMenu.menus[0];
@@ -186,7 +185,6 @@ const GetData = async () => {
                 form.value.timespan = 30
             }
         }
-        console.log()
         GetRecipes().then(() => {
             const selectedIds = newlistRecipes.value.map(recipe => recipe._id ?? recipe.id);
             listRecipes.value = recipeStore.GetRecipesList.filter(recipe => !selectedIds.includes(recipe._id ?? recipe.id));

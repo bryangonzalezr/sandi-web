@@ -20,7 +20,6 @@ const currentUser = JSON.parse(authUser.toString());
 const loadContactCard = async () => {
   loading.value = true;
   try {
-    console.log(currentUser.id)
     await contactCardStore.ShowContactCard(currentUser.id);
     contactCard.value = contactCardStore.contact_card;
 
@@ -113,7 +112,7 @@ onMounted(() => {
 
 <template>
   <AppButton
-    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 rounded-none rounded-b-lg"
+    class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 lg:rounded-none lg:rounded-b-lg"
     type="button"
     text="Volver"
     :icons="['fas', 'arrow-left']"
@@ -122,8 +121,8 @@ onMounted(() => {
   <div class="flex flex-col py-2 px-10 gap-y-5">
     <div class="flex justify-between">
       <div class="flex flex-col">
-        <div class="flex flex-row items-center gap-2">
-          <font-awesome-icon class="" :icon="['fas', 'address-book']"></font-awesome-icon><h1 class="uppercase text-2xl">Perfil de Contacto</h1>
+        <div class="flex items-center gap-2">
+          <font-awesome-icon class="" :icon="['fas', 'address-card']"></font-awesome-icon><h1 class="uppercase text-2xl">Tarjeta de Contacto</h1>
         </div>
         <h2>Tarjeta de contacto que podrán ver otros usuarios que no tienen nutricionista</h2>
       </div>

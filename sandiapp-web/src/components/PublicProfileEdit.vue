@@ -164,144 +164,135 @@ watch(selectedRegionOption, (selectedCommuneOption) => { selectedCommuneOption =
 </script>
 
 <template>
-  <div class="max-w mx-auto p-5">
-    <div class="mb-8 text-left">
-      <h1 class="text-2xl font-bold uppercase">Editar Panel Publicitario</h1>
-      <p class="text-gray-500 text-sm mt-1">
+  <div class="flex flex-col py-2 px-10 gap-y-5">
+    <div class="text-left">
+      <div class="flex items-center gap-2">
+          <font-awesome-icon class="" :icon="['fas', 'address-card']"></font-awesome-icon><h1 class="uppercase text-2xl">Editar Tarjeta de Contacto</h1>
+        </div>
+      <p class="text-sm">
         Actualiza la información para que los usuarios puedan conocerte y contactarte
       </p>
     </div>
-
-    <form @submit.prevent="saveContactCard" class="space-y-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <label class="block font-semibold text-gray-700 mb-2">Región</label>
-          <AppSelect
-            :options="regions.data"
-            v-model:selectedOption="selectedRegionOption"
-            value="ordinal"
-            optionText="name"
-            placeholder="Seleccione una región"
-            @update:selectedOption="handleRegionChange"
-            class="w-full bg-gray-100 rounded py-2"
-          />
-        </div>
-
-        <div>
-          <label class="block font-semibold text-gray-700 mb-2">Comuna</label>
-          <AppSelect
-            :options="communes"
-            value="id"
-            optionText="commune"
-            placeholder="Seleccione una comuna"
-            :disabled="!selectedOrdinal"
-            class="w-full bg-gray-100 rounded py-2"
-            @update:selectedOption="setValue('commune_id')"
-          />
-        </div>
-
-        <div>
-          <label class="block font-semibold text-gray-700 mb-2">Eslogan</label>
+    <form @submit.prevent="saveContactCard" class="flex flex-col gap-y-2">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div class="lg:col-span-2 lg:grid lg:grid-cols-4 lg:gap-x-2 gap-y-2 flex flex-col">
+              <AppSelect
+              :options="regions.data"
+              label="Región"
+              v-model:selectedOption="selectedRegionOption"
+              value="ordinal"
+              optionText="name"
+              placeholder="Seleccione una región"
+              @update:selectedOption="handleRegionChange"
+              class="w-full rounded"
+            />
+            <AppSelect
+              :options="communes"
+              label="Comuna"
+              value="id"
+              optionText="commune"
+              placeholder="Seleccione una comuna"
+              :disabled="!selectedOrdinal"
+              class="w-full rounded"
+              @update:selectedOption="setValue('commune_id')"
+            />
+            <div class="lg:col-span-2">
+              <AppInput
+                v-model="contactCard.address"
+                label="Dirección"
+                type="text" 
+                class="w-full rounded"
+                placeholder="Direccion..."
+              />
+            </div>
+          </div>
           <AppInput
             v-model="contactCard.slogan"
+            label="Eslogan"
             type="text" 
-            class="w-full bg-gray-100 rounded py-2"
+            class="w-full rounded"
             placeholder="Escribe tu slogan"
           />
-        </div>
-
-        <div>
-          <label class="block font-semibold text-gray-700 mb-2">Especialidad Principal</label>
           <AppInput
             v-model="contactCard.specialties"
+            label="Especialidad Principal"
             type="text" 
-            class="w-full bg-gray-100 rounded py-2"
+            class="w-full rounded"
             placeholder="Escribe tu especialidad"
           />
-        </div>
       </div>
-
-      <div>
-        <label class="block font-semibold text-gray-700 mb-2">Dirección</label>
-        <AppInput
-            v-model="contactCard.address"
-            type="text" 
-            class="w-full bg-gray-100 rounded py-2"
-            placeholder="Direccion..."
-          />
-      </div>
-
-      <div>
-        <label class="block font-semibold text-gray-700 mb-2">Descripción</label>
+      <div class="flex flex-col gap-y-2 py-3">
+        <label class="">Descripción</label>
         <textarea 
           v-model="contactCard.description" 
-          class="w-full bg-gray-100 border border-light-gray rounded px-3 py-2 h-24"
+          class="w-full border border-light-gray rounded px-3 py-2 h-24"
           placeholder="Descripción..."
+          maxlength="200"
         ></textarea>
       </div>
 
-      <div class="mt-6">
-          <h2 class="text-lg font-bold text-gray-800">Experiencia</h2>
+      <div class="flex flex-col gap-y-1">
+          <div class="flex gap-3">
+            <h2 class="text-lg font-bold text-gray-800">Experiencia</h2>
+            <AppButton 
+              @click="goExp" 
+              type="button" 
+              :icons="['fas', 'plus']"
+              class="text-dark-violet bg-light-violet border-0 hover:bg-dark-violet hover:text-light-violet h-fit"
+              text="Añadir Experiencia"
+            />
+          </div>
           <!-- Tabla de experiencias -->
-          <div class="overflow-x-auto mt-4">
+          <div class="overflow-x-auto mt-2">
             <table class="min-w-full border border-light-gray">
-              <thead class="bg-white">
-                <tr>
-                  <th class="px-4 py-2 border-b border-light-gray text-left text-sm font-semibold text-black">Tipo</th>
-                  <th class="px-4 py-2 border-b border-light-gray text-left text-sm font-semibold text-black">Título</th>
-                  <th class="px-4 py-2 border-b border-light-gray text-left text-sm font-semibold text-black">Organización</th>
-                  <th class="px-4 py-2 border-b border-light-gray text-left text-sm font-semibold text-black">Fecha de Inicio</th>
-                  <th class="px-4 py-2 border-b border-light-gray text-left text-sm font-semibold text-black">Fecha de Término</th>
-                  <th class="px-4 py-2 border-b border-light-gray text-left text-sm font-semibold text-black">Borrar Experiencia</th>
+              <thead class="bg-mid-beige">
+                <tr class="border-b border-b-extralight-beige">
+                  <th class="px-4 py-2 text-left text-sm">Tipo</th>
+                  <th class="px-4 py-2 text-left text-sm">Título</th>
+                  <th class="px-4 py-2 text-left text-sm">Organización</th>
+                  <th class="px-4 py-2 text-left text-sm">Fecha de Inicio</th>
+                  <th class="px-4 py-2 text-left text-sm">Fecha de Término</th>
+                  <th class="px-4 py-2 text-left text-sm">Borrar Experiencia</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(experience, index) in contactCard.experiences" :key="index" class="border-light-gray bg-white">
-                  <td class="px-4 py-2 text-sm text-black">{{ experience.type }}</td>
-                  <td class="px-4 py-2 text-sm text-black">{{ experience.title }}</td>
-                  <td class="px-4 py-2 text-sm text-black">{{ experience.institution }}</td>
-                  <td class="px-4 py-2 text-sm text-black">{{ experience.start_date }}</td>
-                  <td class="px-4 py-2 text-sm text-black">{{ experience.end_date || 'Actualidad' }}</td>
+                <tr v-for="(experience, index) in experiences" :key="index" class="border-b border-b-extralight-beige">
+                  <td class="px-4 py-2 text-sm">{{ experience.type }}</td>
+                  <td class="px-4 py-2 text-sm">{{ experience.title }}</td>
+                  <td class="px-4 py-2 text-sm">{{ experience.institution }}</td>
+                  <td class="px-4 py-2 text-sm">{{ experience.start_date }}</td>
+                  <td class="px-4 py-2 text-sm">{{ experience.end_date || 'Actualidad' }}</td>
                   <td class="px-4 py-2">
                     <AppButton
-                    class="bg-mid-red text-dark-red border-0 p-1"
+                    class="bg-mid-red text-dark-red border-0 hover:bg-mid-red hover:text-dark-red"
                     type="button"
                     text="Eliminar"
-                    :icons="['fas', 'x']"
+                    :icons="['fas', 'xmark']"
                     @click="EliminateExperience(experience.id)"
                   /></td>
                 </tr>
               </tbody>
             </table>
-            <AppPagination :meta="meta" :links="links" @handlePage="GetExperiences" />
           </div>
+          <AppPagination :meta="meta" :links="links" @handlePage="GetExperiences" />
         </div>
-
-      <div>
-        <AppButton 
-          @click="goExp" 
-          type="button" 
-          class="text-black bg-light-violet text-sm font-medium hover:underline"
-          text="+ Añadir Experiencia"
-        />
-      </div>
-
       <div v-if="isExperiencePopupOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
           <ContactCardExperience @close="closeExperiencePopup"/>
         </div>
       </div>
-
-      <div class="flex space-x-4 mt-8">
+      <div class="flex justify-end gap-3">
         <AppButton
           text="Guardar"
           type="submit"
-          class="bg-neutral-green text-white px-4 py-2 rounded hover:bg-light-green"
+          :icons="['fas', 'floppy-disk']"
+          class="bg-mid-green text-dark-green border-0 hover:bg-dark-green hover:text-mid-green h-fit"
         />
         <AppButton
           text="Cancelar"
           type="button"
-          class="bg-mid-red text-white px-4 py-2 rounded hover:bg-light-red"
+          :icons="['fas', 'circle-xmark']"
+          class="bg-mid-red text-dark-red border-0 hover:bg-dark-red hover:text-mid-red h-fit"
           @click="goBack"
         />
       </div>

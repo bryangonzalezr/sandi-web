@@ -238,10 +238,10 @@ onMounted(() => {
         :icons="['fas', 'save']"
         text="Guardar Consulta" />
         <AppButton 
-        class="bg-light-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-light-red"
+        class="bg-mid-red text-dark-red border-0 hover:bg-dark-red hover:text-mid-red p-1"
         type="button" 
         text="Cancelar" 
-        :icons="['fas', 'cancel']"
+        :icons="['fas', 'circle-xmark']"
         @click="goBack" />
       </div>
     </form>

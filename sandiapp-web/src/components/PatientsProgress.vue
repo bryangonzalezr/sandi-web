@@ -42,8 +42,6 @@ const loadData = async () => {
 
     const lastProgress = fetchedProgress[fetchedProgress.length - 1];
 
-    console.log('lastProgress:', lastProgress);
-
     if (lastProgress) {
       currentprogress.value = {
         nutritional_state: lastProgress.nutritional_state || "Desconocido",

@@ -16,7 +16,6 @@ const goToContactCard = () => {
 
 const GetData = async () => {
     dataProfile.value = authStore.userInfo
-    console.log(dataProfile.value)
 }
 
 onMounted(() => {
