@@ -22,6 +22,18 @@ const typesMethods = {
     'Harris-Benedict': 'Harris-Benedict'
 }
 
+/* ['desayuno', 'almuerzo', 'colacion', 'once', 'cena'] */
+const pauta = {
+    'desayuno' : 'desayuno',
+    'almuerzo' : 'almuerzo',
+    'colacion' : 'colación',
+    'once' : 'once',
+    'cena' : 'cena',
+    'free_foods': 'alimentos libres',
+    'forbidden_foods' : 'alimentos a evitar',
+    'general_recommendations': 'recomendaciones generales'
+}
+
 const patient = ref({})
 const plan = ref({})
 const requerimientos = ref({})
@@ -75,13 +87,13 @@ onMounted(() => {
             <div class="flex-1 flex flex-col gap-y-2 bg-light-green p-4 rounded-lg shadow-md lg:w-1/2">
                 <h3 class="uppercase font-semibold text-dark-green">Pauta asignada</h3>
                 <div>
-                    <template v-for="servicio in ['desayuno', 'almuerzo', 'colacion', 'once', 'cena']">
+                    <template v-for="(servicio,key) in pauta">
                         <div 
-                            v-if="plan[servicio] != null"
+                            v-if="plan[key] != null"
                             class="grid grid-cols-5 bg-white border border-light-gray rounded-lg mb-2"
                         >
                             <div class="capitalize border-r border-r-light-gray px-3 py-2 font-semibold text-dark-brown bg-neutral-beige rounded-l-lg">{{ servicio }}</div>
-                            <div class="px-3 py-2 col-span-4 text-dark-black">{{ plan[servicio] }}</div>
+                            <div class="px-3 py-2 col-span-4 text-dark-black">{{ plan[key] }}</div>
                         </div>
                     </template>
                     <div class="grid grid-cols-5 bg-white border border-light-gray rounded-lg">
