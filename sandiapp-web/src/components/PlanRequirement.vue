@@ -34,10 +34,10 @@ const typesMethods = [
     {
         text: 'Factorial paciente sano',
         value: 'Normal',
-        required: true
+        required: props.type_patient == 'Ambulatorio'
     },
     {
-        text: 'Facotorial paciente enfermo',
+        text: 'Factorial paciente enfermo',
         value: 'Factorial',
         required: props.type_patient == 'Enfermo'
     },
@@ -137,11 +137,11 @@ onMounted(() => {
         <div :class="selectedMethod.method == 'Harris-Benedict' ? 'grid grid-cols-2 gap-2' : ''">
             <AppSelect  
                 label="Método para calcular GEB"
-                :options="typesMethods"
+                :options="typesMethods.filter(method => method.required === true)"
                 :selectedOption="selectedMethod.method"
                 firstOptionValue="Selecciona el método"
-                value="text"
-                optionText="value"
+                value="value"
+                optionText="text"
                 @update:selectedOption="setValue('method')"
                 class="profile-edit"
             />

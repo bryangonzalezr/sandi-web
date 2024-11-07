@@ -52,9 +52,41 @@ const allergyTranslations = {
   'wheat-free': 'Trigo',
 };
 
+const enumPathology = {
+    'HiperMetabolismo Leve': 'HiperMetabolismo Leve',
+    'HiperMetabolismo Moderado': 'HiperMetabolismo Moderado',
+    'HiperMetabolismo': 'HiperMetabolismo',
+    'Edema Severo': 'Edema Severo',
+    'Ascitis': 'Ascitis',
+    'Desnutrición Leve': 'Desnutrición Leve',
+    'Desnutrición Moderada': 'Desnutrición Moderada',
+    'Desnutrición Severa': 'Desnutrición Severa',
+    'Desnutrición Sin Estrés': 'Desnutrición Sin Estrés',
+    'Tumor': 'Tumor',
+    'Leucemia / Linfoma': 'Leucemia / Linfoma',
+    'Infeccion': 'Infeccion',
+    'Sepsis / Abscesos': 'Sepsis / Abscesos',
+    'Quemadura 20%': 'Quemadura 20%',
+    'Quemadura 20-40%': 'Quemadura 20-40%',
+    'Quemadura 40-100%': 'Quemadura 40-100%',
+    'Enfermedad Pancreática': 'Enfermedad Pancreática',
+    'Enfermedad Inflamatoria Intestinal': 'Enfermedad Inflamatoria Intestinal',
+    'Cirugia Menor': 'Cirugia Menor',
+    'Cirugia Mayor': 'Cirugia Mayor',
+    'Cirugia General': 'Cirugia General',
+    'Politraumatismo': 'Politraumatismo',
+    'Politraumatismo y Sepsis': 'Politraumatismo y Sepsis',
+    'Transplante': 'Transplante',
+    'Ventilación Mecanica': 'Ventilación Mecanica',
+    }
+
 const translateAllergies = (allergies) => {
   return allergies.map(allergy => allergyTranslations[allergy] || allergy);
 };
+
+const translatePathology = (pathologies) => {
+  return pathologies.map(pathology => enumPathology[pathology] || pathology);
+}
 
 const goBack = () => {
   router.push({ name: 'Patients'});
@@ -253,7 +285,7 @@ onMounted(async () => {
               'Cirugías': nutritional_profile.morbid_antecedents?.cirugias,
               'Farmacos': nutritional_profile.morbid_antecedents?.farmacos,
               'Examenes': nutritional_profile.morbid_antecedents?.exams,
-              'Otros': nutritional_profile.otros?.length > 0 ? nutritional_profile.otros.join(', ') : 'No especificadas'
+              'Otros': nutritional_profile.morbid_antecedents?.otros.length > 0 ? translatePathology(nutritional_profile.morbid_antecedents.otros).join(', ') : 'No especificadas'
             }" :key="label" class="grid grid-cols-2 border-b last:border-b-0 border-light-gray">
               <div class="p-2 border-r border-neutral-gray">{{ label }}</div>
               <div class="p-2">{{ field || 'No especificado' }}</div>

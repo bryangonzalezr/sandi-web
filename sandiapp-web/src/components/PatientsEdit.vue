@@ -1,22 +1,17 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { useNutritionalProfileStore } from '@/stores';
-import AppButton from '@/common/AppButton.vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useNutritionalProfileStore } from '@/stores';
+import { getPathology } from '@/utilities'
+import 'vue-multiselect/dist/vue-multiselect.css';
+import VueMultiselect from 'vue-multiselect';
+import AppButton from '@/common/AppButton.vue';
 import AppSelect from '@/common/AppSelect.vue';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import VueMultiselect from 'vue-multiselect';
-import 'vue-multiselect/dist/vue-multiselect.css';
-import { watch } from 'vue';
-
-
-
 
 const router = useRouter();
 const patientStore = useNutritionalProfileStore();
 const loading = ref(true);
-
-
 
 const props = defineProps({
   id: {
@@ -24,8 +19,6 @@ const props = defineProps({
     required: true
   }
 });
-
-
 
 const user = ref({});
 const nutritional_profile = ref({
@@ -44,7 +37,8 @@ const nutritional_profile = ref({
     dislipidemia: false,
     insulin_resistance: false,
     cirugias: '',
-    farmacos: ''
+    farmacos: '',
+    otros: [],
   },
   subjective_assessment: {
     usual_weight: '',
@@ -97,17 +91,46 @@ const allergiesMapping = {
   'wheat-free': 'Trigo'
 };
 
+const enumPathology = {
+    'HiperMetabolismo Leve': 'HiperMetabolismo Leve',
+    'HiperMetabolismo Moderado': 'HiperMetabolismo Moderado',
+    'HiperMetabolismo': 'HiperMetabolismo',
+    'Edema Severo': 'Edema Severo',
+    'Ascitis': 'Ascitis',
+    'Desnutrición Leve': 'Desnutrición Leve',
+    'Desnutrición Moderada': 'Desnutrición Moderada',
+    'Desnutrición Severa': 'Desnutrición Severa',
+    'Desnutrición Sin Estrés': 'Desnutrición Sin Estrés',
+    'Tumor': 'Tumor',
+    'Leucemia / Linfoma': 'Leucemia / Linfoma',
+    'Infeccion': 'Infeccion',
+    'Sepsis / Abscesos': 'Sepsis / Abscesos',
+    'Quemadura 20%': 'Quemadura 20%',
+    'Quemadura 20-40%': 'Quemadura 20-40%',
+    'Quemadura 40-100%': 'Quemadura 40-100%',
+    'Enfermedad Pancreática': 'Enfermedad Pancreática',
+    'Enfermedad Inflamatoria Intestinal': 'Enfermedad Inflamatoria Intestinal',
+    'Cirugia Menor': 'Cirugia Menor',
+    'Cirugia Mayor': 'Cirugia Mayor',
+    'Cirugia General': 'Cirugia General',
+    'Politraumatismo': 'Politraumatismo',
+    'Politraumatismo y Sepsis': 'Politraumatismo y Sepsis',
+    'Transplante': 'Transplante',
+    'Ventilación Mecanica': 'Ventilación Mecanica',
+    }
+
 const allergiesInput = ref('');
-const recognizedAllergies = ref([]);
 const selectedAllergies = ref([]);
-
-
-
-
+const selectedPatology = ref([]);
 
 const options = Object.keys(allergiesMapping).map(key => ({
   value: key,
   label: allergiesMapping[key]
+}));
+
+const pathologyOptions = Object.keys(enumPathology).map(key => ({
+  value: key,
+  label: enumPathology[key]
 }));
 
 // Cargar los datos actuales del perfil al montar el componente
@@ -123,7 +146,7 @@ const loadPatientProfile = async () => {
     id: data.nutritional_profile?.id || null,
     habits: data.nutritional_profile?.habits || { alcohol: '', tabaco: '' },
     nutritional_anamnesis: data.nutritional_profile?.nutritional_anamnesis || { plan_anterior: false, agua: false },
-    morbid_antecedents: data.nutritional_profile?.morbid_antecedents || { dm2: false, hta: false, tiroides: false, dislipidemia: false, insulin_resistance: false, cirugias: '', farmacos: '' },
+    morbid_antecedents: data.nutritional_profile?.morbid_antecedents || { dm2: false, hta: false, tiroides: false, dislipidemia: false, insulin_resistance: false, cirugias: '', farmacos: '', otros:[] },
     subjective_assessment: data.nutritional_profile?.subjective_assessment || { usual_weight: '', weight_variation: '', gastrointestinal_symptoms: '', appetite: '', digestion: '' },
     allergies: data.nutritional_profile?.allergies || [],
     family_antecedents: data.nutritional_profile?.family_antecedents || { dm2: false, hta: false, tiroides: false, dislipidemia: false, comments: '' },
@@ -157,12 +180,20 @@ watch(selectedAllergies, (newAllergies) => {
   
 });
 
+watch(selectedPatology, (newPatology) => {
+  nutritional_profile.value.morbid_antecedents.otros = newPatology.map(patology => patology.value)
+})
+
 
 watch(nutritional_profile, (newProfile) => {
   selectedAllergies.value = newProfile.allergies.map(allergy => {
     return options.find(option => option.value === allergy);
   });
+  selectedPatology.value = newProfile.morbid_antecedents?.otros.map(patology => {
+    return pathologyOptions.find(option => option.value === patology);
+  })
 });
+
 
 
 </script>
@@ -370,6 +401,30 @@ watch(nutritional_profile, (newProfile) => {
                         <td class="px-6 py-4 w-1/2">Examenes</td>
                         <td class="px-6 py-4 w-1/2">
                           <textarea v-model="nutritional_profile.morbid_antecedents.exams" class="rounded" />
+                        </td>
+                      </tr>
+                      <tr class="bg-warm-beige">
+                        <td class="px-6 py-4 w-1/2">Otros</td>
+                        <td class="px-6 py-4 w-1/2">
+                          <VueMultiselect
+                            v-model="selectedPatology"
+                            :options="pathologyOptions"
+                            :close-on-select="false"
+                            :multiple="true"
+                            :clear-on-select="false"
+                            :show-labels="false"
+                            placeholder="Selecciona las patologias"
+                            label="label"
+                            track-by="value"
+                            class="bg-warm-beige border border-forest-green rounded"
+                          >
+                            <template #selection="{ values }">
+                              <div v-for="value in values" :key="value.value" class="multiselect__tag">
+                                {{ value.label }}
+                                <span class="multiselect__tag-icon" @click="selectedPatology.splice(selectedPatology.indexOf(value), 1)"></span>
+                              </div>
+                            </template>
+                          </VueMultiselect>
                         </td>
                       </tr>
                     </tbody>

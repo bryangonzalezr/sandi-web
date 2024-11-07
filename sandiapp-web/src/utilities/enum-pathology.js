@@ -1,0 +1,30 @@
+export const getPathology = () => {
+    const enumPathology = {
+    'HiperMetabolismo Leve': 'HiperMetabolismo Leve',
+    'HiperMetabolismo Moderado': 'HiperMetabolismo Moderado',
+    'HiperMetabolismo': 'HiperMetabolismo',
+    'Edema Severo': 'Edema Severo',
+    'Ascitis': 'Ascitis',
+    'Desnutrición Leve': 'Desnutrición Leve',
+    'Desnutrición Moderada': 'Desnutrición Moderada',
+    'Desnutrición Severa': 'Desnutrición Severa',
+    'Desnutrición Sin Estrés': 'Desnutrición Sin Estrés',
+    'Tumor': 'Tumor',
+    'Leucemia / Linfoma': 'Leucemia / Linfoma',
+    'Infeccion': 'Infeccion',
+    'Sepsis / Abscesos': 'Sepsis / Abscesos',
+    'Quemadura 20%': 'Quemadura 20%',
+    'Quemadura 20-40%': 'Quemadura 20-40%',
+    'Quemadura 40-100%': 'Quemadura 40-100%',
+    'Enfermedad Pancreática': 'Enfermedad Pancreática',
+    'Enfermedad Inflamatoria Intestinal': 'Enfermedad Inflamatoria Intestinal',
+    'Cirugia Menor': 'Cirugia Menor',
+    'Cirugia Mayor': 'Cirugia Mayor',
+    'Cirugia General': 'Cirugia General',
+    'Politraumatismo': 'Politraumatismo',
+    'Politraumatismo y Sepsis': 'Politraumatismo y Sepsis',
+    'Transplante': 'Transplante',
+    'Ventilación Mecanica': 'Ventilación Mecanica',
+    }
+    return enumPathology
+}
