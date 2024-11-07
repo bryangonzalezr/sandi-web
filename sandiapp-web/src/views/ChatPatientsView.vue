@@ -24,7 +24,7 @@ const messagesContainer = ref(null);
 const isPatientTyping = ref(false);
 const isPatientTypingTimer = ref(null);
 const form = ref({
-        message: '',
+    message: '',
 });
 const userPatient = ref({})
 const patientList = ref([])
@@ -35,31 +35,32 @@ const hover = ref(false);
 const lastMessages = ref({});
 const isLoading = ref(true);
 const isLoadingPatientList = ref(true);
+const pendingMessages = ref(new Set()); // Track pending messages
 
 // Function to format date/time
 const formatTime = (date) => {
-        return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
 const formatDate = (date) => {
-        return new Date(date).toLocaleDateString([], { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-        });
+    return new Date(date).toLocaleDateString([], { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
 };
 
 // Group messages by date
 const groupedMessages = computed(() => {
-        const groups = {};
-        messages.value.forEach(message => {
-                const date = formatDate(message.created_at);
-                if (!groups[date]) {
-                        groups[date] = [];
-                }
-                groups[date].push(message);
-        });
-        return groups;
+    const groups = {};
+    messages.value.forEach(message => {
+        const date = formatDate(message.created_at);
+        if (!groups[date]) {
+            groups[date] = [];
+        }
+        groups[date].push(message);
+    });
+    return groups;
 });
 
 const getLastMessage = (patientId) => {
@@ -142,12 +143,67 @@ const getData = async (id = props.id, filter=0) => {
 };
 
 const sendMessage = async (message, receiver_id) => {
-    const now = new Date().toISOString();
-    message.created_at = now;
-    await chatStore.SendMessage(message, receiver_id);
+    if (!message.message.trim()) return;
+
+    // Create temporary message object
+    const tempMessage = {
+        id: `temp-${Date.now()}`, // Temporary ID
+        text: message.message,
+        sender_id: currentUser.id,
+        receiver_id: receiver_id,
+        created_at: new Date().toISOString(),
+        pending: true
+    };
+
+    // Add to pending set
+    pendingMessages.value.add(tempMessage.id);
+
+    // Add message to local state immediately
+    messages.value.push(tempMessage);
+
+    // Clear input
     form.value.message = '';
-    await chatStore.ShowAllMessages(); // Refresh all messages after sending
+
+    try {
+        // Send to API
+        const response = await chatStore.SendMessage(
+            { message: tempMessage.text },
+            receiver_id
+        );
+
+    
+        
+        // Remove temporary message
+        const messageIndex = messages.value.findIndex(m => m.id === tempMessage.id);
+        if (messageIndex !== -1) {
+            messages.value.splice(messageIndex, 1);
+        }
+        
+
+        // Remove from pending set
+        pendingMessages.value.delete(tempMessage.id);
+
+        
+
+        // Refresh all messages
+        await chatStore.ShowMessage(receiver_id);
+        messages.value = chatStore.GetMessages;
+        await chatStore.ShowAllMessages();
+    } catch (error) {
+        // Handle error - mark message as failed
+        const messageIndex = messages.value.findIndex(m => m.id === tempMessage.id);
+        if (messageIndex !== -1) {
+            messages.value[messageIndex] = {
+                ...tempMessage,
+                pending: false,
+                failed: true
+            };
+        }
+        pendingMessages.value.delete(tempMessage.id);
+        console.error('Failed to send message:', error);
+    }
 };
+
 
 const sendTypingEvent = () => {
         echo.private(`chat.${props.id}`).whisper("typing", {
@@ -285,64 +341,75 @@ const allStoreMessages = computed(() => chatStore.GetAllMessages?.data || []);
 
                         <!-- Messages Content -->
                         <template v-else>
-                            <template v-for="(messageGroup, date) in groupedMessages" :key="date">
-                                <!-- Date separator -->
-                                <div class="flex justify-center my-4">
-                                    <div class="bg-gray-200 rounded-full px-4 py-1 text-sm text-gray-600">
-                                        {{ date }}
+                    <template v-for="(messageGroup, date) in groupedMessages" :key="date">
+                        <div class="flex justify-center my-4">
+                            <div class="bg-gray-200 rounded-full px-4 py-1 text-sm text-gray-600">
+                                {{ date }}
+                            </div>
+                        </div>
+                        
+                        <template v-for="message in messageGroup" :key="message.id">
+                            <div class="flex mb-2" :class="message.sender_id === currentUser.id ? 'justify-end' : 'justify-start'">
+                                <div class="flex flex-col px-2 py-3 rounded-2xl shadow-md max-w-[60%]" 
+                                    :class="[
+                                        message.sender_id === currentUser.id ? 'bg-light-green rounded-tr-none' : 'bg-light-gray rounded-tl-none',
+                                        { 'opacity-70': message.pending },
+                                        { 'bg-red-100': message.failed }
+                                    ]"
+                                >
+                                    <div class="w-full text-black">{{ message.text }}</div>
+                                    <div v-if="message.pending" class="text-xs text-gray-500">
+                                        Enviando...
                                     </div>
-                                </div>
-                                
-                                <!-- Messages for this date -->
-                                <template v-for="message in messageGroup" :key="message.id">
-                                    <div class="flex mb-2" :class="message.sender_id === currentUser.id ? 'justify-end' : 'justify-start'">
-                                        <div class="flex flex-col px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-light-green" 
-                                            :class="message.sender_id === currentUser.id ? 'rounded-tr-none' : 'rounded-tl-none'"
-                                        >
-                                            <div class="w-full text-black">{{ message.text }}</div>
-                                        </div>
+                                    <div v-if="message.failed" class="text-xs text-red-500">
+                                        Error al enviar. Toca para reintentar.
                                     </div>
-                                    <div class="text-xs text-gray-500 mt-1 self-end" :class="message.sender_id === currentUser.id ? 'text-right' : 'text-left'">
-                                        {{ formatTime(message.created_at) }}
-                                    </div>
-                                </template>
-                            </template>
-
-                            <div class="flex mb-2 justify-start" v-if="isPatientTyping">
-                                <div class="flex px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-white rounded-tl-none opacity-70">
-                                    <div class="w-full text-black">{{ userPatient.name }} está escribiendo...</div>
                                 </div>
                             </div>
+                            <div class="text-xs text-gray-500 mt-1 self-end" 
+                                :class="message.sender_id === currentUser.id ? 'text-right' : 'text-left'">
+                                {{ formatTime(message.created_at) }}
+                            </div>
                         </template>
+                    </template>
+
+                    <div class="flex mb-2 justify-start" v-if="isPatientTyping">
+                        <div class="flex px-2 py-3 rounded-2xl shadow-md max-w-[60%] bg-white rounded-tl-none opacity-70">
+                            <div class="w-full text-black">{{ userPatient.name }} está escribiendo...</div>
+                        </div>
                     </div>
-                        <form @submit.prevent="sendMessage(form, props.id)">
-                                <div class="bg-white py-4 px-2 shadow-2xl flex rounded-full">
-                                        <input 
-                                                class="input-message w-full text-wrap rounded-full"
-                                                :class="showFiled ? 'cursor-not-allowed': ''"
-                                                type="text"
-                                                placeholder="Escribe un mensaje..."
-                                                :disabled="showFiled"
-                                                @keydown="sendTypingEvent"
-                                                v-model="form.message"
-                                                @update:modelValue="setValue('message')"
-                                        />
-                                        <div class="px-4">
-                                                <button class="bg-pink px-4 py-2 rounded-full disabled:opacity-50" type="submit" :disabled="form.message == ''">
-                                                        <font-awesome-icon :icon="['fas', 'arrow-right']" />
-                                                </button>
-                                        </div>
-                                </div>
-                        </form>
+                </template>
+            </div>
+            <form @submit.prevent="sendMessage(form, props.id)">
+                <div class="bg-white py-4 px-2 shadow-2xl flex rounded-full">
+                    <input 
+                        class="input-message w-full text-wrap rounded-full"
+                        :class="showFiled ? 'cursor-not-allowed': ''"
+                        type="text"
+                        placeholder="Escribe un mensaje..."
+                        :disabled="showFiled"
+                        @keydown="sendTypingEvent"
+                        v-model="form.message"
+                        @update:modelValue="setValue('message')"
+                    />
+                    <div class="px-4">
+                        <button class="bg-pink px-4 py-2 rounded-full disabled:opacity-50" 
+                                type="submit" 
+                                :disabled="form.message.trim() === ''">
+                            <font-awesome-icon :icon="['fas', 'arrow-right']" />
+                        </button>
+                    </div>
                 </div>
+            </form>
         </div>
+    </div>
 </template>
 
 <style lang="postcss" scoped>
-.input-message{
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        outline: none;
+.input-message {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
 }
 </style>
