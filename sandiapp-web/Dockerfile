@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 5173
 
 # Define el comando por defecto para ejecutar la aplicación
-CMD ["npm", "run", "preview" "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]

@@ -258,14 +258,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    
+  <AppButton
+      class="w-fit bg-light-gray border-0 px-3 mx-6 mb-5 rounded-none rounded-b-lg"
+      type="button"
+      text="Volver"
+      :icons="['fas', 'arrow-left']"
+      @click="goBack"
+    />
+  <div class="flex flex-col py-2 px-10 gap-y-5">
     <div v-if="loading" class="flex justify-center items-center">
-      <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
-      <span class="visually-hidden">  Loading...</span>
+      <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+      <span class="visually-hidden">  Cargando...</span>
     </div>
 
     <div v-else-if="!progress.length">
+      <div class="flex flex-col">
+        <h1 class="text-2xl flex items-center gap-2">
+          <font-awesome-icon :icon="['fas', 'chart-line']" class="text-black" />
+          Progreso
+        </h1>
+      </div>
       <p class="text-center text-xl font-bold mt-4">No tiene progreso registrado.</p>
       <div class="grid grid-flow-col auto-cols-max gap-2 justify-center mt-4">
         <AppButton 
@@ -275,45 +287,37 @@ onMounted(() => {
           :icons="['fas', 'plus']" 
           @click="goToConsults" 
         />
-        <AppButton 
-          class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
-          type="button" 
-          text="Volver al perfil"
-          :icons="['fas', 'arrow-left']" 
-          @click="goBack" 
-        />
       </div>
     </div>
-    <div v-if="progress.length">
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <h2 class="text-lg font-bold">Estado Nutricional: {{ currentprogress.nutritional_state }}</h2>
-          <p>Peso: {{ currentprogress.weight }} kg</p>
-          <p>Altura: {{ currentprogress.height }} m</p>
-          <p>IMC: {{ currentprogress.imc }}</p>
-          <p>Grasa: {{ currentprogress.fat_percentage }}%</p>
-          <p>Musculatura: {{ currentprogress.muscular_percentage }}%</p>
+    <div v-if="progress.length" class="flex flex-col gap-y-6">
+      <div class="flex justify-between">
+        <div class="flex flex-col">
+          <h1 class="text-2xl flex items-center gap-2">
+            <font-awesome-icon :icon="['fas', 'chart-line']" class="text-black" />
+            Progreso
+          </h1>
         </div>
-
-        <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
-          <AppButton 
-            class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
-            type="button" 
-            text="Ir a consultas"
-            :icons="['fas', 'eye']" 
-            @click="goToConsults" 
-          />
-          <AppButton 
-            class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
-            type="button" 
-            text="Volver"
-            :icons="['fas', 'arrow-left']" 
-            @click="goBack" 
-          />
+        <AppButton 
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
+          type="button" 
+          text="Agregar Antropometría"
+          :icons="['fas', 'plus']" 
+          @click="goToConsults" 
+        />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="col-span-2 text-xl">Últimas medidas</div>
+        <div>
+          <h2 class="text-base">Estado Nutricional: {{ currentprogress.nutritional_state }}</h2>
+          <p class="text-base">Peso: {{ currentprogress.weight }} kg</p>
+          <p class="text-base">Altura: {{ currentprogress.height }} m</p>
+          <p class="text-base">IMC: {{ currentprogress.imc }}</p>
+          <p class="text-base">Grasa: {{ currentprogress.fat_percentage }}%</p>
+          <p class="text-base">Musculatura: {{ currentprogress.muscular_percentage }}%</p>
         </div>
       </div>
 
-      <div class="mt-8">
+      <div class="mt-2">
         <h2 class="text-xl font-bold mb-4">Gráficas de Progreso</h2>
         <div class="grid grid-cols-2 gap-4">
           <div class="h-64">

@@ -122,7 +122,7 @@ onMounted(async () => {
         <AppButton
           class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
           type="button"
-          text="Agregar consulta"
+          text="Agregar Antropometría"
           :icons="['fas', 'plus']"
           @click="goToConsult"
         />

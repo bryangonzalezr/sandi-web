@@ -377,7 +377,7 @@ onMounted(async () => {
 
     <div v-if="loading" class="flex justify-center items-center">
       <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
-      <span class="visually-hidden">  Loading...</span>
+      <span class="visually-hidden">  Cargando...</span>
     </div>
 
     <div v-else>
