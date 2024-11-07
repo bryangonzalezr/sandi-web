@@ -149,7 +149,7 @@ const GetData = async (page = 1) => {
     showPatientFiled.value = false;
     loading.value = false;
   }catch(error){
-    patient.value = []
+    patients.value = []
   }
 }
 
