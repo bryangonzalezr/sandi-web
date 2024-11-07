@@ -54,6 +54,10 @@ const props = defineProps({
   classOption: {
     type: String,
     default: '',
+  },
+  optionRequired: {
+    type: String,
+    default: false,
   }
 });
 
@@ -105,14 +109,25 @@ const changeSelect = () => {
         </template>
         <template
           v-else>
-          <option
-            v-for="option in options"
-            :key="option[props.value]"
-            :value="option[props.value]"
-            :selected="option[props.value] == props.selectedOption"
-          >
-            {{ option[props.optionText] }}
-        </option>
+          <template v-for="option in options" :key="option[props.value]">
+            <template v-if="props.optionRequired">
+              <option
+                  v-if="option[props.optionRequired]"
+                  :value="option[props.value]"
+                  :selected="option[props.value] == props.selectedOption"
+              >
+                  {{ option[props.optionText] }}
+              </option>
+            </template>
+            <template v-else>
+              <option
+                  :value="option[props.value]"
+                  :selected="option[props.value] == props.selectedOption"
+              >
+                  {{ option[props.optionText] }}
+              </option>
+            </template>
+          </template>
         </template>
       </select>
     </div>

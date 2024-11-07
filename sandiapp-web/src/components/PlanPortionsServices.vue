@@ -45,7 +45,7 @@ const food = {
     "lacteos_mg": "Lácteos medios en grasas",
     "lacteos_bg": "Lácteos bajos en grasas",
     "aceites_grasas": "Aceites y Grasas",
-    "alim_ricos_lipidos": "Ricos en lípidos",
+    "alim_ricos_lips": "Ricos en lípidos",
     "azucares": "Azúcares", 
 }
 
@@ -192,7 +192,7 @@ const dataResults = (service) => {
         portionsFood[service].lacteos_mg = props.portionsServices[service].lacteos_mg
         portionsFood[service].lacteos_bg = props.portionsServices[service].lacteos_bg
         portionsFood[service].aceites_grasas = props.portionsServices[service].aceites_grasas
-        portionsFood[service].alim_ricos_lips = props.portionsServices[service].alim_ricos_lips
+        portionsFood[service].alim_ricos_lipidos = props.portionsServices[service].alim_ricos_lips
         portionsFood[service].azucares = props.portionsServices[service].azucares
         portionsFood[service].total_calorias = props.portionsServices[service].total_calorias
     }
@@ -314,7 +314,7 @@ onMounted(() => {
         <AppButton
           text="Siguiente"
           @click="Next()"
-          :disabled="Object.values(totales).some(total => total === 0)"
+          :disabled="(totales.almuerzo == 0)"
         />
       </div>
     </div>

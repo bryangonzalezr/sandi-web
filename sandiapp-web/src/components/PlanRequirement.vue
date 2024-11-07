@@ -30,28 +30,7 @@ const emit = defineEmits(["goToStep", 'getRequirements']);
 
 const planStore = usePlanStore();
 
-const typesMethods = [
-    {
-        text: 'Factorial paciente sano',
-        value: 'Normal',
-        required: props.type_patient == 'Ambulatorio'
-    },
-    {
-        text: 'Factorial paciente enfermo',
-        value: 'Factorial',
-        required: props.type_patient == 'Enfermo'
-    },
-    {
-        text: 'FAO/OMS/ONU',
-        value: 'FAO/OMS/ONU',
-        required: true
-    },
-    {
-        text: 'Harris-Benedict',
-        value: 'Harris-Benedict',
-        required: props.type_patient == 'Enfermo'
-    },
-  ]
+const typesMethods = ref([])
 
 const typesRest = {
     'Absoluto' : 'Absoluto (cama)',
@@ -119,7 +98,33 @@ watch(() => props.requirementsResult, () => {
   getData()
 })
 
+watch(() => props.type_patient, () => {
+  typesMethods.value = [
+    {
+        text: 'Factorial paciente sano',
+        value: 'Normal',
+        required: props.type_patient == 'Ambulatorio'
+    },
+    {
+        text: 'Factorial paciente enfermo',
+        value: 'Factorial',
+        required: props.type_patient == 'Enfermo'
+    },
+    {
+        text: 'FAO/OMS/ONU',
+        value: 'FAO/OMS/ONU',
+        required: props.type_patient == 'Ambulatorio'
+    },
+    {
+        text: 'Harris-Benedict',
+        value: 'Harris-Benedict',
+        required: props.type_patient == 'Enfermo'
+    },
+  ]
+})
+
 onMounted(() => {
+  typesMethods.value = typesMethods.value.filter(method => method.required === true)
   if('get' in props.requirementsResult){
     getData()
   }
@@ -137,11 +142,12 @@ onMounted(() => {
         <div :class="selectedMethod.method == 'Harris-Benedict' ? 'grid grid-cols-2 gap-2' : ''">
             <AppSelect  
                 label="Método para calcular GEB"
-                :options="typesMethods.filter(method => method.required === true)"
+                :options="typesMethods"
                 :selectedOption="selectedMethod.method"
                 firstOptionValue="Selecciona el método"
                 value="value"
                 optionText="text"
+                optionRequired="required"
                 @update:selectedOption="setValue('method')"
                 class="profile-edit"
             />

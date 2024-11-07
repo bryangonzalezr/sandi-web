@@ -48,21 +48,19 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col py-2 px-10 gap-y-5">
+    <AppButton
+      class="w-fit bg-light-gray border-0 px-3 mx-6 rounded-none rounded-b-lg"
+      type="button"
+      text="Volver"
+      :icons="['fas', 'arrow-left']"
+      @click="goBack"
+    />
+    <div class="flex flex-col px-10 gap-y-5">
         <div class="flex flex-col">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2 mt-6 mb-4">
                     <font-awesome-icon :icon="['fas', 'book']"/>
                     <h1 class="text-2xl font-bold">Pauta</h1>
-                </div>
-                <div class="mt-4">
-                        <AppButton 
-                        type="button"
-                        class="bg-mid-red text-dark-red hover:bg-mid-red px-4 py-2 rounded border-0 flex items-center gap-2"
-                        text="Volver"
-                        :icons="['fas', 'reply']"
-                        @click="goBack"
-                    />
                 </div>
             </div>
             <div class="bg-light-violet p-4 rounded-lg mt-2 flex items-center shadow-inner w-fit">
@@ -72,9 +70,9 @@ onMounted(() => {
                 </span>
             </div>
         </div>
-        <div class="flex flex-wrap gap-6">
+        <div class="flex flex-col lg:flex-row flex-wrap gap-6">
             <!-- Pauta -->
-            <div class="flex-1 flex flex-col gap-y-2 bg-light-green p-4 rounded-lg shadow-md">
+            <div class="flex-1 flex flex-col gap-y-2 bg-light-green p-4 rounded-lg shadow-md lg:w-1/2">
                 <h3 class="uppercase font-semibold text-dark-green">Pauta asignada</h3>
                 <div>
                     <template v-for="servicio in ['desayuno', 'almuerzo', 'colacion', 'once', 'cena']">
@@ -94,7 +92,7 @@ onMounted(() => {
             </div>
 
             <!-- Requerimientos -->
-            <div class="flex flex-col gap-y-2 bg-light-green p-4 rounded-lg shadow-md max-w-fit">
+            <div class="flex flex-col gap-y-2 bg-light-green p-4 rounded-lg shadow-md lg:w-1/2">
                 <h3 class="uppercase font-semibold text-dark-green">Requerimientos calculados</h3>
                 <div class="inline-grid gap-0">
                     <div class="grid grid-cols-5 bg-white border border-light-gray rounded-lg mb-2">

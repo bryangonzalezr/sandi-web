@@ -318,7 +318,7 @@ onMounted(() => {
             <AppButton
               text="Finalizar"
               @click="Finish()" 
-              :disabled="(Pauta.desayuno == '' || Pauta.almuerzo == '' || (Pauta.colacion == '' && Pauta.once == '' && Pauta.cena == ''))"
+              :disabled="(Pauta.almuerzo == '')"
             />
         </div>
     </div>
