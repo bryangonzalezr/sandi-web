@@ -269,14 +269,14 @@ onMounted(() => {
       <p class="text-center text-xl font-bold mt-4">No tiene progreso registrado.</p>
       <div class="grid grid-flow-col auto-cols-max gap-2 justify-center mt-4">
         <AppButton 
-          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+          class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
           type="button" 
           text="Crear Consulta"
           :icons="['fas', 'plus']" 
           @click="goToConsults" 
         />
         <AppButton 
-          class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+          class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
           type="button" 
           text="Volver al perfil"
           :icons="['fas', 'arrow-left']" 
@@ -297,14 +297,14 @@ onMounted(() => {
 
         <div class="grid grid-flow-col auto-cols-max gap-2 justify-self-end">
           <AppButton 
-            class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+            class="bg-mid-green text-dark-green border-0 p-1 hover:bg-dark-green hover:text-mid-green"
             type="button" 
             text="Ir a consultas"
             :icons="['fas', 'eye']" 
             @click="goToConsults" 
           />
           <AppButton 
-            class="bg-forest-green text-black border-forest-green enabled:hover:bg-white enabled:hover:text-black enabled:hover:border-black" 
+            class="bg-mid-red text-dark-red border-0 p-1 hover:bg-dark-red hover:text-mid-red"
             type="button" 
             text="Volver"
             :icons="['fas', 'arrow-left']" 
