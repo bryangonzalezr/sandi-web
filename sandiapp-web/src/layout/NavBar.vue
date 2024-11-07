@@ -14,8 +14,8 @@ const currentUser = JSON.parse(authUser.toString());
 const firstPatient = ref(null);
 const navLinks = ref([])
 
-const Logout = () => {
-  authStore.Logout();
+const Logout = async () => {
+  await authStore.Logout();
 }
 
 const GetData = async () => {

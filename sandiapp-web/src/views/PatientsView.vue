@@ -201,8 +201,8 @@ onMounted(async () => {
               v-model="formAddPatient.name"
               label="Nombre:"
               placeholder="Nombre"
-              :error="errorsForm.name ? true : false"
-              :errorMessage="errorsForm.name"
+              :error="errorsForm?.name ? true : false"
+              :errorMessage="errorsFor?.name"
               @update:modelValue="setValue('name')"
             />
             <AppInput
@@ -210,8 +210,8 @@ onMounted(async () => {
               v-model="formAddPatient.last_name"
               label="Apellido:"
               placeholder="Apellido"
-              :error="errorsForm.last_name ? true : false"
-              :errorMessage="errorsForm.last_name"
+              :error="errorsForm?.last_name ? true : false"
+              :errorMessage="errorsForm?.last_name"
               @update:modelValue="setValue('last_name')"
             />
             <AppInput
@@ -219,8 +219,8 @@ onMounted(async () => {
               v-model="formAddPatient.phone_number"
               label="Celular:"
               placeholder="Número"
-              :error="errorsForm.phone_number ? true : false"
-              :errorMessage="errorsForm.phone_number"
+              :error="errorsForm?.phone_number ? true : false"
+              :errorMessage="errorsForm?.phone_number"
               @update:modelValue="setValue('phone_number')"
             />
             <div class="flex flex-col"> 
@@ -236,7 +236,7 @@ onMounted(async () => {
                 select-text="Seleccionar"
                 :enable-time-picker="false"
                 :day-names="['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do']"
-                :state="errorsForm.birthdate ? false : null"
+                :state="errorsForm?.birthdate ? false : null"
               />
             </div>
             <AppSelect
@@ -244,8 +244,8 @@ onMounted(async () => {
               :options="getSex()"
               firstOptionValue="Selecciona tu sexo"
               :disabledFirstOption='true' 
-              :error="errorsForm.sex ? true : false"
-              :errorMessage="errorsForm.sex"
+              :error="errorsForm?.sex ? true : false"
+              :errorMessage="errorsForm?.sex"
               @update:selectedOption="setValue('sex')"
             />
             <AppSelect
@@ -253,8 +253,8 @@ onMounted(async () => {
               :options="getCivilstatus()"
               firstOptionValue="Selecciona tu estado civil"
               :disabledFirstOption='true' 
-              :error="errorsForm.civil_status ? true : false"
-              :errorMessage="errorsForm.civil_status"
+              :error="errorsForm?.civil_status ? true : false"
+              :errorMessage="errorsForm?.civil_status"
               @update:selectedOption="setValue('civil_status')"
             />
             <AppInput
@@ -262,8 +262,8 @@ onMounted(async () => {
               v-model="formAddPatient.email"
               label="Correo:"
               placeholder="Correo"
-              :error="errorsForm.email ? true : false"
-              :errorMessage="errorsForm.email"
+              :error="errorsForm?.email ? true : false"
+              :errorMessage="errorsForm?.email"
               @update:modelValue="setValue('email')"
             />
             <AppTextarea
@@ -272,8 +272,8 @@ onMounted(async () => {
               :maxlength="200"
               label="Objetivo:"
               placeholder="Objetivo"
-              :error="errorsForm.objetives ? true : false"
-              :errorMessage="errorsForm.objetives"
+              :error="errorsForm?.objetives ? true : false"
+              :errorMessage="errorsForm?.objetives"
               @update:modelValue="setValue('objetives')"
             />
             <div class="col-span-2 justify-self-center">
@@ -295,8 +295,8 @@ onMounted(async () => {
             v-model="formAddPatient.email"
             label="Correo:"
             placeholder="Correo"
-            :error="errorsForm.email ? true : false"
-            :errorMessage="errorsForm.email"
+            :error="errorsForm?.email ? true : false"
+            :errorMessage="errorsForm?.email"
             @update:modelValue="setValue('email')"
           />
           <div class="col-span-2 justify-self-center">

@@ -51,14 +51,16 @@ export const usePatientsStore = defineStore('patients',{
     },
 
     async RegisterPatient(form) {
-      await APIAxios.post(`/api/paciente`, form);
-      Swal.fire({
-        title: "Se ha registrado al paciente con exito",
-        icon: "success",
-        timer: 1000,
-        showConfirmButton: false,
-        heightAuto: false,
-      });
+      await APIAxios.post(`/api/paciente`, form).then(() => {
+        Swal.fire({
+          title: "Se ha registrado al paciente con exito",
+          icon: "success",
+          timer: 1000,
+          showConfirmButton: false,
+          heightAuto: false,
+        });
+      })
+      
     },
 
     async AssociatePatient(email) {
