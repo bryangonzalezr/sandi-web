@@ -106,7 +106,6 @@ const saveConsult = async () => {
     consultData.date = fecha.value;
     consultData.patient_id = parseInt(props.id);
     try {
-      console.log('entra')
       await consultStore.saveConsult(props.id, consultData);
     }finally {
       isSubmitting.value = false;

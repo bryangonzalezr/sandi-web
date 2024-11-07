@@ -45,7 +45,7 @@ const selectedMethod = reactive({
 })
 
 const viewResults = ref(false)
-
+const loading = ref(false)
 const Results = reactive({})
 
 const Next = () =>{
@@ -63,15 +63,19 @@ const setValue = (value) => {
 }
 
 const getResult = async (method) => {
+  loading.value = true
   await planStore.CreateRequeriments(method)
   Results.value = planStore.GetRequirements.data.data;
+  loading.value = false
   viewResults.value = true;
 }
 
 const getData = () => {
+  loading.value = true;
   Results.value = props.requirementsResult
   selectedMethod.method = props.lastMethod.method
   selectedMethod.rest_type = props.lastMethod.rest_type
+  loading.value = false;
   viewResults.value = true;
 }
  
@@ -160,7 +164,11 @@ onMounted(() => {
                 @update:selectedOption="setValue('rest_type')"
             />
         </div>
-        <div v-if="viewResults"
+        <div v-if="loading" class="flex justify-center items-center">
+          <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+          <span class="visually-hidden">  Cargando...</span>
+        </div>
+        <div v-if="!loading && viewResults"
           class="flex flex-col w-full"
         >
           <div class="border border-black p-2 bg-neutral-violet">Resultados</div>

@@ -37,6 +37,7 @@ const pauta = {
 const patient = ref({})
 const plan = ref({})
 const requerimientos = ref({})
+const loading = ref(false)
 
 const goBack = () => {
   router.push({name: 'PatientsShow', params: {id: props.id}});
@@ -44,12 +45,15 @@ const goBack = () => {
 
 const getData = async () => {
     try{
+        loading.value = true;
         await patientsStore.ShowPatient(props.id);
         await planStore.ShowPauta(props.id);
         patient.value = patientsStore.GetPatient.user
         plan.value = planStore.GetPauta;
         requerimientos.value = planStore.GetPauta.nutritional_requirement
+        loading.value = false;
     }catch(error){
+        loading.value = false;
         console.log(error)
     }
 }
@@ -82,7 +86,11 @@ onMounted(() => {
                 </span>
             </div>
         </div>
-        <div class="flex flex-col lg:flex-row flex-wrap gap-6">
+        <div v-if="loading" class="flex justify-center items-center">
+          <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+          <span class="visually-hidden">  Cargando...</span>
+        </div>
+        <div v-else class="flex flex-col lg:flex-row flex-wrap gap-6">
             <!-- Pauta -->
             <div class="flex-1 flex flex-col gap-y-2 bg-light-green p-4 rounded-lg shadow-md lg:w-1/2">
                 <h3 class="uppercase font-semibold text-dark-green">Pauta asignada</h3>

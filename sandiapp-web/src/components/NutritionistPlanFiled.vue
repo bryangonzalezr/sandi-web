@@ -83,7 +83,7 @@ onMounted(() => {
     <!-- Título sección -->
     <div class="flex flex-col">
       <div class="flex items-center gap-2">
-        <font-awesome-icon class="" :icon="['fas', 'box-archive']"></font-awesome-icon><h1 class="uppercase text-2xl">Tarjeta de Contacto</h1>
+        <font-awesome-icon class="" :icon="['fas', 'box-archive']"></font-awesome-icon><h1 class="uppercase text-2xl">Planes archivados</h1>
       </div>
     </div>
 
@@ -108,8 +108,8 @@ onMounted(() => {
 
     <!-- Loading spinner -->
     <div v-if="loading" class="flex justify-center items-center">
-      <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
-      <span class="visually-hidden">Loading...</span>
+      <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+      <span class="visually-hidden">  Cargando...</span>
     </div>
 
     <!-- Tabla de planes -->

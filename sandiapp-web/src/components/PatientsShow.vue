@@ -118,7 +118,6 @@ const GetData = async () => {
     await patientStore.ShowProgress(props.id);
     user.value = perfilStore.GetData.user;
     nutritional_profile.value = perfilStore.GetData.nutritional_profile;
-    console.log(nutritional_profile.value)
     if(perfilStore.GetData.nutritional_plan){
       createPlan.value = perfilStore.GetData.nutritional_plan.length == 0 ? false : true;
     }
@@ -206,8 +205,8 @@ onMounted(async () => {
     </div>
 
     <div v-if="loading" class="flex justify-center items-center">
-      <div class="animate-spin w-8 h-8 border-4 border-t-forest-green border-b-red border-l-transparent border-r-transparent rounded-full"></div>
-      <span class="visually-hidden">Cargando...</span>
+      <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+      <span class="visually-hidden">  Cargando...</span>
     </div>
 
     <div v-else class="grid grid-cols-2 gap-4">

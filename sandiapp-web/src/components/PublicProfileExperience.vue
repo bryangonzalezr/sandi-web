@@ -73,7 +73,10 @@ onMounted(() => {
     <!-- Contenedor principal del pop-up -->
     <div class="bg-white w-full max-w-2xl mx-auto rounded-lg p-6 space-y-4 border border-neutral-beige">
       <!-- Mensaje de carga -->
-      <div v-if="loading" class="text-center text-black">Cargando tipos de experiencia...</div>
+      <div v-if="loading" class="flex justify-center items-center">
+        <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+        <span class="visually-hidden">  Cargando...</span>
+      </div>
       
       <!-- Contenido del formulario -->
       <div v-else>

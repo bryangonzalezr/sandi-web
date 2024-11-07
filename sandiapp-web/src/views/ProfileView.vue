@@ -9,13 +9,16 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const dataProfile = ref({})
+const loading = ref(false)
 
 const goToContactCard = () => {
   router.push({ name: 'PublicProfile' })
 }
 
 const GetData = async () => {
+    loading.value = true
     dataProfile.value = authStore.userInfo
+    loading.value = false
 }
 
 onMounted(() => {
@@ -41,7 +44,11 @@ onMounted(() => {
                 />
             </div>
         </div>
-        <div class="flex flex-col">
+        <div v-if="loading" class="flex justify-center items-center">
+          <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+          <span class="visually-hidden">  Cargando...</span>
+        </div>
+        <div class="flex flex-col" v-else>
             <div class="bg-neutral-beige rounded-t p-2">
                Mis datos
             </div>

@@ -102,7 +102,6 @@ const SaveRecipe = async() => {
 const GetData = async () => {
   await recipeStore.ShowRecipe(props.id)
   recipe.value = recipeStore.GetRecipe;
-  console.log(recipe.value)
 }
 
 onMounted(async () => {

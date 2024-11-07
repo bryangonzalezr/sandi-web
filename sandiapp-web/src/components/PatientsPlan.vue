@@ -53,7 +53,6 @@ const goToStep = (step) => {
 }
 
 const getRequirements = async (method) => {
-  console.log(method)
   await planStore.CreateRequeriments(method)
   await planStore.CreateIndicadores()
   lastMethodResult.value = method

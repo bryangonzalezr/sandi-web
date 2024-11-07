@@ -141,7 +141,10 @@ onMounted(() => {
           />
       </div>
     </div>
-    <div v-if="loading" class="text-center text-gray-500">Cargando...</div>
+    <div v-if="loading" class="flex justify-center items-center">
+      <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+      <span class="visually-hidden">  Cargando...</span>
+    </div>
     <div v-else>
       <div v-if="contactCard" class="flex flex-col gap-y-3">
         <div>
