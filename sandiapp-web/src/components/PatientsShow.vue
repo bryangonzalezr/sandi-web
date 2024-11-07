@@ -227,7 +227,7 @@ onMounted(async () => {
               'Estado Civil': user.civil_status,
               'Objetivo': user.objectives,
               'Alergias': nutritional_profile.allergies?.length > 0 ? translateAllergies(nutritional_profile.allergies).join(', ') : 'No especificadas',
-              'Estado Físico': nutritional_profile.physical_status
+              'Estado Físico': nutritional_profile?.physical_status
             }" :key="label" class="grid grid-cols-2 border-b last:border-b-0 border-neutral-gray">
               <div class="p-2 border-r border-neutral-gray">{{ label }}</div>
               <div class="p-2">{{ field || 'No especificado' }}</div>
@@ -285,7 +285,7 @@ onMounted(async () => {
               'Cirugías': nutritional_profile.morbid_antecedents?.cirugias,
               'Farmacos': nutritional_profile.morbid_antecedents?.farmacos,
               'Examenes': nutritional_profile.morbid_antecedents?.exams,
-              'Otros': nutritional_profile.morbid_antecedents?.otros.length > 0 ? translatePathology(nutritional_profile.morbid_antecedents.otros).join(', ') : 'No especificadas'
+              'Otros': nutritional_profile.morbid_antecedents?.otros?.length > 0 ? translatePathology(nutritional_profile.morbid_antecedents.otros).join(', ') : 'No especificadas'
             }" :key="label" class="grid grid-cols-2 border-b last:border-b-0 border-light-gray">
               <div class="p-2 border-r border-neutral-gray">{{ label }}</div>
               <div class="p-2">{{ field || 'No especificado' }}</div>
