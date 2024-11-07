@@ -195,7 +195,7 @@ const SaveRecipe = async() => {
       <div class="flex flex-col justify-between p-5 gap-1 bg-light-red rounded-lg">
         <div class="flex gap-2 w-full" :class="errorsForm.ingredientLines ? 'items-center': 'items-end'">
           <div :class="errorsForm.ingredientLines ? 'flex flex-col' : ''">
-            <div class="flex gap-2">
+            <div class="flex gap-2 w-full">
               <AppInput
                 type="text"
                 class="flex-nowrap w-full"
@@ -291,7 +291,7 @@ const SaveRecipe = async() => {
       class="w-fit self-end border-0 p-1 bg-light-green text-dark-green hover:bg-dark-green hover:text-light-green"
       type="button"
       text="Guardar Receta"
-      :icons="['fas', 'plus']"
+      :icons="['fas', 'floppy-disk']"
       @click="SaveRecipe"
     />
   </div>
