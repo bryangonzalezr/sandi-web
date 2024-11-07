@@ -5,6 +5,7 @@ import { useConsultStore } from '@/stores/consult.store';
 import AppButton from '@/common/AppButton.vue';
 import { useRouter } from 'vue-router';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+
 const consultStore = useConsultStore();
 const router = useRouter();
 const loading = ref(true);
