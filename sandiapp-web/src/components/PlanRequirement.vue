@@ -30,24 +30,28 @@ const emit = defineEmits(["goToStep", 'getRequirements']);
 
 const planStore = usePlanStore();
 
-const typesMethods = {
-    'Normal': {
+const typesMethods = [
+    {
         text: 'Factorial paciente sano',
+        value: 'Normal',
         required: true
     },
-    'Factorial': {
+    {
         text: 'Facotorial paciente enfermo',
+        value: 'Factorial',
         required: props.type_patient == 'Enfermo'
     },
-    'FAO/OMS/ONU' : {
+    {
         text: 'FAO/OMS/ONU',
+        value: 'FAO/OMS/ONU',
         required: true
     },
-    'Harris-Benedict': {
+    {
         text: 'Harris-Benedict',
+        value: 'Harris-Benedict',
         required: props.type_patient == 'Enfermo'
     },
-}
+  ]
 
 const typesRest = {
     'Absoluto' : 'Absoluto (cama)',
@@ -136,6 +140,8 @@ onMounted(() => {
                 :options="typesMethods"
                 :selectedOption="selectedMethod.method"
                 firstOptionValue="Selecciona el método"
+                value="text"
+                optionText="value"
                 @update:selectedOption="setValue('method')"
                 class="profile-edit"
             />

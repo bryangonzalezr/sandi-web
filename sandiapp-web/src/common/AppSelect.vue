@@ -116,7 +116,7 @@ const changeSelect = () => {
         </template>
       </select>
     </div>
-    <p v-if="props.error" class="text-xs text-bold-red flex gap-1 items-center">
+    <p v-if="props.error" class="text-xs text-dark-red flex gap-1 items-center">
       <font-awesome-icon :icon="['fas', 'circle-exclamation']" />
       {{ props.errorMessage[0] }}
     </p>
@@ -160,10 +160,18 @@ const changeSelect = () => {
 
 .profile-edit .custom-select:hover {
   /* Hover effect */
-  background-color: var(--light-green);
   border-color: var(--dark-green); /* Optional: border color on hover */
   background-color: var(--dark-green);
   color: var(--light-green);
+}
+
+.profile-edit .custom-select:hover option {
+  /* Hover effect */
+  color: var(--dark-green);
+}
+.profile-edit .custom-select:hover option:hover {
+  /* Hover effect */
+  background-color: var(--dark-green);
 }
 
 .profile-edit .custom-select option {
