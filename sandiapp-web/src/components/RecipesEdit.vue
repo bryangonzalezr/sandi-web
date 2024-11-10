@@ -76,9 +76,9 @@ const deleteIngredient = (index) => {
     title: "¿Segur@ que quieres eliminar el ingrediente?",
     showDenyButton: true,
     confirmButtonText: "Si",
-    confirmButtonColor: "#76A95C",
+    confirmButtonColor: "#B8D0A7",
     denyButtonText: `No`,
-    denyButtonColor: "#DE3E3E",
+    denyButtonColor: "#EC9B98",
   }).then((result) => {
     if (result.isConfirmed) {
       recipe.value.ingredientLines.splice(index, 1);

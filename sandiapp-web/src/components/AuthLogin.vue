@@ -5,6 +5,7 @@ import { RouterLink } from 'vue-router'
 // Importar Stores
 import { useAuthStore } from "@/stores";
 //Importar paquetes de diseño o elementos visuales
+import Swal from "sweetalert2";
 //Importar componentes
 import AppButton from '@/common/AppButton.vue';
 import AppInput from '@/common/AppInput.vue';
@@ -33,11 +34,23 @@ const Login = async () => {
         email: '',
         password: ''
       }
+      console.log('exito')
+      loading.value = false;
     }catch(error){
+      console.log('error', error)
       loading.value = false;
-      errorsForm.value = error.response.data.errors;
-    }finally{
-      loading.value = false;
+      if(error.response.data.errors){
+        errorsForm.value = error.response.data.errors;
+      }else{
+        Swal.fire({
+          title: error.response.data.message == 'Invalid Credentials' ? 'Credenciales invalidas' : 'Error',
+          text: error.response.data.message == 'Invalid Credentials' ? 'Intenta nuevamente' : error.response.data.message,
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+          heightAuto: false,
+        });
+      }
     }
 }
 </script>
@@ -50,7 +63,7 @@ const Login = async () => {
     />
      <div class="text-2xl animate-blink">Iniciando sesión...</div>
   </div>
-  <div class="flex flex-col items-center bg-light-beige">
+  <div class="flex flex-col items-center bg-light">
     <!-- Logo, titulo y descripción -->
     <div class="flex flex-col items-center">
       <img 

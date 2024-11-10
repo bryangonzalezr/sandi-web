@@ -65,7 +65,7 @@ const changeAddPatient = () => {
 const ShowPatientsFiled = async (page) => {
   try{
     loading.value = true;
-    await patientStore.IndexPatient(1,page,1)
+    await patientStore.IndexPatient(1,false,page,1)
     patients.value = patientStore.GetPatients
     links.value = patientStore.GetLinks
     meta.value = patientStore.GetMeta
@@ -77,7 +77,7 @@ const ShowPatientsFiled = async (page) => {
 }
 
 const VerifyFiled = async () => {
-  await patientStore.IndexPatient(1,1,0,true);
+  await patientStore.IndexPatient(1,false,1,0,true);
   verifyFiled.value = patientStore.GetVerifyFiled;
 };
 
@@ -102,9 +102,9 @@ const RemovePatient = (id) => {
         title: "¿Segur@ que quieres eliminar al paciente?",
         showDenyButton: true,
         confirmButtonText: "Si",
-        confirmButtonColor: "#76A95C",
+        confirmButtonColor: "#B8D0A7",
         denyButtonText: `No`,
-        denyButtonColor: "#DE3E3E",
+        denyButtonColor: "#EC9B98",
       }).then(async (result) => {
         if (result.isConfirmed) {
           await patientStore.RemovePatient(id);
@@ -123,9 +123,9 @@ const RestorePatient = (id) => {
         title: "¿Segur@ que quieres restaurar al usuario como paciente?",
         showDenyButton: true,
         confirmButtonText: "Si",
-        confirmButtonColor: "#76A95C",
+        confirmButtonColor: "#B8D0A7",
         denyButtonText: `No`,
-        denyButtonColor: "#DE3E3E",
+        denyButtonColor: "#EC9B98",
       }).then(async (result) => {
         if (result.isConfirmed) {
           await patientStore.RestorePatient(id);
@@ -140,7 +140,7 @@ const RestorePatient = (id) => {
 const GetData = async (page = 1) => {
   try{
     loading.value = true;
-    await patientStore.IndexPatient(0,page,1)
+    await patientStore.IndexPatient(0,false,page,1)
     await planStore.ShowPlanfiled();
     patients.value = patientStore.GetPatients
     links.value = patientStore.GetLinks

@@ -52,9 +52,9 @@ const deleteMenu = (type, id) => {
     title: "¿Segur@ que quieres eliminar el menú?",
     showDenyButton: true,
     confirmButtonText: "Si",
-    confirmButtonColor: "#76A95C",
+    confirmButtonColor: "#B8D0A7",
     denyButtonText: `No`,
-    denyButtonColor: "#DE3E3E",
+    denyButtonColor: "#EC9B98",
   }).then((result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {

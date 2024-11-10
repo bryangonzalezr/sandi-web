@@ -43,7 +43,7 @@ APIAxios.interceptors.response.use(
           title: "Error",
           text: getValidationError(error.response.status, error.response.message),
           icon: "error",
-          confirmButtonColor: "#e65a03",
+          confirmButtonColor: "#B8D0A7",
           confirmButtonText: "Aceptar",
           heightAuto: false,
         });

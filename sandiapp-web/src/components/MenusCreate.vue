@@ -52,7 +52,7 @@ const handleDrop = (event, targetList) => {
           title: "Límite Alcanzado",
           text: "Has alcanzado el número máximo de recetas para el día. Elimina una receta para agregar una nueva",
           icon: "error",
-          confirmButtonColor: "#e65a03",
+          confirmButtonColor: "#B8D0A7",
           confirmButtonText: "Aceptar",
           heightAuto: false,
         });

@@ -186,14 +186,18 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 
   const privateRoutes = to.matched.some((record) => record.meta.requiresAuth);
 
   const authStore = useAuthStore();
   const data = authStore.SessionUser();
-
   const loggedIn = localStorage.getItem("user");
+
+    if(from.name == 'ChatPatients' && to.name != from.name){
+      localStorage.removeItem("showFiled");
+      localStorage.removeItem("idLastChat");
+    }
 
     if (!data && privateRoutes && loggedIn) {
       localStorage.setItem("lastPath", to.fullPath);
@@ -208,6 +212,11 @@ router.beforeEach((to, from, next) => {
 
     // Si la ruta es privada y el usuario no esta logueado lo redirecciona a la pagina de login
     if (privateRoutes && !loggedIn) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("rolUser");
+      localStorage.removeItem("roles");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("shouldDisplayHeader");
       next({ name: "Login" });
       return;
     }

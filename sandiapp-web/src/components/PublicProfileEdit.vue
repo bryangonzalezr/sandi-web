@@ -111,9 +111,9 @@ const EliminateExperience = async (id) => {
         title: "¿Segur@ que quieres eliminar esta experiencia?",
         showDenyButton: true,
         confirmButtonText: "Si",
-        confirmButtonColor: "#76A95C",
+        confirmButtonColor: "#B8D0A7",
         denyButtonText: `No`,
-        denyButtonColor: "#DE3E3E",
+        denyButtonColor: "#EC9B98",
       }).then(async (result) => {
         if (result.isConfirmed) {
           await contactCardStore.DeleteExperience(id);

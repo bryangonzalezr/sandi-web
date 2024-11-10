@@ -6,7 +6,8 @@ export const useChatStore = defineStore('chat',{
   state: () => ({
     messages: [],
     message: "",
-    all_messages: []
+    all_messages: [],
+    idLastChat: JSON.parse(localStorage.getItem("idLastChat")) || null,
   }),
 
   getters: {
@@ -17,8 +18,10 @@ export const useChatStore = defineStore('chat',{
 
   actions: {
     async ShowMessage(user_id) {
-      const res = await APIAxios.get(`/api/messages/${user_id}`).then((res) => {
+      await APIAxios.get(`/api/messages/${user_id}`).then((res) => {
         this.messages = res.data.message
+        this.idLastChat = user_id;
+        localStorage.setItem("idLastChat", JSON.stringify(user_id));
       });
 
     },

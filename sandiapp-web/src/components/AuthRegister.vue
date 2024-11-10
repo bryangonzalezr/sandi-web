@@ -50,7 +50,7 @@ const Register = async () => {
 </script>
 
 <template>
-  <div class="w-screen flex justify-center justify-items-center bg-light-beige">
+  <div class="w-screen flex justify-center justify-items-center bg-light">
   <div class="flex flex-col bg-extralight-green self-center pt-10 pb-5 px-10 w-4/6 rounded-2xl">
     <!-- Titulo y descripción -->
     <h1 class="text-xl mb-3 text-bold text-center">Estás a un paso de conectar con tus pacientes</h1>

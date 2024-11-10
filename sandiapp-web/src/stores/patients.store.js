@@ -11,6 +11,7 @@ export const usePatientsStore = defineStore('patients',{
     patient: {},
     firstPatient: 0,
     patientfiled: false,
+    showFiled: JSON.parse(localStorage.getItem("showFiled")) || 0,
   }),
 
   getters: {
@@ -24,9 +25,13 @@ export const usePatientsStore = defineStore('patients',{
   },
 
   actions: {
-    async IndexPatient(archivados = 0, page, paginate = 0, verify = false) {
+    async IndexPatient(archivados = 0, chat = false, page, paginate = 0, verify = false) {
       try{
         const res = await APIAxios.get(`/api/pacientes?page=${page}&archivados=${archivados}&paginate=${paginate}`);
+        if(chat){
+          this.showFiled = archivados
+          localStorage.setItem("showFiled", JSON.stringify(archivados));
+        }
         if(!verify){
           this.patientslist = res.data.data;
           this.firstPatient = (this.patientslist[0]).id

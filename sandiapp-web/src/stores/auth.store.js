@@ -28,11 +28,12 @@ export const useAuthStore = defineStore('auth', {
         actions: {
 
             async SessionUser() {
-                const data = await APIAxios.get("/api/check-session").catch(() => {
-                  return false;
-                });
-          
-                return data;
+                try{
+                    const data = await APIAxios.get("/api/check-session")
+                    return data.data
+                }catch{
+                    return false;
+                }
             },
 
             async ShowRoles() {
@@ -65,7 +66,7 @@ export const useAuthStore = defineStore('auth', {
                         title: "ACCESO RESTRINGIDO",
                         text: "Tu cuenta solo puede iniciar sesión desde la aplicación móvil. Por favor, ingresa desde nuestra app para continuar.",
                         icon: "error",
-                        confirmButtonColor: "#e65a03",
+                        confirmButtonColor: "#B8D0A7",
                         confirmButtonText: "Aceptar",
                         heightAuto: false,
                       });
@@ -118,7 +119,7 @@ export const useAuthStore = defineStore('auth', {
                         text: "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.",
                         icon: "success",
                         showConfirmButton: true,
-                        confirmButtonColor: "#EC9B98",
+                        confirmButtonColor: "#B8D0A7",
                         confirmButtonText: "Aceptar",
                         heightAuto: false,
                       });

@@ -33,27 +33,6 @@ const loadContactCard = async () => {
   loading.value = false;
 };
 
-const EliminateExperience = async (id) => {
-  try{
-    Swal.fire({
-        title: "¿Segur@ que quieres eliminar esta experiencia?",
-        showDenyButton: true,
-        confirmButtonText: "Si",
-        confirmButtonColor: "#76A95C",
-        denyButtonText: `No`,
-        denyButtonColor: "#DE3E3E",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await contactCardStore.DeleteExperience(id);
-          await GetExperiences();
-        }
-      });
-    
-  } catch (error) {
-    errorsForm.value = error.response.data.errors;
-  }
-};
-
 const goToBack = () => {
   router.push({ name: 'Profile'});
 }
@@ -72,12 +51,14 @@ const deleteContactCard = async () => {
     text: "No podrás revertir esta acción.",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
+    confirmButtonColor: "#B8D0A7",
+    cancelButtonColor: "#EC9B98",
     confirmButtonText: "Eliminar",
     cancelButtonText: "Cancelar",
   }).then(async (result) => {
     if (result.isConfirmed) {
+      console.log(experiences.value)
+      console.log(contactCard.value.experiences)
       // Asegúrate de cargar las experiencias si aún no están en experiences.value
       if (!experiences.value || experiences.value.length === 0) {
         await contactCardStore.IndexExperience();
@@ -87,6 +68,7 @@ const deleteContactCard = async () => {
       for (const exp of contactCard.value.experiences) {
         await contactCardStore.DeleteExperience(exp.id);
       }
+      await GetExperiences()
       // Eliminar la tarjeta de contacto después de eliminar las experiencias
       await contactCardStore.DeleteContactCard(contactCard.value.id);
       contactCard.value = null;

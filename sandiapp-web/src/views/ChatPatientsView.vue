@@ -100,7 +100,7 @@ const handleFilter = async () => {
 };
 
 const VerifyFiled = async () => {
-        await patientsStore.IndexPatient(1,1,0,true);
+        await patientsStore.IndexPatient(1,false, 1,0,true);
         verifyFiled.value = patientsStore.GetVerifyFiled;
 };
 
@@ -111,7 +111,7 @@ const getData = async (id = props.id, filter=0) => {
             patientsStore.ShowPatient(id),
             chatStore.ShowMessage(id),
             chatStore.ShowAllMessages(),
-            patientsStore.IndexPatient(filter)
+            patientsStore.IndexPatient(filter, true)
         ]);
 
         messages.value = chatStore.GetMessages;
@@ -217,8 +217,16 @@ const setValue = (value) => {
 };
 
 onMounted(() => {
+    const localLastId = localStorage.getItem("idLastChat")
+    const localShowFiled = localStorage.getItem("showFiled")
+    if(localShowFiled && localShowFiled == 1){
+        showFiled.value = true
+        filter.value = 1
+        getData(localLastId, 1)
+    }else{
         showFiled.value = false
         getData(props.id)
+    }
 });
 
 watch(patient, (newVal) => {
