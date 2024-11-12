@@ -175,13 +175,12 @@ watch(selectedRegionOption, (selectedCommuneOption) => { selectedCommuneOption =
         Actualiza la información para que los usuarios puedan conocerte y contactarte
       </p>
     </div>
-    <form @submit.prevent="saveContactCard" class="flex flex-col gap-y-2">
-      <div class="flex justify-center items-center" v-if="loading">
-        <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
-        <span class="visually-hidden">  Cargando...</span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" v-else>
+    <div v-if="loading" class="flex flex-col justify-center items-center gap-4">
+      <img class="h-16 w-16 rounded-full animate-spin-slow" src="@/assets/images/Logo_instagram.svg"></img>
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <form v-else @submit.prevent="saveContactCard" class="flex flex-col gap-y-2">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div class="lg:col-span-2 lg:grid lg:grid-cols-4 lg:gap-x-2 gap-y-2 flex flex-col">
               <AppSelect
               :options="regions.data"
@@ -252,7 +251,11 @@ watch(selectedRegionOption, (selectedCommuneOption) => { selectedCommuneOption =
           </div>
           <!-- Tabla de experiencias -->
           <div class="overflow-x-auto mt-2">
-            <table class="min-w-full border border-light-gray">
+            <div v-if="loadingExperience" class="flex flex-col justify-center items-center gap-4">
+              <img class="h-16 w-16 rounded-full animate-spin-slow" src="@/assets/images/Logo_instagram.svg"></img>
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <table v-else-if="!loadingExperience && experiences.length > 0 " class="min-w-full border border-light-gray">
               <thead class="bg-mid-beige">
                 <tr class="border-b border-b-extralight-beige">
                   <th class="px-4 py-2 text-left text-sm">Tipo</th>
@@ -264,14 +267,7 @@ watch(selectedRegionOption, (selectedCommuneOption) => { selectedCommuneOption =
                 </tr>
               </thead>
               <tbody>
-                <tr v-if="loadingExperience">
-                  <td class="flex justify-center items-center" colspan="6">
-                    <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
-                    <span class="visually-hidden">  Cargando...</span>
-                  </td>
-                </tr>
-                <template v-else>
-                  <tr v-for="(experience, index) in experiences" :key="index" class="border-b border-b-extralight-beige">
+                <tr v-for="(experience, index) in experiences" :key="index" class="border-b border-b-extralight-beige">
                     <td class="px-4 py-2 text-sm">{{ experience.type }}</td>
                     <td class="px-4 py-2 text-sm">{{ experience.title }}</td>
                     <td class="px-4 py-2 text-sm">{{ experience.institution }}</td>
@@ -286,7 +282,6 @@ watch(selectedRegionOption, (selectedCommuneOption) => { selectedCommuneOption =
                       @click="EliminateExperience(experience.id)"
                     /></td>
                   </tr>
-                </template>
               </tbody>
             </table>
           </div>

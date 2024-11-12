@@ -13,7 +13,14 @@ const authStore = useAuthStore();
     </header>
   </template>
   <main :class="authStore.shouldDisplayHeader ? 'bg-light w-full pt-[90px]' : ''">
-    <RouterView />
+    <div v-if="authStore.loadingPage" class="bg-light flex flex-col fixed top-0 left-0 z-40 w-screen h-screen justify-center items-center ">
+      <img
+        class="w-1/6 p-5 rounded-full animate-spin-slow"
+        src="@/assets/images/Logo_instagram.svg"
+      />
+       <div class="text-2xl animate-blink">Cerrado sesión...</div>
+    </div>
+    <RouterView v-else/>
   </main>
 </template>
 

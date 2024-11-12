@@ -34,8 +34,6 @@ const Login = async () => {
         email: '',
         password: ''
       }
-      console.log('exito')
-      loading.value = false;
     }catch(error){
       console.log('error', error)
       loading.value = false;
@@ -51,6 +49,7 @@ const Login = async () => {
           heightAuto: false,
         });
       }
+      loading.value = false;
     }
 }
 </script>

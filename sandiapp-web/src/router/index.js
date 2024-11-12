@@ -191,7 +191,7 @@ router.beforeEach(async (to, from, next) => {
   const privateRoutes = to.matched.some((record) => record.meta.requiresAuth);
 
   const authStore = useAuthStore();
-  const data = authStore.SessionUser();
+  const data = await authStore.SessionUser();
   const loggedIn = localStorage.getItem("user");
 
     if(from.name == 'ChatPatients' && to.name != from.name){

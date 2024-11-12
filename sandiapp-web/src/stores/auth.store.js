@@ -13,7 +13,7 @@ export const useAuthStore = defineStore('auth', {
                 objectives: '',
                 role: ''
             },
-            isLoading: false,
+            loadingPage: false,
             shouldDisplayHeader: JSON.parse(localStorage.getItem("shouldDisplayHeader")) || false,
         }),
     
@@ -81,19 +81,20 @@ export const useAuthStore = defineStore('auth', {
                     } catch (err) {
                         console.error(err);
                     }
+                    router.push( {name: 'Patients'});
                     this.user = user;
                     this.rolUser = role;
                     this.roles = roles.data;
                     this.shouldDisplayHeader = true;
-                    localStorage.setItem("shouldDisplayHeader", true);
                     localStorage.setItem("user", JSON.stringify(user))
                     localStorage.setItem("rolUser", JSON.stringify(role))
                     localStorage.setItem("roles", JSON.stringify(roles))
-                    router.push( {name: 'Patients'});
+                    localStorage.setItem("shouldDisplayHeader", true);
                 }
             },
 
             async Logout(){
+                this.loadingPage = true;
                 try{
                     this.user = null
                     this.shouldDisplayHeader = false;
@@ -106,8 +107,18 @@ export const useAuthStore = defineStore('auth', {
                     await router.push({name: 'Login'});
 
                     await APIAxios.post(`/api/logout`);
+                    this.loadingPage = false;
                 }catch(error){
-                    return { 'error': error.message }
+                    this.loadingPage = false;
+                    Swal.fire({
+                        title: "Error",
+                        text: error.message,
+                        icon: "error",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#B8D0A7",
+                        confirmButtonText: "Aceptar",
+                        heightAuto: false,
+                      });
                 }
             },
     

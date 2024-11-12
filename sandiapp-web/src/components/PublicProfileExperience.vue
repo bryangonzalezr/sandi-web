@@ -75,9 +75,9 @@ onMounted(() => {
     <!-- Contenedor principal del pop-up -->
     <div class="bg-white w-full max-w-2xl mx-auto rounded-lg p-6 space-y-4 border border-neutral-beige">
       <!-- Mensaje de carga -->
-      <div v-if="loading" class="flex justify-center items-center">
-        <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
-        <span class="visually-hidden">  Cargando...</span>
+      <div v-if="loading" class="flex flex-col justify-center items-center gap-4">
+        <img class="h-16 w-16 rounded-full animate-spin-slow" src="@/assets/images/Logo_instagram.svg"></img>
+        <span class="visually-hidden">Cargando...</span>
       </div>
       
       <!-- Contenido del formulario -->

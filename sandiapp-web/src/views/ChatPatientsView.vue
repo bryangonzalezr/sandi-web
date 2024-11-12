@@ -291,7 +291,7 @@ const allStoreMessages = computed(() => chatStore.GetAllMessages?.data || []);
                 <div class="w-1/5 shadow-xl">
                     <div v-if="isLoadingPatientList" class="h-full flex items-center justify-center">
                         <div class="flex flex-col items-center gap-4">
-                            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-light-green"></div>
+                            <img class="h-16 w-16 rounded-full animate-spin-slow" src="@/assets/images/Logo_instagram.svg"></img>
                             <p class="text-gray-600 text-lg">Cargando mensajes...</p>
                         </div>
                     </div>
@@ -342,7 +342,7 @@ const allStoreMessages = computed(() => chatStore.GetAllMessages?.data || []);
                         <!-- Loading Screen -->
                         <div v-if="isLoading" class="h-full flex items-center justify-center">
                             <div class="flex flex-col items-center gap-4">
-                                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-light-green"></div>
+                                <img class="h-16 w-16 rounded-full animate-spin-slow" src="@/assets/images/Logo_instagram.svg"></img>
                                 <p class="text-gray-600 text-lg">Cargando mensajes...</p>
                             </div>
                         </div>

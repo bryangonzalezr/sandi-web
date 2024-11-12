@@ -107,9 +107,9 @@ onMounted(() => {
     </div>
 
     <!-- Loading spinner -->
-    <div v-if="loading" class="flex justify-center items-center">
-      <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
-      <span class="visually-hidden">  Cargando...</span>
+    <div v-if="loading" class="flex flex-col justify-center items-center gap-4">
+      <img class="h-16 w-16 rounded-full animate-spin-slow" src="@/assets/images/Logo_instagram.svg"></img>
+      <span class="visually-hidden">Cargando...</span>
     </div>
 
     <!-- Tabla de planes -->
