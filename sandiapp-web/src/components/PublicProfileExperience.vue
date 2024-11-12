@@ -42,10 +42,12 @@ const saveExperience = async () => {
     }
 
     // Aquí haríamos la llamada a la API usando el store
-    await contactCardStore.CreateExperience(experience.value);
-
-   
-    closeModal();
+    await contactCardStore.CreateExperience(experience.value).then(async () => {
+      await contactCardStore.IndexExperience(1, 1)
+    }).finally(() => {
+      closeModal();
+    });  
+    
   } catch (error) {
     console.error("Error al guardar la experiencia:", error);
   }

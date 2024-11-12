@@ -15,9 +15,6 @@ const contactCardStore = useContactCardStore();
 const {experiences, links, meta} = storeToRefs(contactCardStore)
 const regionStore = useRegionStore();
 const router = useRouter();
-const loading = ref(false);
-
-const isExperiencePopupOpen = ref(false);
 
 const authUser = localStorage.getItem('user');
 const currentUser = JSON.parse(authUser.toString());
@@ -27,6 +24,9 @@ const communes = ref([]);
 const selectedRegionOption = ref('');
 const selectedCommuneOption = ref('');
 const selectedOrdinal = ref('');
+const loading = ref(false);
+const loadingExperience = ref(false);
+const isExperiencePopupOpen = ref(false);
 
 const contactCard = ref({
   nutritionist_id: currentUser.id,
@@ -41,24 +41,15 @@ const openExperiencePopup = () => {
 };
 
 const loadRegions = async () => {
-  loading.value = true;
+
   await regionStore.RegionsList();
   regions.value = regionStore.GetRegions;
-
-  // Verificamos que se están cargando las regiones
-  /* console.log("Regiones cargadas:", regions.value); */
   loading.value = false;
 };
 
 const loadCommunes = async (regionOrdinal) => {
-  console.log("Cargando comunas para el ordinal:", regionOrdinal);
-  loading.value = true;
   await regionStore.CommunesList(regionOrdinal.trim());
   communes.value = regionStore.GetCommunes;
-
-  // Verificamos que se están cargando las comunas
-  /* console.log("Comunidades cargadas para el ordinal", regionOrdinal, ":", communes.value); */
-  loading.value = false;
 };
 
 const handleRegionChange = (selected) => {
@@ -75,12 +66,11 @@ const handleRegionChange = (selected) => {
 };
 
 const GetExperiences = async (page = 1) => {
-  loading.value = true;
-  await contactCardStore.IndexExperience(1,page)
-  experiences.value = contactCardStore.GetExperiences
-  links.value = contactCardStore.GetLinks
-  meta.value = contactCardStore.GetMeta
-  loading.value = false;
+  loadingExperience.value = true;
+  await contactCardStore.IndexExperience(1,page).finally(() => {
+    loadingExperience.value = false;
+  })
+  
 }
 
 const EliminateExperience = async (id) => {
@@ -105,11 +95,12 @@ const EliminateExperience = async (id) => {
 };
 
 const saveContactCard = async () => {
-  loading.value = true;
-  await contactCardStore.CreateContactCard(contactCard.value);
-  loading.value = false;
-  await contactCardStore.ShowContactCard(currentUser.id);
-  goProfile();
+  await contactCardStore.CreateContactCard(contactCard.value).then(async () => {
+    await contactCardStore.ShowContactCard(currentUser.id).then(() => {
+      goProfile();
+    })
+  });
+
 };
 
 const goBack = () => {
@@ -137,7 +128,6 @@ onMounted(() => {
   loading.value = true;
   GetExperiences();
   loadRegions();
-  loading.value = false;
 });
 
 watch(selectedRegionOption, (selectedCommuneOption) => {selectedCommuneOption = "";})
@@ -156,7 +146,11 @@ watch(selectedRegionOption, (selectedCommuneOption) => {selectedCommuneOption = 
     </div>
 
     <form @submit.prevent="saveContactCard" class="flex flex-col gap-y-2">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div class="flex justify-center items-center" v-if="loading">
+        <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+        <span class="visually-hidden">  Cargando...</span>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" v-else>
         <div class="lg:col-span-2 lg:grid lg:grid-cols-4 lg:gap-x-2 gap-y-2 flex flex-col">
             <AppSelect
             :options="regions.data"
@@ -238,21 +232,29 @@ watch(selectedRegionOption, (selectedCommuneOption) => {selectedCommuneOption = 
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(experience, index) in experiences" :key="index" class="border-b border-b-extralight-beige">
-                  <td class="px-4 py-2 text-sm">{{ experience.type }}</td>
-                  <td class="px-4 py-2 text-sm">{{ experience.title }}</td>
-                  <td class="px-4 py-2 text-sm">{{ experience.institution }}</td>
-                  <td class="px-4 py-2 text-sm">{{ experience.start_date }}</td>
-                  <td class="px-4 py-2 text-sm">{{ experience.end_date || 'Actualidad' }}</td>
-                  <td class="px-4 py-2">
-                    <AppButton
-                    class="bg-mid-red text-dark-red border-0 hover:bg-mid-red hover:text-dark-red"
-                    type="button"
-                    text="Eliminar"
-                    :icons="['fas', 'xmark']"
-                    @click="EliminateExperience(experience.id)"
-                  /></td>
+                <tr v-if="loadingExperience">
+                  <td class="flex justify-center items-center" colspan="6">
+                    <div class="animate-spin w-8 h-8 border-4 border-t-mid-green border-b-mid-red border-l-light-violet border-r-light-orange rounded-full"></div>
+                    <span class="visually-hidden">  Cargando...</span>
+                  </td>
                 </tr>
+                <template v-else>
+                  <tr v-for="(experience, index) in experiences" :key="index" class="border-b border-b-extralight-beige">
+                    <td class="px-4 py-2 text-sm">{{ experience.type }}</td>
+                    <td class="px-4 py-2 text-sm">{{ experience.title }}</td>
+                    <td class="px-4 py-2 text-sm">{{ experience.institution }}</td>
+                    <td class="px-4 py-2 text-sm">{{ experience.start_date }}</td>
+                    <td class="px-4 py-2 text-sm">{{ experience.end_date || 'Actualidad' }}</td>
+                    <td class="px-4 py-2">
+                      <AppButton
+                      class="bg-mid-red text-dark-red border-0 hover:bg-mid-red hover:text-dark-red"
+                      type="button"
+                      text="Eliminar"
+                      :icons="['fas', 'xmark']"
+                      @click="EliminateExperience(experience.id)"
+                    /></td>
+                  </tr>
+                </template>
               </tbody>
             </table>
           </div>

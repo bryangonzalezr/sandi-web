@@ -90,7 +90,7 @@ const Register = async () => {
           @update:modelValue="setValue('phone_number')"
         />
         <div class="flex flex-col"> 
-          <label class="text-sm">Cumpleaños:</label>
+          <label class="text-sm">Fecha de nacimiento:</label>
           <VueDatePicker
             input-class-name="font-Poppins"
             v-model="form.birthdate"

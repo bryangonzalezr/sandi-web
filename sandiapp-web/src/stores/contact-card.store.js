@@ -79,6 +79,14 @@ export const useContactCardStore = defineStore('contact_card', {
           showConfirmButton: false,
           heightAuto: false,
         });
+      }).catch(() => {
+        Swal.fire({
+          title: "Ha habido un error",
+          icon: "error",
+          timer: 1000,
+          showConfirmButton: false,
+          heightAuto: false,
+        });
       });
     },
 
@@ -96,8 +104,9 @@ export const useContactCardStore = defineStore('contact_card', {
 
     async ShowContactCard(id) {
       if (id !== undefined) {
-        const res = (await APIAxios.get(`/api/tarjeta/${id}`)).data.data;
-        this.contact_card = res;
+        await APIAxios.get(`/api/tarjeta/${id}`).then((data) => {
+          this.contact_card = data.data.data;
+        });
       }
     }
 

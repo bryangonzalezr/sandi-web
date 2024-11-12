@@ -9,12 +9,14 @@ export const useRegionStore = defineStore('regions', {
         ]
          */
       regions: [],
-      communes: []
+      communes: [],
+      commune: {}
     }),
   
     getters: {
       GetRegions: (state) => state.regions,
-      GetCommunes: (state) => state.communes
+      GetCommunes: (state) => state.communes,
+      GetCommune: (state) => state.commune
     },
   
     actions: {
@@ -28,6 +30,12 @@ export const useRegionStore = defineStore('regions', {
       async CommunesList(ordinal){
         await APIAxios.get(`/api/communes?region=${ordinal}`).then((data) => {
             this.communes = data.data.data
+        });
+      },
+
+      async ShowCommune(commune_id){
+        await APIAxios.get(`/api/communes/${commune_id}`).then((data) => {
+            this.commune = data.data.data
         });
       }
   

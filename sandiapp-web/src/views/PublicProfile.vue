@@ -136,7 +136,7 @@ onMounted(() => {
           <div class="bg-white w-full px-2 border-b border-b-light-gray">
             <div v-for="(field, label) in {
             'Región': contactCard.region.name,
-            'Comuna': contactCard.commune_id.name,
+            'Comuna': contactCard.commune.name,
             'Dirección': contactCard.address,
             }" :key="label" class="grid grid-cols-4 border-b last:border-b-0">
               <div class="p-2 border-r">{{ label }}</div>
