@@ -200,7 +200,6 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (!data && privateRoutes && loggedIn) {
-      localStorage.setItem("lastPath", to.fullPath);
       localStorage.removeItem("user");
       localStorage.removeItem("rolUser");
       localStorage.removeItem("roles");
