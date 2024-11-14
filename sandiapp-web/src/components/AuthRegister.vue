@@ -37,6 +37,15 @@ const Register = async () => {
   try{
     isloading.value = true;
     await authStore.Register(form.value)
+    Swal.fire({
+      title: "¡Registro exitoso!",
+      text: "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.",
+      icon: "success",
+      showConfirmButton: true,
+      confirmButtonColor: "#B8D0A7",
+      confirmButtonText: "Aceptar",
+      heightAuto: false,
+    });
   }catch(error){
     isloading.value = false;
     errorsForm.value = error.response.data.errors;
